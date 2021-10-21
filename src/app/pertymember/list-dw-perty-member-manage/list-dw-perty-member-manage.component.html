@@ -1,0 +1,493 @@
+<div id="top">
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div>
+        <div id="app-common-type-tree">
+
+          <div class="row m-0">
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div style="max-height: 90vh; overflow-y: auto;">
+                <app-general-party-tree #tree
+                                      [entityName]="'DwGeneralParty'"
+                                      [treeTitle]="'武汉轻工大学党委'"
+                                      [idField]="'id'"
+                                      [valueField]="'generalPartyName'"
+                                      [parentField]="'parentId'"
+                                      (nodeSelectEvent)="nodeSelect($event)"
+                                      [condition]="treeCondition"
+                                      [conditionCount]="countCondition"
+                                      [type]="'pertyMember'"
+                                      [orderBy]="'generalPartyNumber'"
+                                        [generalId]="userData.generalPartyId"
+                                        [viewPermissions]="userData.viewPermissions"
+                ></app-general-party-tree>
+              </div>
+            </div>
+            <div class="col-lg-10 col-md-9 col-sm-8">
+
+              <ngb-tabset class="tabset-code" type="tabs"  (tabChange)="clickPartyPhasesButton($event)">
+                <ngb-tab title="申请人({{countPhasesList['1']}})" [id]="1" ></ngb-tab>
+                <ngb-tab title="积极分子({{countPhasesList['2']}})" [id]="2"></ngb-tab>
+                <ngb-tab title="党校学员({{countPhasesList['3']}})" [id]="3"></ngb-tab>
+                <ngb-tab title="发展对象({{countPhasesList['4']}})" [id]="4"></ngb-tab>
+                <ngb-tab title="预备党员({{countPhasesList['5']}})" [id]="5"></ngb-tab>
+                <ngb-tab title="正式党员({{countPhasesList['6']}})" [id]="6"></ngb-tab>
+                <ngb-tab title="关系转接({{countPhasesList['7']}})" [id]="7"></ngb-tab>
+              </ngb-tabset>
+
+                <div *ngIf="!showDataTableOnly">
+
+                  <div class="card">
+                    <div class="card-header"><span><b>党员管理</b><b *ngIf="selectedNodeData">: {{selectedNodeData.name}}</b></span>
+                      <button type="button" class="btn btn-outline-secondary float-right btn-xsm"
+                              (click)="isQueryCollapsed = !isQueryCollapsed" [attr.aria-expanded]="!isQueryCollapsed"
+                              aria-controls="collapseQuery">{{isQueryCollapsed == true ? '筛选' : '收起'}}</button>
+                    </div>
+                    <div class="card-body" id="collapseQuery" [ngbCollapse]="isQueryCollapsed">
+                      <div class="form-inline">
+                        <div class="form-group col-6">
+                          <small class="col-4 col-form-label text-right">申请时间:</small>
+                          <common-select class="col-2 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.applicationdateComparison"
+                                         [dataList]="comparisonSelectDataList"></common-select>
+                          <app-date-input class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="myCondition.applicantdate"></app-date-input>
+                        </div>
+                        <div class="form-group col-6">
+                          <small class="col-4 col-form-label text-right">积极分子时间:</small>
+                          <common-select class="col-2 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.activistsdateComparison"
+                                         [dataList]="comparisonSelectDataList"></common-select>
+                          <app-date-input class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="myCondition.activistsdate"></app-date-input>
+                        </div>
+                        <div class="form-group col-6">
+                          <span class="col-4 col-form-label text-right">党校期数:</span>
+                          <common-select class="col-2 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.partyPhasesComparison"
+                                         [dataList]="comparisonSelectDataList"></common-select>
+                          <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.partyPhases"
+                                         [dataList]="partyPhasesSelectDataList"></common-select>
+                        </div>
+                        <div class="form-group col-6">
+                          <small class="col-4 col-form-label text-right">发展对象时间:</small>
+                          <common-select class="col-2 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.developmentdateComparison"
+                                         [dataList]="comparisonSelectDataList"></common-select>
+                          <app-date-input class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="myCondition.developmentdate"></app-date-input>
+                        </div>
+                        <div class="form-group col-6">
+                          <small class="col-4 col-form-label text-right">志愿书编号:</small>
+                          <input type="text" class="col-8 form-control form-control-sm" (keyup.enter)="loadDataList()" [(ngModel)]="queryData.volunteerbook">
+                        </div>
+                        <div class="form-group col-6">
+                          <small class="col-4 col-form-label text-right">入党时间:</small>
+                          <common-select class="col-2 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.probationarydateComparison"
+                                         [dataList]="comparisonSelectDataList"></common-select>
+                          <app-date-input class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="myCondition.probationarydate"></app-date-input>
+                        </div>
+                        <div class="form-group col-6">
+                          <small class="col-4 col-form-label text-right">转正时间:</small>
+                          <common-select class="col-2 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.partymemberdateComparison"
+                                         [dataList]="comparisonSelectDataList"></common-select>
+                          <app-date-input class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="myCondition.partymemberdate"></app-date-input>
+                        </div>
+                        <div class="form-group col-6">
+                          <small class="col-4 col-form-label text-right">党员增加:</small>
+                          <common-select class="col-8 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.manner"
+                                         [dataList]="mannerSelectDataList"></common-select>
+                        </div>
+                        <div class="form-group col-6">
+                          <small class="col-4 col-form-label text-right">党内职务:</small>
+                          <common-select class="col-2 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.partypostComparison"
+                                         [dataList]="comparisonSelectDataList"></common-select>
+                          <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.partypost"
+                                         [dataList]="partypostSelectDataList"></common-select>
+                        </div>
+                        <div class="form-group col-6">
+                          <small class="col-4 col-form-label text-right">党员评议:</small>
+                          <common-select class="col-8 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                                         [(ngModel)]="myCondition.pingyi"
+                                         [dataList]="pingyiSelectDataList"></common-select>
+                        </div>
+
+                      </div>
+                      <div class="form-inline ">
+                        <div class="col-12 ">
+                          <div class="float-right btn-group">
+                            <button *ngIf="model==1" type="button" class="btn btn-outline-secondary float-right btn-xsm" ngbTooltip="当前筛选条件下" (click)="openChangeAllList()">全部确定为积极分子</button>
+                            <button *ngIf="model==6" type="button" class="btn btn-outline-secondary float-right btn-xsm" ngbTooltip="当前筛选条件下" [confirm]="'确定全部转接？'" (confirmClick)="changeAllList()">全部转接</button>
+                            <button class="btn btn-xsm btn-warning" (click)="reset()">重置</button>
+                            <button class="btn btn-xsm btn-info " (click)="searchData()">搜索</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card mt-2">
+                    <div class="card-header">
+                      <div class="float-left">
+                        <button *ngIf="envService.showPopUp" class="btn btn-warning btn-xsm"
+                                [disabled]="!isBranchparty"
+                                [hidden]="model==2||model==3||model==4||model==7"
+                                [appCommonEdit]
+                                [comp]="getComponentByName('EditDwPertyMemberManageComponent')"
+                                [handleTaskComponent]="getComponentByName('ViewDwPertyMemberManageComponent')"
+                                (dataSavedEvent)="dataSaved($event)"
+                                style="margin-right: 5px;"
+                                (handleTaskEvent)="handleTask($event)"><i class="fa fa-plus-circle"></i>添加
+                        </button>
+                        <button [disabled]="checkedNum==0" *ngIf="envService.showPopUp" class="btn btn-warning btn-xsm" style="margin-right: 5px;"
+                        (click)="changeGeneralParty()"><i class="fa fa-bars"></i>更改支部
+                        </button>
+                        <button [disabled]="!isBranchparty" [hidden]="model!=1" class="btn btn-warning btn-xsm" (click)="batchInto()" style="margin-right: 5px;"><i
+                          class="fa fa-upload"></i>批量导入
+                        </button>
+                        <button [hidden]="model==1||model==7" style="margin-right: 5px;" class="btn btn-xsm btn-warning" (click)="exportPartyMemberFormsXlsx()"><i class="fa fa-file-word-o"></i>{{downloadXlsBtnText}}</button>
+                        <a *ngIf="model==7" style="margin-right: 5px;" class="btn btn-xsm btn-warning" [href]="'exportRelationshipTable/?phases='+ partyQuery| serverUrl"><i class="fa fa-file-word-o"></i>{{downloadXlsBtnText}}</a>
+                        <a *ngIf="model==1" style="margin-right: 5px;" target="_blank" class="btn btn-xsm btn-warning" [appDownload]="'eiip/1/0/1/批量导入模板.xlsx'">
+                          <i class="fa fa-download"></i>下载样表
+                        </a>
+                        <button [disabled]="checkedNum==0" [hidden]="model==4||model==6||model==7" class="btn btn-warning btn-xsm" style="margin-right: 5px;"
+                                (click)="partyPhaseLevelUp()"><i
+                          class="fa fa-level-up"></i><span>{{btnLevelUp}}</span></button>
+                        <button  *ngIf="model==7" class="btn btn-warning btn-xsm" style="margin-right: 5px;"
+                                (click)="openBatchChangeAdapter()"><i class="fa fa-level-down"></i>批量转接
+                        </button>
+                        <button [disabled]="checkedNum==0" *ngIf="model==5||model==6" class="btn btn-warning btn-xsm" [confirm]="'确定转接？'"
+                                (confirmClick)="changeAdapter()" style="margin-right: 5px;"><i class="fa fa-level-down"></i>转接
+                        </button>
+                        <button [disabled]="checkedNum==0" [hidden]="model==1||((model==5||model==6)&&userData.generalPartyId)" class="btn btn-warning btn-xsm" [confirm]="'确定后退？'"
+                                (confirmClick)="partyPhasesLevelDown()" style="margin-right: 5px;"><i class="fa fa-level-down"></i>后退
+                        </button>
+                        <button [disabled]="checkedNum==0" class="btn btn-warning btn-xsm" (click)="exportPeopleInfo()" style="margin-right: 5px;"><i class="fa fa-level-down"></i>导出选中人员
+                        </button>
+<!--                        <a class="btn btn-outline-primary btn-xsm" [href]="'exportPeopleToXlsx/?all=1&phases=' + model + partyQuery| serverUrl"><i class="fa fa-level-down"></i>导出全部人员</a>-->
+                        <button class="btn btn-warning btn-xsm" (click)="exportPeopleInfoAll()" style="margin-right: 5px;"><i
+                          class="fa fa-level-down"></i>导出全部人员
+                        </button>
+                        <button [disabled]="checkedNum==0" style="margin-right: 5px;" class="btn btn-xsm  btn-danger" [confirm]="'确定删除？'"
+                                (confirmClick)="markDelete()"><i class="fa fa-fw fa-remove"></i>删除
+                        </button>
+                        <button *ngIf="model===1" [disabled]="checkedNum==0" class="btn btn-xsm  btn-danger" [confirm]="'删除后无法恢复!确定删除？'"
+                                (confirmClick)="deleteList()"><i class="fa fa-fw fa-remove"></i>彻底删除
+                        </button>
+                      </div>
+                      <div class="btn-group float-right">
+                        <button type="button" class="btn btn-outline-secondary btn-xsm" [routerLink]="'/manage/fieldSet'">设置</button>
+                        <button type="button" class="btn btn-outline-secondary btn-xsm"
+                                (click)="isOpratorCollapsed = !isOpratorCollapsed"
+                                [attr.aria-expanded]="!isOpratorCollapsed"
+                                aria-controls="collapseOprator">{{isOpratorCollapsed == true ? '展开' : '收起'}}</button>
+                      </div>
+                    </div>
+                    <div class="card-body" id="collapseOprator" [ngbCollapse]="isOpratorCollapsed">
+                      <ng-container *ngTemplateOutlet="table"></ng-container>
+                    </div>
+                  </div>
+                </div>
+<!--              </ng-template>-->
+              <ng-container *ngIf="showDataTableOnly">
+                <ng-container *ngTemplateOutlet="table"></ng-container>
+              </ng-container>
+
+              <ng-template #table>
+                <div class="table-responsive" style="max-height: 610px">
+                  <table class="table table-hover table-striped table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                      <th><input type="checkbox" [checked]="isAllChecked" (click)="checkAll()"></th>
+                      <ng-container *ngFor="let field of fieldInfoService.fieldInfoList">
+                        <th *ngIf="field.showInTable=='Y'">{{field.fieldLabel}}</th>
+                      </ng-container>
+                      <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody  style="height: 100%;overflow-x: auto">
+                    <ng-template ngFor let-data [ngForOf]="dataList">
+                      <tr>
+                        <td width="30px"><input type="checkbox" [(ngModel)]="data.checked"></td>
+                        <ng-container *ngFor="let field of fieldInfoService.fieldInfoList">
+                          <td *ngIf="field.showInTable=='Y'"><span>{{data[field.fieldName]}}</span></td>
+                        </ng-container>
+
+                        <td class="btn-group">
+                          <ng-container *ngIf="envService.showPopUp">
+                            <button *ngIf="model!=7" class="btn btn-primary btn-sm" [appCommonView]
+                                    [comp]="getComponentByName('ViewDwPertyMemberManageComponent')"
+                                    [procInstId]="data.procInstId" [PK]="fieldInfoService.getEntityPK(data)"
+                                    ngbTooltip="查看"
+                                    (handleTaskDoneEvent)="loadDataList()" #viewButton><i class="fa fa-eye"></i>
+                            </button>
+                            <button *ngIf="model==7&&data.relationship!=true&&(!userData.generalPartyId||data.identity=='2')" class="btn btn-info btn-sm"
+                                    [appCommonEdit]
+                                    [comp]="getDwRelationshipComponent()"
+                                    [PK]="{'pertymember':data.id}"
+                                    ngbTooltip="转接"
+                            ><i class="fa fa-retweet"></i>
+                            </button>
+                            <button *ngIf="model==7&&data.relationship==true&&(!userData.generalPartyId||data.identity=='2')" class="btn btn-success btn-sm"
+                                    [appCommonEdit]
+                                    [comp]="getDwRelationshipComponent()"
+                                    [PK]="{'pertymember':data.id}"
+                                    ngbTooltip="修改"
+                            ><i class="fa fa-wrench"></i>
+                            </button>
+<!--                            <a target="_blank" ngbTooltip="查看" *ngIf="model==7&&data.relationship==true" class="btn btn-primary btn-sm" [href]="'viewRelationship/?id=' + data.id + '&html=1&'| serverUrl"><i class="fa fa-file-word-o"></i></a>-->
+                            <button ngbTooltip="查看"
+                                    *ngIf="model==7&&data.relationship==true"
+                                    class="btn btn-primary btn-sm"
+                                    (click)="openBatchChange(data)"
+                            ><i class="fa fa-file-word-o"></i></button>
+                            <ng-container *ngIf="canEdit(data)&&(!userData.generalPartyId||data.identity=='2')">
+                              <button class="btn btn-warning btn-sm" [appCommonEdit]
+                                      [comp]="getComponentByName('EditDwPertyMemberManageComponent')"
+                                      [handleTaskComponent]="getComponentByName('ViewDwPertyMemberManageComponent')"
+                                      [PK]="fieldInfoService.getEntityPK(data)"
+                                      (dataSavedEvent)="dataSaved($event)"
+                                      (handleTaskEvent)="handleTask($event)"
+                                      ngbTooltip="编辑"
+                              ><i class="fa fa-edit"></i>
+                              </button>
+                            </ng-container>
+                          </ng-container>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    </tbody>
+
+                  </table>
+
+
+                </div>
+                <small class="form-inline">
+                  <select class="form-control form-control-sm" style="height: 33px" [ngbTooltip]="'页面显示条目数量'" [(ngModel)]="this.submitQueryData.viewSize" (ngModelChange)="loadDataList()">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="80">80</option>
+                    <option value="100">100</option>
+                  </select>
+                  <ngb-pagination style="margin-top: 15px" [collectionSize]="pageData.listSize" [(page)]="pageData.page"
+                                  (pageChange)="pageChange($event)" [maxSize]="5" [rotate]="true"
+                                  [pageSize]="submitQueryData.viewSize"
+                                  [boundaryLinks]="true"></ngb-pagination>
+                  <input type="number" class="form-control form-control-sm" style="height: 33px; width: 62px"
+                         [ngbTooltip]="'敲击回车跳转到该页面'" [(ngModel)]="directPage" (keyup.enter)="enterToPage()"/>
+                  <label>共{{pageData.listSize}}条记录</label>
+                </small>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>
+
+<ng-template #editGeneralPartyContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">更改党支部</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="editGeneralPartyUpRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right">
+        所属党委:
+      </small>
+      <span class="col-6 form-control form-control-sm" [selectDwGeneralParty]
+            [isQueryCollapsed]="true" [mapCondition]="{parentId: 'null', generalPartyHistory: 0}"
+            [condition]="generalPartySelectConditionList"
+            [(ngModel)]="changeGeneralparty" (selectedEvent)="getParentParty($event)"></span>
+    </div>
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right">
+        所属支部:
+      </small>
+      <span class="col-6 form-control form-control-sm" [selectDwGeneralParty] [isQueryCollapsed]="true" [mapCondition]="{parentId: changeGeneralparty!='null'?changeGeneralparty:0, generalPartyHistory: 0}" [(ngModel)]="changeBranchparty" (selectedEvent)="getBranchParty($event)"></span>
+    </div>
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right">
+        所属专业:
+      </small>
+      <span class="col-6 form-control form-control-sm" [selectDwProfessional] [isQueryCollapsed]="true" [mapCondition]="{generalId: changeGeneralparty!='null'?changeGeneralparty:0, professionalHistory:0}" [(ngModel)]="changeProfessional" (selectedEvent)="getProfessional($event)"></span>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm" [disabled]="!changeGeneralparty||!changeBranchparty||changeGeneralparty=='null'||changeBranchparty=='null'" (click)="saveGeneralChanged()">保存</button>
+    <button class="btn btn-primary btn-sm" (click)="editGeneralPartyUpRef.close()">关闭</button>
+  </div>
+</ng-template>
+
+<ng-template #editPhasesUpContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{phasesButtonText}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="editPhasesUpRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right">
+        {{editPhasesLabel}}:
+      </small>
+      <app-date-input class="col-4 row p-0 m-0" [hidden]="this.model==2" [(ngModel)]="phasesUpTime"></app-date-input>
+      <!--      <input class="col-12 form-control form-control-sm" title="格式:2001.01.11"  [(ngModel)]="phasesUpTime">-->
+<!--      <span class="col-4 form-control form-control-sm"  [selectDwPhases]="" [showValue] [(ngModel)]="phasesUpSelect"></span>-->
+      <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [hidden]="this.model!=2"
+                     [(ngModel)]="phasesUpSelect"
+                     [dataList]="partyPhasesSelectDataList"></common-select>
+    </div>
+  </div>
+  <div class="modal-footer">
+
+    <button class="btn btn-primary btn-sm" [disabled]="!phasesUpTime&&!phasesUpSelect" (click)="savePhasesUp()">保存</button>
+    <button class="btn btn-primary btn-sm" (click)="editPhasesUpRef.close()">关闭</button>
+  </div>
+</ng-template>
+
+<ng-template #batchIntoContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">批量导入申请人</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="batchIntoContentRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right" style="font-size: medium">
+        请确保Excel表第一行包含以下字段(<span style="color: red">*为必填项</span>)
+      </small>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right" style="font-size: medium">
+        *基本信息：姓名(xm<span style="color: red">*</span>)，性别(xb<span style="color: red">*</span>)，民族(mz<span style="color: red">*</span>)，出生地(csd<span style="color: red">*</span>)，籍贯(jg<span style="color: red">*</span>)，身份证号(sfzh<span style="color: red">*</span>)
+      </small>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right" style="font-size: medium">
+        *学历工作信息：类别(lb<span style="color: red">*</span>)，层次(cc<span style="color: red">*</span>)，现有学历(xyxl<span style="color: red">*</span>)，年级(nj<span style="color: red">*</span>)，班级(bj<span style="color: red">*</span>)，学号(xh<span style="color: red">*</span>)，专业(zy<span style="color: red">*</span>)，学制(xz<span style="color: red">*</span>)，任职情况(rzqk)
+      </small>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right" style="font-size: medium">
+        *党务信息：申请入党时间(sqrd<span style="color: red">*</span>)
+      </small>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right" style="font-size: large">
+        备注:该功能目前仅支持导入学生
+      </small>
+      <app-upload-file [(ngModel)]="attachListData"></app-upload-file>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm" [disabled]="!attachListData" (click)="doBatchInto()">提交</button>
+    <button class="btn btn-primary btn-sm" (click)="batchIntoContentRef.close()">关闭</button>
+  </div>
+</ng-template>
+<ng-template #changeAllListContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">全部确定为积极分子</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="changeAllListRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right">
+        积极分子时间:
+      </small>
+      <app-date-input class="col-4 row p-0 m-0" [(ngModel)]="activeDate"></app-date-input>
+    </div>
+  </div>
+  <div class="modal-footer">
+
+    <button class="btn btn-primary btn-sm" [disabled]="!activeDate" (click)="changeAllList()">保存</button>
+    <button class="btn btn-primary btn-sm" (click)="changeAllListRef.close()">关闭</button>
+  </div>
+</ng-template>
+
+<ng-template #batchAdapterContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">批量关系转接</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="batchAdapterContentRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right" style="font-size: medium">
+        <span style="color: red">请使用从系统导入的Excel文件，或者请确保Excel表第3行包含</span>
+      </small>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right" style="font-size: medium">
+        身份证号码、转入基层党组织、组织关系抬头称谓、介绍信编号、党费缴至时间、转出时间、联系方式
+      </small>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <app-upload-file [(ngModel)]="attachAdapterListData"></app-upload-file>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm" [disabled]="attachAdapterListData.length==0" (click)="doBatchAdapter()">提交</button>
+    <button class="btn btn-primary btn-sm" (click)="batchAdapterContentRef.close()">关闭</button>
+  </div>
+</ng-template>
+
+
+
+<!-- 查看打印介绍信之前，需要选择介绍信模板信息，以及省内省外 -->
+<ng-template #selectLetterTemplateContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">关系转接表样式</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="selectLetterTemplateRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-12 col-form-label text-right">
+        模板:
+      </small>
+      <common-select class="col-12" [cssStyle]="'form-control form-control-sm'"
+      [(ngModel)]="letterTemplate"
+      [dataList]="letterTemplateList"></common-select>
+    </div>
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-12 col-form-label text-right">
+        有效期:
+      </small>
+      <select class="col-12 form-control form-control-sm" [(ngModel)]="validity">
+        <option value="">请选择</option>
+        <option value="1">省内</option>
+        <option value="2">省外</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm" [disabled]="!letterTemplate||!validity" (click)="pinrtTransfer()">确认</button>
+  </div>
+</ng-template>

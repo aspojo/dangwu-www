@@ -1,0 +1,153 @@
+<app-common-pop-or-page [heading]="inView?'流程详情':'任务办理'"
+                        [contentView]="contentView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+
+<ng-template #contentView>
+  <ngb-tabset class="" [destroyOnHide]="false">
+    <ngb-tab title="申请事项">
+      <ng-template ngbTabContent>
+        <div class="card">
+          <div class="card-body">
+
+            <ng-container *ngTemplateOutlet="formView"></ng-container>
+
+
+            <div *ngIf="!inView" class="card mt-2">
+              <div class="card-header">
+                审批意见
+              </div>
+              <div class="card-body p-0">
+                <div class="row p-0">
+                  <div class="col-12  border-0">
+                    <app-rich-text-input [(ngModel)]="submitData.option"></app-rich-text-input>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </ng-template>
+    </ngb-tab>
+
+    <ngb-tab title="审批过程">
+      <ng-template ngbTabContent>
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead class="">
+            <tr>
+              <th>步骤</th>
+              <th>任务结点</th>
+              <th>办理人</th>
+              <th>审批开始时间</th>
+              <th>审批结束时间</th>
+              <th>用时</th>
+              <th>审批意见</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-template ngFor let-data let-i="index" [ngForOf]="handleList">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.assignee}}</td>
+                <td>{{data.startTime}}</td>
+                <td>{{data.endTime}}</td>
+                <td>{{formatDuring(data.duration)}}</td>
+                <td>
+                  {{getOptionsStart(data)}}
+                  <button class="btn btn-xsm btn-outline-primary" (click)="showText(moreView,data)">意见</button>
+                </td>
+              </tr>
+            </ng-template>
+            </tbody>
+
+          </table>
+
+        </div>
+      </ng-template>
+    </ngb-tab>
+
+
+    <ngb-tab title="流程图">
+      <ng-template ngbTabContent>
+        <img *ngIf="procInstId" [src]="'getProcessInstanceImage?procInstId=' + this.procInstId | serverUrl">
+      </ng-template>
+    </ngb-tab>
+
+
+  </ngb-tabset>
+
+
+  <div *ngIf="!inView" class="card mt-2">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-8">
+
+          <div class="form-inline">
+            <div class="form-group col-12">
+              <small class="col-2 col-form-label text-right">指定审批人:</small>
+              <div class="col-6 input-group">
+                <span class="form-control form-control-sm">{{submitData.assignee}}</span>
+
+                <div class="input-group-append">
+                  <button class="btn btn-xsm btn-outline-primary input-group-text" ngbTooltip="选人"
+                          [selectUser] [(ngModel)]="submitData.assignee" [showResultAndSearchButton]="false" (click)="submitData.isUser='Y'">
+                    <i class="fa fa-user px-1"></i>
+                  </button>
+                </div>
+                <div class="input-group-append">
+                  <button class="btn btn-xsm btn-outline-primary input-group-text" ngbTooltip="选角色"
+                          [selectRole] [(ngModel)]="submitData.assignee" [showResultAndSearchButton]="false" groupType="actRole" (click)="submitData.isUser='N'">
+                    <i class="fa fa-users px-1"></i>
+                  </button>
+                </div>
+
+              </div>
+
+
+              <small class="col-4">
+                <small class="text-left text-muted">不指定则使用默认配置</small>
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+
+          <div class="btn-group float-right">
+            <ng-container *ngIf="isStartTask">
+              <button class="btn btn-xsm btn-outline-primary" (click)="taskHandle('yes')">提交</button>
+            </ng-container>
+            <ng-container *ngIf="!isStartTask">
+              <button class="btn btn-xsm btn-outline-primary" (click)="taskHandle('yes')">批准</button>
+              <button class="btn btn-xsm btn-outline-primary" (click)="taskHandle('no')">驳回</button>
+            </ng-container>
+            <button class="btn btn-xsm btn-outline-danger" [confirm]="'确定作废该流程？'" (confirmClick)="invalidProcess()">作废</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</ng-template>
+
+
+<ng-template #moreView let-text>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">审批意见</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="moreViewRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="overflow: auto;" [innerHTML]="options | safeHtml">
+
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm" (click)="moreViewRef.close()">关闭</button>
+  </div>
+</ng-template>

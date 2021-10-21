@@ -1,0 +1,179 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/outc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@environments": [
+        "src/environments/environment"
+      ],
+      "@config": [
+        "src/config"
+      ],
+      "@app/router-animations": [
+        "src/app/router.animations"
+      ],
+
+      "@shared-common/edit": [
+        "src/app/shared/common/edit"
+      ],
+      "@shared-common/pop-or-page": [
+        "src/app/shared/common/pop-or-page/common-pop-or-page.module"
+      ],
+      "@shared-common/complex-select": [
+        "src/app/shared/common/select/common-complex-select"
+      ],
+      "@shared-common/select-one": [
+        "src/app/shared/common/select/common-select-one"
+      ],
+      "@shared-common/task": [
+        "src/app/shared/common/task"
+      ],
+      "@shared-common/view": [
+        "src/app/shared/common/view"
+      ],
+      "@shared-common/component": [
+        "src/app/shared/common/common.component"
+      ],
+      "@shared-common/data-table-directive": [
+        "src/app/shared/common/common-data-table.directive"
+      ],
+      "@shared-common/data-table": [
+        "src/app/shared/common/common-data-table"
+      ],
+      "@shared-common/events": [
+        "src/app/shared/common/common-events"
+      ],
+      "@shared-common/form-input": [
+        "src/app/shared/common/common-form-input"
+      ],
+      "@shared-common/pop": [
+        "src/app/shared/common/common-pop.component"
+      ],
+      "@shared-common/service": [
+        "src/app/shared/common/common-service"
+      ],
+      "@shared-common/field-info-service": [
+        "src/app/shared/common/field-info-service"
+      ],
+      "@shared-modules/attachment-files": [
+        "src/app/shared/modules/attachment-files/attachment-files.module"
+      ],
+      "@shared-modules/select": [
+        "src/app/shared/modules/common-select/common-select.module"
+      ],
+      "@shared-modules/type-tree": [
+        "src/app/shared/modules/common-type-tree/common-type-tree.module"
+      ],
+      "@shared-modules/confirm": [
+        "src/app/shared/modules/confirm/confirm.module"
+      ],
+      "@shared-modules/dic-select": [
+        "src/app/shared/modules/dic-select/dic-select.module"
+      ],
+      "@shared-modules/download": [
+        "src/app/shared/modules/download/download.module"
+      ],
+      "@shared-modules/image-view": [
+        "src/app/shared/modules/image-view/image-view.module"
+      ],
+      "@shared-modules/input": [
+        "src/app/shared/modules/input"
+      ],
+      "@shared-modules/page-header": [
+        "src/app/shared/modules/page-header/page-header.module"
+      ],
+      "@shared-modules/region-select": [
+        "src/app/shared/modules/region-select/region-select.module"
+      ],
+      "@shared-modules/scan-input": [
+        "src/app/shared/modules/scan-input/scan-input.module"
+      ],
+      "@shared-modules/select-dept": [
+        "src/app/shared/modules/select-dept/select-dept.module"
+      ],
+      "@shared-modules/select-role": [
+        "src/app/shared/modules/select-role/select-role.module"
+      ],
+      "@shared-modules/select-user": [
+        "src/app/shared/modules/select-user/select-user.module"
+      ],
+      "@shared-modules/true-false-select": [
+        "src/app/shared/modules/true-false-select/true-false-select.module"
+      ],
+      "@shared-modules/upload-file": [
+        "src/app/shared/modules/upload-file/upload-file.module"
+      ],
+      "@shared-modules/upload-image": [
+        "src/app/shared/modules/upload-image/upload-image.module"
+      ],
+      "@shared-pipes": [
+        "src/app/shared/pipes/shared-pipes.module"
+      ],
+      "@shared-services/attachment": [
+        "src/app/shared/services/attachment.service"
+      ],
+      "@shared-services/auth": [
+        "src/app/shared/services/auth"
+      ],
+      "@shared-services/datetime": [
+        "src/app/shared/services/datetime"
+      ],
+      "@shared-services/dept-user": [
+        "src/app/shared/services/dept-user.service"
+      ],
+      "@shared-services/dic": [
+        "src/app/shared/services/dic.service"
+      ],
+      "@shared-services/environment": [
+        "src/app/shared/services/environment.service"
+      ],
+      "@shared-services/loading": [
+        "src/app/shared/services/loading.service"
+      ],
+      "@shared-services/message": [
+        "src/app/shared/services/message-service"
+      ],
+      "@shared-services/mqtt": [
+        "src/app/shared/services/mqtt.service"
+      ],
+      "@shared-services/sn": [
+        "src/app/shared/services/sn.service"
+      ],
+      "@shared-utils/cryptogram": [
+        "src/app/shared/utils/util-cryptogram"
+      ],
+      "@shared-utils/entity": [
+        "src/app/shared/utils/util-entity"
+      ],
+      "@shared-utils/http": [
+        "src/app/shared/utils/util-http"
+      ],
+      "@shared-utils/misc": [
+        "src/app/shared/utils/util-misc"
+      ],
+      "@shared-utils/validate": [
+        "src/app/shared/utils/util-validate"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
+}

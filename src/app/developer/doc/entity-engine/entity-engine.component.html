@@ -1,0 +1,369 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up" style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/entityEngine#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down" style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/entityEngine#bottom"></a>
+
+<div id="top">
+  <app-page-header [heading]="'FADP实体引擎使用手册'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <p>本节教程在指导使用FADP实体引擎的开发人员使用实体引擎，包含定义实体、定义视图、使用delegator查询等。教程使用到的所有实体和视图的定义在后台代码路径【hot-deploy/fadp/entitydef/guide-entitymodel.xml】的xml文件中。
+      </p>
+      <p class="text-warning">需知：本文档中只说明多数情况下XML的配置，未提到的配置都可以通过相应的DTD定义文件查找到，多数情况下建议使用驼峰命名法。</p>
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>实体引擎介绍</h4>
+        </div>
+        <ol>
+          <li>实体引擎屏蔽了java程序访问数据库的实现细节，使java程序通过一组XML配置及java api调用来操作数据。</li>
+          <li>实体引擎自动处理不同数据库之间的差异，使程序可以在不同数据库上平滑迁移（支持Oracle、MySql、MS SQL、PostgreSql、H2等主流数据库）。</li>
+        </ol>
+      </div>
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>实体引擎配置(entityengine.xml)</h4>
+        </div>
+        <ol>
+          <li>介绍：
+            <p>实体引擎是对数据库连接信息等的配置，这里以H2数据库的连接为例，其文件路径为：【framework/entity/config/entityengine.xml】。如下介绍主要的两部分：delegator、datasource。</p>
+          </li>
+          <textarea highlight-js [options]="{}" [lang]="'xml'">
+<delegator distributed-cache-clear-enabled="false" entity-eca-reader="main" entity-group-reader="main" entity-model-reader="main" name="default">
+  <group-map datasource-name="localh2" group-name="com.hanlin.fadp"/>
+  <group-map datasource-name="localh2" group-name="com.hanlin.fadp.olap"/>
+  <group-map datasource-name="localh2" group-name="com.hanlin.fadp.tenant"/>
+  <group-map datasource-name="localh2" group-name="com.hanlin.fadp.entitymgr"/>
+  <group-map datasource-name="localh2" group-name="com.fadp.ims"/>
+</delegator>
+<datasource add-missing-on-start="true" field-type-name="h2" helper-class="com.hanlin.fadp.entity.datasource.GenericHelperDAO"
+            name="localh2" offset-style="fetch" schema-name="PUBLIC" use-foreign-keys="false" use-indices-unique="false" use-order-by-nulls="true"
+            use-pk-constraint-names="false">
+  <read-data reader-name="tenant"/>
+  <read-data reader-name="seed"/>
+  <read-data reader-name="seed-initial"/>
+  <read-data reader-name="demo"/>
+  <read-data reader-name="ext"/>
+  <read-data reader-name="ext-test"/>
+  <read-data reader-name="ext-demo"/>
+  <inline-jdbc isolation-level="ReadCommitted" jdbc-driver="org.h2.Driver" jdbc-password-lookup="derby-ofbiz"
+               jdbc-uri="jdbc:h2:./runtime/data/h2/fadp/fadp;MVCC=TRUE;AUTO_SERVER=TRUE;TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0"
+               jdbc-username="fadp" pool-jdbc-test-stmt="values 1" pool-maxsize="250" test-on-borrow="true"/>
+</datasource>
+          </textarea>
+          <li>delegator：
+            <p>实体操作句柄。</p>
+          </li>
+          <li>group-map：
+            <p>数据库分组，默认情况下系统使用的表都在如图的第一个分组，分组的datasource-name代表该分组对应的数据源。</p>
+          </li>
+          <li>datasource：
+            <p>数据源 ，它映射到一个具体的数据库。</p>
+          </li>
+          <li>check-on-start：
+            <p>该属性为true代表实体引擎启动时会检查实体定义文件，检查的内容包括：实体字段，实体主键，实体外键，实体索引。</p>
+          </li>
+          <li>add-missing-on-start：
+            <p>该属性为true代表实体引擎启动时若检查到实体定义了表、字段、主键、外键或索引，但是数据库中却没有，则实体引擎将根据实体定义去数据库中创建这些内容。</p>
+          </li>
+          <li>use-foreign-keys：
+            <p>该属性为true代表若实体定义文件中定义了主外键，那么实体引擎就会在数据库中创建相应的主键外键，<br>该属性为false代表实体定义文件中定义的主外键只会作用于程序验证数据的合法性不会在数据库中创建相应的主键，外键。</p>
+          </li>
+        </ol>
+
+      <div class="p-2 mb-2 bg-gray-me">
+        <h4>实体（entity）</h4>
+      </div>
+      <ol>
+        <li>介绍：
+          <p>【实体】是一段XML配置，用于描述数据库中的【表】，如下面的代码解释。</p>
+        </li>
+        <textarea highlight-js [options]="{}" [lang]="'xml'">
+<entity entity-name="TestStudentClass" package-name="">
+  <description>学生班级表</description>
+  <field name="classId" type="id"></field>
+  <field name="studentId" type="id"></field>
+  <prim-key field="classId"/>
+  <prim-key field="studentId"/>
+  <relation type="one" rel-entity-name="TestStudent">
+      <key-map field-name="studentId"/>
+  </relation>
+  <relation type="one" rel-entity-name="TestClass">
+      <key-map field-name="classId"/>
+  </relation>
+</entity>
+        </textarea>
+
+      <li>字段(field)：
+        <p>field标签代表数据库字段。</p>
+        <ol>
+          <li>name属性代表数据库字段名；</li>
+          <li>type属性代表数据库字段类型。这里的类型为平台定义的抽象类型，同样的id类型对应不同数据库可能不一样，具体定义参见【framework/entity/fieldtype/】下的配置文件。</li>
+        </ol>
+      </li>
+      <li>主键(prim-key)：
+        <p>prim-key标签代表数据库主键字段，field属性为主键字段名，当需要联合主键时为每一个主键子段添加一个prim-key标签。<span style="color: red;">（现在不允许使用联合主键，应该增加一个字段单独作为该实体的主键）</span></p>
+      </li>
+      <li>关联(relation)：
+        <p>relation标签代表数据库表之间的关联关系；</p>
+        <ol>
+          <li>type属性为one时代表外键，如上图的第一个关联即代表【学生班级表】指向【学生表】的一个外键，
+            type属性为many时代表一个关系，说明当前表与关联表是一对多的关系，
+            type属性为one-nofk时代表程序中的外键约束，不会在数据库中创建外键；</li>
+          <li>rel-entity-name属性代表外键关联的实体名；</li>
+          <li>key-map标签代表外键关联的实体中的具体字段。</li>
+        </ol>
+      </li>
+      </ol>
+
+      <div class="p-2 mb-2 bg-gray-me">
+        <h4>视图（view-entity）</h4>
+      </div>
+      <ol>
+        <li>介绍：
+          <p>【视图】是一段XML配置，其功能与传统数据库的视图功能一致，但是实体引擎并不会在数据库中真的创建视图，实体引擎会这使用视图时根据视图定义临时拼装查询语句。
+            下面介绍view-entity配置的各个子标签及主要属性的意义及使用方法。
+          </p>
+        </li>
+        <textarea highlight-js [options]="{}" [lang]="'xml'">
+<view-entity entity-name="TestStudentRecordsView" package-name="">
+  <description>学生成绩视图</description>
+  <member-entity entity-alias="SC" entity-name="TestStudentCourseView"/>
+  <member-entity entity-alias="REC" entity-name="TestRecords"/>
+  <alias-all entity-alias="SC"/>
+  <alias name="results" entity-alias="REC"/>
+  <view-link entity-alias="SC" rel-entity-alias="REC" rel-optional="true">
+      <key-map field-name="courseId"/>
+  </view-link>
+</view-entity>
+      </textarea>
+
+        <li>成员实体(member-entity)：
+          <p>member-entity代表这个视图使用到的成员实体。</p>
+          <ol>
+            <li>entity-alias属性代表给该成员实体取一个别名，建议使用实体的首字母命名；</li>
+            <li>entity-name属性代表成员实体的实体名，这里不止可以是实体，也可以是视图。</li>
+          </ol>
+        </li>
+        <li>选取所有字段指定别名(alias-all)：
+          <p>该属性表示选择实体的所有字段，并以字段的原始名称作为别名。</p>
+          <ol>
+            <li>entity-alias属性代表选取字段来自的实体别名。</li>
+          </ol>
+        </li>
+        <li>选取字段指定别名(alias)：
+          <p>alias标签代表选取实体中的某个字段，并为该字段指定别名。</p>
+          <ol>
+            <li>name属性代表选取的字段别名；</li>
+            <li>filed属性代表要取别名的实体字段；</li>
+            <li>entity-alias属性代表选取字段来自的实体别名。</li>
+          </ol>
+        </li>
+        <li>连接规则(view-link):
+          view-link标签代表连接规则，实体引擎视图提供3种连接方式。
+          <ol>
+            <li>自然连接
+              <p>即不配置view-link；场景：建立学生课程视图,分析：每个学生都有每个课程，所以需要自然连接。具体配置如下：</p>
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+<view-entity entity-name="TestStudentCourseView" package-name="">
+  <description>学生课程连接视图</description>
+  <member-entity entity-alias="STU" entity-name="TestStudent"/>
+  <member-entity entity-alias="COU" entity-name="TestCourse"/>
+  <alias-all entity-alias="STU"/>
+  <alias-all entity-alias="COU"/>
+</view-entity>
+              </textarea>
+            </li>
+            <li>内连接：
+              <p>配置view-link默认情况就是内连接。</p>
+            </li>
+            <li>左外连接：
+              <p>即view-link添加属性【rel-optional="true"】
+                场景：建立学生成绩视图
+                分析：学生的各科成绩即使不存在，也需要展示该学生各科目，需要左外连接。</p>
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+<view-entity entity-name="TestStudentRecordsView" package-name="">
+  <description>学生成绩视图</description>
+  <member-entity entity-alias="SC" entity-name="TestStudentCourseView"/>
+  <member-entity entity-alias="REC" entity-name="TestRecords"/>
+  <alias-all entity-alias="SC"/>
+  <alias name="results" entity-alias="REC"/>
+  <view-link entity-alias="SC" rel-entity-alias="REC" rel-optional="true">
+    <key-map field-name="courseId"/>
+  </view-link>
+</view-entity>
+          </textarea>
+          </ol>
+        </li>
+        <li>视图应用场景：
+          <ol>
+            <li>聚合查询:
+              <p>在视图中使用聚合函数，例如：max、sum、avg、count、count-distinct、upper、lower、extract-year、extract-month、extract-day。下面以计数聚合函数count为例介绍其用法。
+                场景：查询出各个班级的人数
+                分析：以班级id分组对学生id进行计数
+                具体配置如下：
+              </p>
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+<view-entity entity-name="TestClassStudentNumView" package-name="">
+  <description>各班级学生人数视图</description>
+  <member-entity entity-alias="SC" entity-name="TestStudentClass"/>
+  <alias name="classId" entity-alias="SC" group-by="true"/>
+  <alias name="studentId" entity-alias="SC" function="count"><description>学生人数</description></alias>
+</view-entity>
+              </textarea>
+            </li>
+            <li>复杂字段:
+              <p>通常情况下select语句中都是表中的字段名，但是当需要在select中指定字段默认值、连接字符串、进行+-运算时，就需要使用到复杂字段了。
+                场景：查询班级，并将班级中的学生姓名连接成一个字符串。
+                分析：按班级分组，将学生姓名连接起来。
+                具体配置如下：
+              </p>
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+ <view-entity entity-name="TestClassView" package-name="">
+  <description>班级视图以字符串形式展示班级的学生</description>
+  <member-entity entity-alias="STU" entity-name="TestStudentClassView"></member-entity>
+  <alias name="className" group-by="true" entity-alias="STU"/>
+  <alias name="studentName">
+      <complex-alias operator="">
+          <complex-alias-field  value="group_concat("/>
+          <complex-alias-field  entity-alias="STU" field="studentName"/>
+          <complex-alias-field  value=")"/>
+      </complex-alias>
+  </alias>
+</view-entity>
+              </textarea>
+            </li>
+            <li>带条件视图：
+              <p>
+                场景：查询所有男生。
+                分析：在学生表上建视图，并带条件（性别=男）。
+                具体配置如下：
+              </p>
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+<view-entity entity-name="TestBoyStudentView" package-name="">
+  <description>男生视图</description>
+  <member-entity entity-alias="CL" entity-name="TestClass"/>
+  <member-entity entity-alias="STU" entity-name="TestStudent"/>
+  <member-entity entity-alias="SC" entity-name="TestStudentClass"/>
+  <alias-all entity-alias="CL"/>
+  <alias-all entity-alias="STU"/>
+  <view-link entity-alias="CL" rel-entity-alias="SC">
+      <key-map field-name="classId"/>
+  </view-link>
+  <view-link entity-alias="SC" rel-entity-alias="STU">
+      <key-map field-name="studentId"/>
+      <entity-condition>
+          <condition-list>
+              <condition-expr field-name="sex" entity-alias="STU" value="男"/>
+          </condition-list>
+      </entity-condition>
+  </view-link>
+</view-entity>
+              </textarea>
+            </li>
+          </ol>
+        </li>
+
+      </ol>
+
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>实体操作句柄（Delegator）</h4>
+        </div>
+        <p>实体引擎使用Delegator的实例来操作数据库，一般情况下delegator的实例可以从session中取得。有如下几个常用使用场景。</p>
+        <ol>
+          <li>插入数据：
+            <p>插入数据分两种情况：主键不自动增长，由用户输入；主键自增长。代码如下:</p>
+            <textarea highlight-js [options]="{}" [lang]="'xml'">
+public void addStudent() throws GenericEntityException {
+  Map<String,Object> map=new HashMap<>();
+  map.put("studentId","2018011001");
+  map.put("studentName","江豆");
+  map.put("sex","男");
+  GenericValue value = delegator.makeValue("TestStudent", map);
+  delegator.create(value);
+}
+// 添加学生，studentId自增长
+public void addStudentAutoId() throws GenericEntityException {
+  String entityName="TestStudent";
+  Map<String,Object> map=new HashMap<>();
+  map.put("studentId",delegator.getNextSeqId(entityName));
+  map.put("studentName","白雪");
+  map.put("sex","女");
+  GenericValue value = delegator.makeValue(entityName, map);
+  delegator.create(value);
+}
+            </textarea>
+          </li>
+          <li>删除数据：
+            <p>删除数据分两种情况：按主键删除、按条件删除。代码如下：</p>
+            <textarea highlight-js [options]="{}" [lang]="'xml'">
+//按主键删除学生
+public void removeStudentByPrimaryKey(String studentId) throws GenericEntityException {
+  GenericPK pk = delegator.makePK("TestStudent", "studentId", studentId);
+  delegator.removeByPrimaryKey(pk);
+}
+//按条件删除学生
+public void removeStudentByCondition(String studentId) throws GenericEntityException {
+  EntityCondition condition = EntityCondition.makeCondition("studentId", studentId);
+  delegator.removeByCondition("TestStudent",condition);
+}
+            </textarea>
+          </li>
+          <li>查询数据：
+            <p>查询数据是最复杂的，这里只挑选常用的查询数据的情况进行讲解。
+              查询常用的api为:
+            </p>
+            <textarea highlight-js [options]="{}" [lang]="'xml'">
+              List<GenericValue> findList(String entityName, EntityCondition entityCondition, Set<String> fieldsToSelect, List<String> orderBy,
+                                          EntityFindOptions findOptions, boolean useCache)
+            </textarea>
+          </li>
+          <div class="row m-0">
+            <table class="table table-hover table-striped">
+              <tr><th class="text-center" colspan="2">方法参数说明</th></tr>
+              <tr class="text-center" colspan="1"><th>字段</th><th>描述</th></tr>
+              <tr class="text-center" colspan="1"><td>entityName</td><td>实体名</td></tr>
+              <tr class="text-center" colspan="1"><td>entityCondition</td><td>查询条件</td></tr>
+              <tr class="text-center" colspan="1"><td>fieldsToSelect</td><td>选取字段</td></tr>
+              <tr class="text-center" colspan="1"><td>orderBy</td><td>排序字段</td></tr>
+              <tr class="text-center" colspan="1"><td>findOptions</td><td>对查询结果集的约束配置</td></tr>
+              <tr class="text-center" colspan="1"><td>useCache</td><td>是否使用缓存</td></tr>
+            </table>
+          </div>
+          <p>对于实体操作，不管是查询还是编辑数据都需要构造查询条件，下面对and、or、in三种条件的构造进行说明，以数据查询为例。</p>
+          <ol>
+            <li>and条件:
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+Map<String,Object> map=new HashMap<>();
+map.put("studentName","白雪");
+map.put("sex","女");
+EntityCondition andCondition = EntityCondition.makeCondition(map);
+delegator.findList("TestStudent",andCondition,null,null,null,false);
+              </textarea>
+            </li>
+            <li>or条件:
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+EntityCondition orCon1 = EntityCondition.makeCondition("studentId", "2018011001");
+EntityCondition orCon2 = EntityCondition.makeCondition("studentId", "test");
+List<EntityCondition> orConditionList=new ArrayList<>();
+orConditionList.add(orCon1);
+orConditionList.add(orCon2);
+EntityCondition orCondition = EntityCondition.makeCondition(orConditionList,EntityOperator.OR);
+delegator.findList("TestStudent",orCondition,null,null,null,false);
+              </textarea>
+            </li>
+            <li>in条件:
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+List<Object> inList=new ArrayList<>();
+inList.add("2018011001");
+inList.add("test");
+EntityCondition inCondition = EntityCondition.makeCondition("studentId", EntityOperator.IN, inList);
+delegator.findList("TestStudent",inCondition,null,null,null,false);
+              </textarea>
+            </li>
+          </ol>
+        </ol>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>
+

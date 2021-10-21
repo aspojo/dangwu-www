@@ -1,0 +1,126 @@
+<app-common-pop-or-page heading="{{inEdit?'修改':'添加'}}数据源"
+                        [contentView]="contentView"
+                        [operateView]="operateView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+<ng-content></ng-content>
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header">
+      基本信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('description')}}:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.description" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('fieldTypeName')}}:
+            </small>
+
+            <common-select class="col-4 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="editDataTemp.fieldTypeName" [dataList]="fieldInfoService.fieldInfoMap.fieldTypeName.selectDataList"></common-select>
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('schemaName')}}:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.schemaName" type="text">
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('databaseName')}}:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.databaseName" type="text">
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('ip')}}:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.ip" type="text">
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('port')}}:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.port" type="text">
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('jdbcUsername')}}:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.jdbcUsername" type="text">
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('jdbcPassword')}}:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.jdbcPassword" type="text">
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList"></app-attachment-files>
+  </div>
+
+
+
+</ng-template>
+
+<ng-template #operateView>
+  <div class="float-right btn-group">
+    <button type="submit" class="btn btn-xsm btn-warning" (click)="testingDataSource()">测试</button>
+    <button type="submit" class="btn btn-xsm btn-primary" (click)="saveData()">保存</button>
+  </div>
+</ng-template>
+

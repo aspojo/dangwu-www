@@ -1,0 +1,115 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up" style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/complexDevelop#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down" style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/complexDevelop#bottom"></a>
+
+<div id="top">
+  <app-page-header [heading]="'FADP复杂业务开发规范'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <p>本节教程旨在指导开发人员处理自动生成代码和通用CURD方法不能满足业务需求的复杂业务。</p>
+      <p class="text-warning">需知：本文将要介绍的api都遵循RESTful规范，接受json数据（或者url参数），返回json数据。</p>
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>复杂业务介绍</h4>
+        </div>
+        <ol>
+          <li>首先说明简单业务：所谓简单业务即为单表操作的业务，在一次业务中仅需要操作一次数据库，对于这种情况一般建议直接使用平台提供的通用CURD的api，在前端处理即可，无需额外编写后端api。</li>
+          <li>复杂业务是相对简单业务而言：即多表操作业务。例如在销售订单管理中增加订单，涉及到订单数据的新增，以及库存数据的修改，这里就需要在一个业务中多次操作数据库。此时就需要开发人员编写自己的后端api。</li>
+        </ol>
+      </div>
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>控制器配置(controller.xml)</h4>
+        </div>
+        <ol>
+          <li>介绍：
+            <p>controller用于配置前端请求与后端处理代码之间的映射关系，其文件路径为：【模块/webapp/应用名/WEB-INF/controller.xml】。这里以demo模块中请求request-map节点为例，代码如下：</p>
+            <textarea highlight-js [options]="{}" [lang]="'xml'">
+<request-map uri="saveOrder">
+  <description>创建订单</description>
+  <security auth="true"/>
+  <event type="java" path="com.demo.DemoEvent" invoke="saveOrder"/>
+  <response name="success" type="none"></response>
+</request-map>
+            </textarea>
+          </li>
+          <li>request-map：
+            <p>前端请求与处理程序的映射。</p>
+            <ol>
+              <li>属性uri：
+                <p>uri代表前端请求的地址，该地址均以/control/开头例如平台提供的通用api 【saveOrder】其完整访问地址为：http://localhost:6001/demo/control/saveOrder。但是前台调用时只需要使用该uri即可，不需要使用全路径，因为前端框架会自动补全api地址。</p>
+              </li>
+              <li>子标签description：
+                <p>dcescription是对该api功能的一个描述性文本，建议描述清楚。</p>
+              </li>
+              <li>子标签security：
+                <p>该标签控制登录验证问题，例如当auth=”true”时代表只有通过登录验证的前端可以访问该api。</p>
+              </li>
+              <li>子标签event：
+                <p>该标签代表用于处理该业务的代码，可以是java代码、groovy代码、服务等。但是现在的开发规范要求使用java代码。其中path代表java类的完全限定名；invoke代表要调用的方法。</p>
+              </li>
+              <li>子标签response：
+                <p>固定写法：
+                  <textarea highlight-js [options]="{}" [lang]="'xml'">
+                    <response name="success" type="none"></response></textarea>
+                </p>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+
+      <div class="p-2 mb-2 bg-gray-me">
+        <h4>一个完整的示例</h4>
+      </div>
+      <ol>
+        <li>业务描述：
+          <p>前端填写销售订单信息，提交数据到后台，后台返回数据。</p>
+        </li>
+        <li>具体操作：
+          <ol>
+            <li>省略掉页面内容。</li>
+            <li>前端提交数据，代码如下：
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+this.http.post('saveOrder', {orderInfo: orderInfo}).subscribe((data:any) => {
+  if (!data.error) {
+    MessageService.showGlobalMessage('success', '订单保存成功');
+  }
+});
+              </textarea>
+            </li>
+            <li>在自己模块的controller中添加request-map，代码如下：
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+<request-map uri="saveOrder">
+  <description>保存销售订单</description>
+  <security auth="true" />
+  <event type="java" path="com.fadp.sale.OrderEvents" invoke="saveOrder"></event>
+  <response name="success" type="none"></response>
+</request-map>
+              </textarea>
+            </li>
+            <li>编写后端处理，类需要做好规划，包名需要与业务相关、类名以Events结尾。例如这里我们建一个类com.fadp.common.CommonFindEvents。</li>
+            <li>在类中编写方法，方法签名为public static void saveOrder (HttpServletRequest request, HttpServletResponse response)。</li>
+            <li>从请求对象中获取请求参数以及session中的数据，saveOrder方法中的代码如下：
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+Map<String, Object> parameters = UtilHttp.getCombinedMap(request);
+Delegator delegator = getDelegator(parameters, request); // 数据库操作句柄
+Map<String, Object> orderInfo = (Map<String, Object> parameters) parameters.get("orderInfo"); //前端提交的数据
+Boolean hasError=false;
+returnMap=new HashMap();
+// TODO: 处理订单保存及库存修改等业务
+if (hasError) {
+AjaxUtil.writeErrorJsonToResponse(error, response);// 出错时，返回错误提示
+} else {
+AjaxUtil.writeJsonToResponse(returnMap, response);// 正常情况下，返回需要返回的数据或者空map
+}
+              </textarea>
+            </li>
+          </ol>
+        </li>
+      </ol>
+
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>
+

@@ -1,0 +1,91 @@
+
+
+<!--<div style="font-size: 16px;">-->
+<!--  <i class="fa fa-fw fa-users"></i>-->
+<!--&lt;!&ndash;  <span>部门人员</span>&ndash;&gt;-->
+<!--</div>-->
+<div class="p-2" style="background-color: #eceff4">
+  <button  [userEdit]="null" [dept]="selectedDept" (userDataChange)="userDataChange()"(click)="validateInfo()" class="btn btn-primary btn-xsm ml-1">添加用户</button>
+<!--  <button [disabled]="checkedNum==0" class="btn btn-outline-dark btn-xsm ml-1" (click)="changeDeptClick(addUserToDeptView)">调整部门</button>-->
+
+  <button [disabled]="checkedNum==0" class="btn btn-xsm  btn-warning" (click)="(userDataTemp={})&&openResetPasswordView(resetPasswordView)" ngbTooltip="重置密码">
+    <i class="fa fa-fw fa-key"></i>重置密码
+  </button>
+
+  <button [disabled]="checkedNum==0" class="btn btn-xsm  btn-danger" [confirm]="'删除用户后，不可恢复，确定删除选中人员？'" ngbTooltip="删除用户，并不可恢复"
+          (confirmClick)="deleteUsers()"><i class="fa fa-fw fa-remove"></i>批量删除
+  </button>
+
+</div>
+
+<table class="table table-hover table-striped">
+  <thead>
+  <tr>
+    <th><input type="checkbox" [checked]="isAllChecked" (click)="checkAll()"></th>
+    <th>账号</th>
+    <th>姓名</th>
+<!--    <th>工号</th>-->
+<!--    <th>电话</th>-->
+    <th>分党委/党总支</th>
+    <th width="60px">状态</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-template ngFor let-data [ngForOf]="dataList">
+    <tr *ngIf="data.__show__!==false" style="cursor: pointer;">
+      <td><input type="checkbox" [(ngModel)]="data.checked"></td>
+      <ng-container *ngTemplateOutlet="myTd; context: {data:data,field:'userLoginId',cssStyle:'btn-link'}"></ng-container>
+      <ng-container *ngTemplateOutlet="myTd; context: {data:data,field:'userName'}"></ng-container>
+<!--      <ng-container *ngTemplateOutlet="myTd; context: {data:data,field:'workNumber'}"></ng-container>-->
+<!--      <ng-container *ngTemplateOutlet="myTd; context: {data:data,field:'phoneNumber'}"></ng-container>-->
+      <ng-container *ngTemplateOutlet="myTd; context: {data:data,field:'generalPartyName'}"></ng-container>
+      <td [userEdit]="data" [dept]="selectedDept" (click)="validateInfo()" (userDataChange)="userDataChange()" >{{data.enabled==='Y'?'正常':'锁定'}}</td>
+
+    </tr>
+  </ng-template>
+  <ng-template #myTd let-data="data" let-field="field" let-cssStyle="cssStyle">
+    <td [userEdit]="data" [dept]="selectedDept"  (userDataChange)="userDataChange()" [class]="cssStyle">{{data[field]}}</td>
+  </ng-template>
+  </tbody>
+</table>
+
+<ng-template #resetPasswordView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">重置密码</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="resetPasswordModalRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <fieldset class="form-group">
+
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text">密码</span></label>
+        <input [(ngModel)]="userDataTemp.currentPassword" class="form-control" >
+      </div>
+    </fieldset>
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="validateForm()"  type="submit" class="btn btn-primary" [confirm]="'确定重置密码？'"
+            (confirmClick)="resetPassword()">保存
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #addUserToDeptView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">调整人员部门<small class="text-muted"><small>人员应至少属于一个部门</small></small></h4>
+
+    <button type="button" class="close pull-right" aria-label="Close" (click)="addUserToDeptModalRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-select-dept [rootDept]="{deptName:'通讯录', deptId:'null'}" [selectedDeptList]="selectedDeptList" (selectChange)="selectChange($event)"></app-select-dept>
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="selectedDeptList.length==0" type="submit" class="btn btn-primary"
+            (click)="addUserToDeptSave()">保存
+    </button>
+  </div>
+</ng-template>

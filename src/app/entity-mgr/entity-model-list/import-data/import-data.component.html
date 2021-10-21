@@ -1,0 +1,42 @@
+<ng-content></ng-content>
+<ng-template #modalView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">数据导入 <small class="pl-1">可以导入文件数据或文本数据</small></h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="form-inline">
+        <div class="form-group p-0 pt-1 col-12">
+          <small class="col-1 col-form-label text-right">
+            文件:
+          </small>
+          <div class="col-11">
+            <button class="btn btn-xsm btn-outline-primary" (click)="fileInput.click()">
+              <input type="file" #fileInput ng2FileSelect [uploader]="uploader" hidden accept="application/zip,application/xml">
+              <i class="fa fa-fw fa-upload"></i>上传文件
+            </button>
+            <small class="col-2"><small class="text-left text-muted">文件类型可分为两种：1.xml文件；2.zip压缩包，其中为多个xml文件</small></small>
+
+          </div>
+        </div>
+        <div class="form-group p-0 pt-1 col-12">
+          <small class="col-1 col-form-label text-right">
+            文本:
+          </small>
+          <textarea class="col-9 form-control form-control-sm" [(ngModel)]="xmlTxt" rows="20"></textarea>
+
+          <small class="col-2">
+            <button class="btn btn-xsm btn-outline-primary" (click)="importXmlTxtData()">
+              导入
+            </button>
+          </small>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</ng-template>

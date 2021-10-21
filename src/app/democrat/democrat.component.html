@@ -1,0 +1,147 @@
+<div id="top">
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div>
+        <div id="app-common-type-tree">
+
+          <div class="row m-0">
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div style="max-height: 90vh; overflow-y: auto;">
+              <app-democrat-tree #tree
+                                    [entityName]="'DwDemocrat'"
+                                    [treeTitle]="'民主党派'"
+                                    [idField]="'id'"
+                                    [valueField]="'democratName'"
+                                    [parentField]="'parentId'"
+                                    (nodeSelectEvent)="nodeSelect($event)"
+                                     [orderBy]="'id'"
+              ></app-democrat-tree>
+              </div>
+            </div>
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <div *ngIf="!showDataTableOnly">
+                <div class="card mt-2">
+                  <div class="card-header">
+                    <div class="float-left">
+                      <button *ngIf="envService.showPopUp" class="btn btn-warning btn-xsm"
+                              [appCommonEdit]
+                              [comp]="getComponentByName('EditDemocratManageComponent')"
+                              [handleTaskComponent]="getComponentByName('ViewDemocratManageComponent')"
+                              (dataSavedEvent)="dataSaved($event)"
+                              style="margin-right: 5px;"
+                              (handleTaskEvent)="handleTask($event)"><i class="fa fa-plus-circle"></i>添加
+                      </button>
+                      <button [disabled]="checkedNum==0" style="margin-right: 5px;" class="btn btn-xsm  btn-danger" [confirm]="'确定删除？'"
+                              (confirmClick)="markDelete()"><i class="fa fa-fw fa-remove"></i>删除
+                      </button>
+                      <button hidden [disabled]="checkedNum==0" class="btn btn-xsm  btn-danger" [confirm]="'删除后无法恢复!确定删除？'"
+                              (confirmClick)="deleteList()"><i class="fa fa-fw fa-remove"></i>彻底删除
+                      </button>
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary float-right btn-xsm"
+                            (click)="isOpratorCollapsed = !isOpratorCollapsed"
+                            [attr.aria-expanded]="!isOpratorCollapsed"
+                            aria-controls="collapseOprator">{{isOpratorCollapsed == true ? '展开' : '收起'}}</button>
+                  </div>
+                  <div class="card-body" id="collapseOprator" [ngbCollapse]="isOpratorCollapsed">
+                    <ng-container *ngTemplateOutlet="table"></ng-container>
+                  </div>
+                </div>
+              </div>
+              <!--              </ng-template>-->
+              <ng-container *ngIf="showDataTableOnly">
+                <ng-container *ngTemplateOutlet="table"></ng-container>
+              </ng-container>
+
+              <ng-template #table>
+                <div class="table-responsive" style="max-height: 610px">
+                  <table class="table table-hover table-striped table-bordered table-condensed">
+                    <thead class="">
+                    <tr>
+                      <th><input type="checkbox" [checked]="isAllChecked" (click)="checkAll()"></th>
+                      <th>{{uiLabel('id')}}</th>
+                      <th>{{uiLabel('departmentValue')}}</th>
+                      <th>{{uiLabel('name')}}</th>
+                      <th>{{uiLabel('genderValue')}}</th>
+                      <th>{{uiLabel('ethnicValue')}}</th>
+                      <th>{{uiLabel('hometown')}}</th>
+                      <th>{{uiLabel('birth')}}</th>
+                      <th>{{uiLabel('identityValue')}}</th>
+                      <th>{{uiLabel('idnumber')}}</th>
+                      <th>{{uiLabel('birthday')}}</th>
+                      <th>{{uiLabel('jobnumber')}}</th>
+                      <th>{{uiLabel('phasesValue')}}</th>
+                      <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ng-template ngFor let-data [ngForOf]="dataList">
+                      <tr>
+                        <td width="30px"><input type="checkbox" [(ngModel)]="data.checked"></td>
+                        <td><span>{{data.id}}</span></td>
+                        <td><span>{{data.departmentValue}}</span></td>
+                        <td><span>{{data.name}}</span></td>
+                        <td><span>{{data.genderValue}}</span></td>
+                        <td><span>{{data.ethnicValue}}</span></td>
+                        <td><span>{{data.hometown}}</span></td>
+                        <td><span>{{data.birth}}</span></td>
+                        <td><span>{{data.identityValue}}</span></td>
+                        <td><span>{{data.idnumber}}</span></td>
+                        <td><span>{{data.birthday}}</span></td>
+                        <td><span>{{data.jobnumber}}</span></td>
+                        <td><span>{{data.phasesValue}}</span></td>
+                        <td class="btn-group">
+                          <ng-container *ngIf="envService.showPopUp">
+                            <button class="btn btn-primary btn-sm" [appCommonView]
+                                    [comp]="getComponentByName('ViewDemocratManageComponent')"
+                                    [procInstId]="data.procInstId" [PK]="fieldInfoService.getEntityPK(data)"
+                                    ngbTooltip="查看"
+                                    (handleTaskDoneEvent)="loadDataList()" #viewButton><i class="fa fa-eye"></i>
+                            </button>
+                            <ng-container *ngIf="canEdit(data)">
+                              <button class="btn btn-warning btn-sm" [appCommonEdit]
+                                      [comp]="getComponentByName('EditDemocratManageComponent')"
+                                      [handleTaskComponent]="getComponentByName('ViewDemocratManageComponent')"
+                                      [PK]="fieldInfoService.getEntityPK(data)"
+                                      (dataSavedEvent)="dataSaved($event)"
+                                      (handleTaskEvent)="handleTask($event)"
+                                      ngbTooltip="编辑"
+                              ><i class="fa fa-edit"></i>
+                              </button>
+                            </ng-container>
+                          </ng-container>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    </tbody>
+
+                  </table>
+                </div>
+                <small class="form-inline">
+                  <select class="form-control form-control-sm" style="height: 33px" [ngbTooltip]="'页面显示条目数量'" [(ngModel)]="this.submitQueryData.viewSize" (ngModelChange)="loadDataList()">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="80">80</option>
+                    <option value="100">100</option>
+                  </select>
+                  <ngb-pagination style="margin-top: 15px" [collectionSize]="pageData.listSize" [(page)]="pageData.page"
+                                  (pageChange)="pageChange($event)" [maxSize]="5" [rotate]="true"
+                                  [pageSize]="submitQueryData.viewSize"
+                                  [boundaryLinks]="true"></ngb-pagination>
+                  <input type="number" class="form-control form-control-sm" style="height: 33px; width: 62px"
+                         [ngbTooltip]="'敲击回车跳转到该页面'" [(ngModel)]="directPage" (keyup.enter)="enterToPage()"/>
+                  <label>共{{pageData.listSize}}条记录</label>
+                </small>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>
+

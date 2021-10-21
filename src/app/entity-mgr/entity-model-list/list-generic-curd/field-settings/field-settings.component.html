@@ -1,0 +1,137 @@
+<ng-content></ng-content>
+<ng-template #modalView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">设置</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body table-responsive">
+        <div class="p-2" [hidden]="showSortInfo">
+          <button class="btn btn-outline-dark btn-xsm ml-1" (click)="sortClick()">调整顺序</button>
+          <button class="btn btn-outline-dark btn-xsm" ngbTooltip="全部参与查询" (click)="editAll({showInQuery:'Y'})">查</button>
+          <button class="btn btn-outline-dark btn-xsm" ngbTooltip="全部不参与查询" (click)="editAll({showInQuery:'null'})">非查</button>
+          <button class="btn btn-outline-dark btn-xsm" ngbTooltip="全部参与列表显示" (click)="editAll({showInTable:'Y'})">列表</button>
+          <button class="btn btn-outline-dark btn-xsm" ngbTooltip="全部不参与列表显示" (click)="editAll({showInTable:'null'})">非列表</button>
+          <button class="btn btn-outline-dark btn-xsm" ngbTooltip="全部参与编辑界面" (click)="editAll({showInEdit:'Y'})">编辑</button>
+          <button class="btn btn-outline-dark btn-xsm" ngbTooltip="全部不参与编辑界面" (click)="editAll({showInEdit:'null'})">非编辑</button>
+          <button class="btn btn-outline-dark btn-xsm" ngbTooltip="全部参与查看界面显示" (click)="editAll({showInView:'Y'})">看</button>
+          <button class="btn btn-outline-dark btn-xsm" ngbTooltip="全部不参与查看界面显示" (click)="editAll({showInView:'null'})">非看</button>
+        </div>
+        <div *ngIf="showSortInfo" class="p-2 btn-group col-12" style="background-color: #fff9db">
+          <small class="m-auto">
+            上下移动调整位置
+            <button class="btn btn-outline-dark btn-xsm" (click)="saveDeptSortClick()">保存排序</button>
+            <button class="btn btn-outline-dark btn-xsm" (click)="cancelDeptSortClick()">撤销</button>
+          </small>
+        </div>
+
+        <table class="table table-hover table-striped" *ngIf="!showSortInfo">
+          <thead class="thead-light">
+          <tr>
+            <th width="150px"><input type="checkbox" [checked]="isAllChecked" (click)="checkAll()">字段</th>
+            <th>字段显示值</th>
+            <th><span>类型</span></th>
+            <th><span ngbTooltip="参与查询">查询</span></th>
+            <th><span ngbTooltip="参与列表显示">列表</span></th>
+            <th><span ngbTooltip="参与查看显示">查看</span></th>
+            <th><span ngbTooltip="参与编辑显示">编辑</span></th>
+            <th><span>必填</span></th>
+            <th><span>排序</span></th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-template ngFor let-data [ngForOf]="fieldInfo">
+            <tr>
+              <td class="long-text-wrap">
+                <div ngbTooltip="{{data.fieldName}}-{{data.description}}">
+                  <input type="checkbox" [(ngModel)]="data.checked">
+                  <small>{{data.fieldName}}</small>
+                  <i *ngIf="data.PK=='Y'" class="fa fa-key text-yellow"></i>
+                </div>
+              </td>
+              <td><input class="form-control form-control-sm" [(ngModel)]="data.fieldLabel"></td>
+              <td>
+                <select [(ngModel)]="data.fieldType">
+                  <option value="null"></option>
+                  <option value="numeric">数值</option>
+                  <option value="date">日期</option>
+                  <option value="dateTime">时间</option>
+                </select>
+              </td>
+              <td>
+                <select [(ngModel)]="data.showInQuery">
+                  <option></option>
+                  <option value="Y">是</option>
+                  <option value="null">否</option>
+                </select>
+              </td>
+              <td>
+                <select [(ngModel)]="data.showInTable">
+                  <option></option>
+                  <option value="Y">是</option>
+                  <option value="null">否</option>
+                </select>
+              </td>
+              <td>
+                <select [(ngModel)]="data.showInView">
+                  <option></option>
+                  <option value="Y">是</option>
+                  <option value="null">否</option>
+                </select>
+              </td>
+              <td>
+                <select [(ngModel)]="data.showInEdit">
+                  <option></option>
+                  <option value="Y">是</option>
+                  <option value="null">否</option>
+                </select>
+              </td>
+              <td>
+                <select [(ngModel)]="data.required">
+                  <option></option>
+                  <option value="Y">是</option>
+                  <option value="null">否</option>
+                </select>
+              </td>
+              <td>
+                <select [(ngModel)]="data.orderBy">
+                  <option></option>
+                  <option value="-">倒序</option>
+                  <option value="+">顺序</option>
+                </select>
+              </td>
+
+
+
+            </tr>
+          </ng-template>
+          </tbody>
+
+        </table>
+
+        <ng-template [ngIf]="showSortInfo">
+          <div class="row py-3" [sortablejs]="newDataList">
+            <ng-template ngFor let-data [ngForOf]="newDataList">
+              <div class="col-3">
+                <small>
+                  <i class="fa fa-fw fa-list text-muted"></i>
+                  <small>{{data.fieldLabel}}
+                    <small>{{data.fieldName}}</small>
+                  </small>
+                </small>
+              </div>
+            </ng-template>
+          </div>
+        </ng-template>
+
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-sm btn-primary" (click)="saveData()">保存
+    </button>
+  </div>
+</ng-template>

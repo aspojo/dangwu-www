@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-xl-12">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">
+        <ng-container *ngIf="hasBackButton">
+          <a *ngIf="backUrl" [routerLink]="[backUrl]">< 返回 </a>
+          <a *ngIf="!backUrl" href="javascript:void(0)" (click)="goBack()">< 返回 </a>
+        </ng-container>
+        <i class="fa {{icon}}"></i> {{heading}}
+      </li>
+    </ol>
+  </div>
+</div>

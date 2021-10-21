@@ -1,0 +1,6 @@
+.dept-nav {
+  max-width: 60px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

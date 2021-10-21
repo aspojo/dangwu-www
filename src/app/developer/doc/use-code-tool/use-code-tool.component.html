@@ -1,0 +1,442 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up" style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/useCodeTool#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down" style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/useCodeTool#bottom"></a>
+
+
+<div id="top">
+  <app-page-header [heading]="'代码生成工具的使用'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row">
+    <div class="col-12">
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>后端配置</h4>
+        </div>
+        <ol>
+          <li><h6>配置业务实体表:</h6></li>
+          <p>
+            现在我们就以demo中的业务为例进行讲解, demo中的业务描述：一个销售订单管理，记录销售信息，一条订单记录对应多条订单明细。例如一次超市购物，购买多件商品。<br>
+            实体表描述如下：<br>
+          </p>
+          <div class="row m-0">
+            <table class="table table-hover table-striped col-5">
+              <tr><th class="text-center" colspan="2">订单表</th></tr>
+              <tr><th>字段</th><th>描述</th></tr>
+              <tr><td>订单id</td><td></td></tr>
+              <tr><td>订单名称</td><td></td></tr>
+              <tr><td>结算方式</td><td>使用先拉框，数据来自字典</td></tr>
+              <tr><td>销售人</td><td>使用人员选择组件</td></tr>
+              <tr><td>操作人</td><td>让平台自动填充当前人员</td></tr>
+              <tr><td>金额</td><td></td></tr>
+              <tr><td>创建时间</td><td>让平台自动填充当前时间</td></tr>
+            </table>
+            <table  class="table table-hover table-striped col-5 offset-1">
+              <tr><th class="text-center" colspan="2">订单条目表</th></tr>
+              <tr><th>字段</th><th>描述</th></tr>
+              <tr><td>订单id</td><td></td></tr>
+              <tr><td>订单条目id</td><td></td></tr>
+              <tr><td>订单名称</td><td>使用先拉框，数据来自字典</td></tr>
+              <tr><td>金额</td><td>使用人员选择组件</td></tr>
+            </table>
+          </div>
+          <p>将表格定义转化为实体配置。配置书写于<b>/hot-deploy/demo/entitydef/demo-entitymodel-xml</b>中，具体配置如下：</p>
+          <div class="row m-0">
+            <div class="col-6">
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+<entity entity-name="DemoOrder" package-name="com.demo">
+    <description>订单</description>
+    <field name="orderId" type="id">
+       <description>订单id</description>
+    </field>
+    <field name="orderName" type="name">
+       <description>订单名称</description>
+    </field>
+    <field name="accountMethod" type="id">
+       <description>结算方式</description>
+    </field>
+    <field name="saleUser" type="id">
+       <description>销售人</description>
+    </field>
+    <field name="operator" type="id">
+       <description>操作人</description>
+    </field>
+    <field name="amount" type="currency-amount">
+       <description>金额</description>
+    </field>
+    <field name="createTime" type="short-varchar">
+       <description>创建时间</description>
+    </field>
+    <prim-key field="orderId"/>
+</entity>
+              </textarea>
+            </div>
+            <div class="col-6">
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+ <entity entity-name="DemoOrderItem" package-name="com.demo">
+    <description>订单条目</description>
+    <field name="orderId" type="id">
+       <description>订单id</description>
+    </field>
+    <field name="orderItemId" type="id">
+       <description>订单条目id</description>
+    </field>
+    <field name="orderItemName" type="name">
+       <description>订单名称</description>
+    </field>
+    <field name="amount" type="currency-amount">
+       <description>金额</description>
+    </field>
+    <prim-key field="orderItemId"/>
+ </entity>
+              </textarea>
+            </div>
+          </div>
+          <p>数据库的配置需要注意一下几点：</p>
+          <ul>
+            <li>entity-name属性值代表数据库表名，按照<b>大驼峰法</b>命名；</li>
+            <li>field属性值代字段名，按照<b>小驼峰法</b>命名；</li>
+            <li>type属性值代字段类型，按照<b>小驼峰法</b>命名。</li>
+            <p>常用可选类型如下：</p>
+            <div class="row m-0">
+              <table class="table table-hover table-striped">
+                <tr><th class="text-center" colspan="2">字段类型说明</th></tr>
+                <tr><th>类型</th><th>使用场景</th></tr>
+                <tr><td>id</td><td>用于各种【id】</td></tr>
+                <tr><td>name</td><td>用于各种【名称】</td></tr>
+                <tr><td>currency-precise</td><td>用于存储【价格】</td></tr>
+                <tr><td>currency-amount</td><td>用于存储【金额】</td></tr>
+                <tr><td>fixed-point</td><td>用于存储【其他浮点数】</td></tr>
+                <tr><td>short-varchar</td><td>用于存储【日期】、【时间】<b class="text-danger">!!!特别敬告:平台中的日期及时间类型必须使用short-varchar</b></td></tr>
+                <tr><td>description</td><td>用于存储【备注】</td></tr>
+                <tr><td>int</td><td>存储整型</td></tr>
+                <tr><td>value</td><td>存储255长度的字符串</td></tr>
+                <tr><td>very-long</td><td>存储长文本，可用于存储url等</td></tr>
+              </table>
+            </div>
+            <p class="text-warning">注意：定义实体时首先从上表中选取类型，若确实无法满足，请告知相关技术主管人员。</p>
+          </ul>
+          <li><h6>配置视图:</h6></li>
+          <p>首先需要声明，CGT生成的代码都是使用视图来查询的。也就是说每个需要通过CGT生成代码的主体业务表都需要为其定义视图；</p>
+          <p>视图要解决的主要问题就是，一个业务表通常需要关联其他表（例如可能关联字典表及用户表），当前台页面展示业务数据时需要根据业务表中的id展示出关联表中的名称（例如根据用户id展示用户名）。</p>
+          <div class="row m-0">
+            <div class="col-12">
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+<view-entity entity-name="DemoOrderView" package-name="com.demo">
+  <member-entity entity-alias="DO" entity-name="DemoOrder"></member-entity>
+  <member-entity entity-alias="UL1" entity-name="UserLogin"></member-entity>
+  <member-entity entity-alias="UL2" entity-name="UserLogin"></member-entity>
+  <member-entity entity-alias="DIC" entity-name="FadpDic"></member-entity>
+  <alias-all entity-alias="DO"/>
+  <alias name="saleUserValue" field="userName" entity-alias="UL1"/>
+  <alias name="operatorValue" field="userName" entity-alias="UL2"/>
+  <alias name="accountMethodValue" field="dicValue" entity-alias="DIC"/>
+  <view-link entity-alias="DO" rel-entity-alias="UL1" rel-optional="true">
+     <key-map field-name="saleUser" rel-field-name="userLoginId"/>
+  </view-link>d
+  <view-link entity-alias="DO" rel-entity-alias="UL2" rel-optional="true">
+     <key-map field-name="operator" rel-field-name="userLoginId"/>
+  </view-link>
+  <view-link entity-alias="DO" rel-entity-alias="DIC" rel-optional="true">
+     <key-map field-name="accountMethod" rel-field-name="dicId"/>
+  </view-link>
+</view-entity>
+              </textarea>
+            </div>
+            <div class="col-12">
+              <textarea highlight-js [options]="{}" [lang]="'xml'">
+<view-entity entity-name="DemoOrderItemView" package-name="com.demo">
+  <member-entity entity-alias="DOI" entity-name="DemoOrderItem"></member-entity>
+  <alias-all entity-alias="DOI"/>
+</view-entity>
+              </textarea>
+            </div>
+          </div>
+          <ul>
+            <li>entity-name属性值代表视图名，按照<b>大驼峰法</b>命名。<b>注意：视图命名规则为 主体实体名+View；</b></li>
+            <li>
+              member-entity标签代表参与该视图的成员实体，其entity-alias属性代表实体别名，entity-name属性代表实体名称；<br>
+              <b>注意：</b>这里主表有两个字段关联用户表，则需要定义两个member-entity，并取不通别名。
+            </li>
+            <li>alias-all标签代表将对应表中的全部字段取出，作为视图的字段；</li>
+            <li>alias标签代表将对应表中的指定字段取出，作为视图的字段。其name属性表示为取出字段别名（若取出字段可直接使用原字段名，则该属性可以省略），field属性代表对应表中的字段名，entity-alias属性代表对应实体别名；</li>
+            <p>
+              <b>注意：</b>可以看到在视图DemoOrderView中，我们为UL1的userName字段取别名为saleUserValue。这个字段命名为saleUser+Value形式；<br>
+              业务上的含义：订单表中的销售人员id与人员表中的用户管理，在视图中取出人员表中的人员名称；<br>
+              关联表字段别名规则定义：主表(DemoOrder)关联其他表(UserLogin)，需给关联表中的可用于显示的字段(userName)取别名为【主表字段(saleValue)】+【Value】。<br>
+            </p>
+            <li>
+              view-link标签代表实体之间的关联关系。entity-alias代表主实体名，rel-entity-alias属性代表被关联实体名，rel-optional属性控制是否使用【左外连接】；<br>
+              <b>注意：</b>一般情况下，该配置的entity-alias到rel-entity-alias的关系与数据库的外键方向保存一致。<br>
+            </li>
+            <li>
+              key-map标签代表实体关联关系的字段映射。field-name代表主实体字段名，rel-field-name属性代表被关联实体字段名。<br>
+              <b>注意：</b>若两个表中的字段名一致，则可不写rel-field-name属性。<br>
+            </li>
+          </ul>
+
+          <li><h6>刷新数据库定义：</h6></li>
+          打开<a target="_blank" href="http://localhost:6001/pm/h5/www/developer/codeTool"> 数据库管理工具；</a><br>
+          点击【刷新实体定义】按钮。<br>
+          <li id="codeToolMore"><h6>使用CGT生成代码：</h6></li>
+          <p>
+            CGT工具是通过数据库表生成前端代码，生成的前端代码包含对数据表的CURD组件及其他可复用组件，其中的配置主要是针对字段的数据输入组件及字段的显示效果进行设置。<br>
+          </p>
+          <li>打开<a target="_blank" href="developer/codeTool">CGT工具:</a><br></li>
+          搜索到业务主体表，点击打开业务主体表配置界面（由于生产业务很少有一张表就能满足需求的，在实际生产中建议使用视图生成代码，这里还是以基本实体为例）,如下图：<br>
+          <img src="assets/images/doc/code-tool-main.png" width="800px"><br>
+          可看到主界面有一排操作按钮，除【保存修改】、【调整排序】、【生产CURD】意外的按钮都是关于显示配置项的快捷操作方式。<br>
+          <p>点击字段的【更多】配置，界面如下图：</p>
+          <img src="assets/images/doc/code-tool-more.png" width="800px">
+
+          <p>下面以列表的方式展示个配置项的含义（这里只讲述主界面中的配置项，【更多】配置请在配置页面直接查看其含义）。
+            <br><small>下表中的提到的【配置类型】含义为：
+              【显示类--控制字段在界面中的显示】，【输入类--控制编辑界面时字段的输入形式】，【系统类--用于控制生成的代码在系统中的特性】
+            </small>
+          </p>
+
+
+          <div id="menuConfig" class="row m-0">
+            <table class="table table-hover table-striped col-12">
+              <tr><th class="text-center" colspan="3">各配置项目含义</th></tr>
+              <tr><th>配置项</th><th>配置类型</th><th>功能描述</th></tr>
+              <tr><td>调整排序</td><td>显示类</td><td>调整各字段在界面显示时的相对位置</td></tr>
+              <tr><td>字段显示值</td><td>显示类</td><td>设置字段在界面的显示标签</td></tr>
+              <tr><td>类型</td><td>输入类</td><td>设置字段的输入组件(例如：设置【日期】类型，则工具会为其生成一个日期选择组件)</td></tr>
+              <tr><td>查询</td><td>显示类</td><td>设置字段是否显示在查询条件界面（即字段是否参与查询）</td></tr>
+              <tr><td>列表</td><td>显示类</td><td>设置字段是否显示在数据列表中</td></tr>
+              <tr><td>查看</td><td>显示类</td><td>设置字段是否显示在数据查看详情界面中</td></tr>
+              <tr><td>编辑</td><td>显示类</td><td>设置字段是否显示在数据编辑界面中（包括新增及修改）</td></tr>
+              <tr><td>必填</td><td>输入类</td><td>控制字段是否必填</td></tr>
+            </table>
+          </div>
+
+          <p>根据业务需要配置完成后，点击【生产CURD】生成代码。至此后端配置完成</p>
+        </ol>
+      </div>
+
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>前端配置</h4>
+        </div>
+        <p>前端界面为左右结构，左侧为菜单，右侧为主界面。</p>
+        <ol>
+          <li>路由配置：</li>
+          <div>
+            <p>
+              路由配置，是一种多层次的结构。下级路由配置位于各模块（多数情况下，文件夹与模块对应，子文件夹即子模块）。<br>
+              还是以平台提供的demo为例，点击进入<a target="_blank" href="developer/demo"> demo主界面 </a>。可以看到demo的地址分为三层：developer为顶层路由，demo为下级路由，具体业务路由为第三层路由。<br>
+              顶层路由developer配置位于<b>/src/app/layout/layout-routing.module.ts</b>，具体配置如下：<br>
+            </p>
+            <textarea highlight-js [options]="{}" [lang]="'javascript'">
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {LayoutComponent} from './layout.component';
+import {AuthGuard} from '@shared';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {path: '', redirectTo: 'dashboard'},
+      {path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule'},
+      {path: 'developer', loadChildren: '../developer/developer.module#PartymemberModule'},
+      {path: 'system', loadChildren: '../system/system.module#SystemModule'},
+      {path: 'oa', loadChildren: '../oa/oa.module#OaModule'},
+      {path: 'test', loadChildren: '../test/test.module#TestModule'},
+      {path: 'entityMgr', loadChildren: '../entity-mgr/entity-mgr.module#EntityMgrModule'},
+      {path: 'pm', loadChildren: '../pm/pm.module#PmModule'},
+      {path: 'experimentalData', loadChildren: '../experimental-data/experimental-data.module#ExperimentalDataModule'},
+    ]
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class LayoutRoutingModule {
+}
+            </textarea>
+            <p>
+              可以看到一条顶层路由就是一个js object对象，path属性对应路由地址，loadChildren属性代表需要加载的下级路由的模块对象。以developer为例，它指向下级模块所在目录为../developer/。(将相对路径翻译为完整路径即为：/src/app/developer/)<br>
+              以下是 <b>/src/app/developer/partymember-routing.module.ts</b>模块中的代码，它将配置第二级路由【demo】：
+            </p>
+            <textarea highlight-js lang="javascript">
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+
+const routes: Routes = [
+    {path: '', redirectTo: 'dashboard'},
+    {path: 'codeTool', loadChildren: './code-tool/code-tool.module#CodeToolModule'},
+    {path: 'doc', loadChildren: './doc/doc.module#DocModule'},
+    {path: 'demo', loadChildren: './demo/list-demo-order/list-demo-order.module#ListDemoOrderModule'},
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class DeveloperRoutingModule {
+}
+            </textarea>
+            <p>
+              以下是 <b>/src/app/developer/demo/list-demo-order-routing.module.ts</b>模块中的代码，它将配置第三级路由，默认路由【】、【editDemoOrder】和【viewDemoOrder】：
+            </p>
+            <textarea highlight-js lang="javascript">
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import {ListDemoOrderComponent} from './list-demo-order.component';
+
+const routes: Routes = [
+              {path: '', component: ListDemoOrderComponent},
+              {path: 'editDemoOrder/:formPK', loadChildren: './edit-demo-order/edit-demo-order.module#EditDemoOrderModule'},
+              {path: 'viewDemoOrder/:formPK', loadChildren: './view-demo-order/view-demo-order.module#ViewDemoOrderModule'},
+];
+
+@NgModule({
+              imports: [RouterModule.forChild(routes)],
+              exports: [RouterModule]
+})
+export class ListDemoOrderRoutingModule {
+              }
+            </textarea>
+
+            <p>
+              可以发现将以上三级路由连接起来就是/developer/demo/，即demo的完整路由。（可以看到三级路由为空，此时进入默认的路由【】，跳转到 ListDemoOrderComponent 组件中）<br>
+              <label class="text-warning">注意：路由可配置任意多级，但是建议层次不要超过三级。</label>
+            </p>
+          </div>
+          <li>拷贝代码：</li>
+          <div>
+            <p>
+              上面完成的第三级路由的配置指向的模块就是使用CGT工具生成的代码。<br>
+              现在将之前使用CGT工具生成的代码代码解压提取其中的list-XXX文件夹，放入路由配置对应的文件夹中。<br>
+              还是以demo为例，将【list-demo-order】文件夹放入【/developer/demo/】文件夹即可。<br>
+              下载的代码目录结构如下：<br>
+            </p>
+            <pre>
+demo
+  list-demo-order
+    edit-demo-order
+    select-demo-order
+    view-demo-order
+    demo-order-field-info-service.ts
+    demo-order-service.ts
+    list-demo-order.component.html
+    list-demo-order.component.scss
+    list-demo-order.component.ts
+    list-demo-order.module.ts
+    list-demo-order-routing.module.ts
+            </pre>
+
+          </div>
+
+          <li>菜单配置：</li>
+          <div>
+            <p>菜单配置就是配置界面左侧菜单项，需要修改的文件位于<b>/src/config/menu-list.ts</b>。具体配置如下：(篇幅限制，这里仅展示部分菜单)</p>
+            <div class="row m-0">
+              <div class="col-12">
+                <textarea highlight-js [options]="{}" [lang]="'javascript'">
+  export const menuData =
+    [
+      {lb: '主页', lk: '/system/dashboard', icon: 'fa-dashboard'},
+                  {
+                  lb: '开发者', permission: 'DEVELOPMENT_BASE', key: 'developer', icon: 'fa-wrench', children: [
+        {lb: '代码生成工具', lk: '/developer/codeTool', icon: 'fa-wrench'},
+        {
+          lb: 'API', key: 'developer.doc', icon: 'fa-book', children: [
+                  {lk: '/developer/doc/intro', lb: 'CGT介绍'},
+                  {lk: '/developer/doc/start', lb: '环境配置'},
+                  {lk: '/developer/doc/useCodeTool', lb: '生成代码'},
+                  {lk: '/developer/doc/dirIntro', lb: '目录说明'},
+                  {lk: '/developer/doc/useComponent', lb: '组件说明'},
+                  {lk: '/developer/doc/useDirective', lb: '指令说明'},
+                  {lk: '/developer/doc/useFilter', lb: '管道说明'},
+                  {lk: '/developer/doc/useCodeToolPro', lb: 'CGT进阶'},
+          ]
+        },
+        {lb: 'DEMO', lk: '/developer/demo', icon: 'fa-laptop'},
+      ]
+    },
+  ]
+                </textarea>
+              </div>
+            </div>
+            <div class="col-9">
+              菜单配置生效后，在左侧菜单开发者下面就会出现DEMO菜单，菜单配置数据是一个数组嵌套对象的多层结构，下面介绍单个菜单的属性及含义。<br>
+              <table class="table table-hover table-striped col-12">
+                <tr><th class="text-center" colspan="2">菜单属性含义</th></tr>
+                <tr><th>属性</th><th>含义</th></tr>
+                <tr><td>lb</td><td>全拼label，表示菜单的显示值</td></tr>
+                <tr><td>lk</td><td>全拼link，表示菜单对应的路由配置（即页面导航配置）。注意：当菜单是多层结构时，只有叶子节点上能配置lk属性。</td></tr>
+                <tr><td>icon</td><td>图标，表示菜单前展示的图标样式（图标来源参照 <a target="_blank" href="http://www.fontawesome.com.cn/faicons/">Font Awesome 中文网</a>） 。注意：只有顶层菜单需要配置图标，叶子节不需要配置。</td></tr>
+                <tr><td>key</td><td>代表对应菜单的唯一id，不可与其他菜单相同，建议命名规则为上级节点的key+本级标识</td></tr>
+                <tr><td>children</td><td>代表下级菜单，是一个数组。</td></tr>
+              </table>
+              <!--              <div class="col-auto">-->
+              <!--                <img src="assets/images/doc/menu-list.png" width="200px">-->
+              <!--              </div>-->
+            </div>
+          </div>
+
+          <li>服务配置：</li>
+          <div>
+            <p>服务配置需要修改的文件位于<b>/src/config/component-map.service.ts</b>。具体配置如下：(篇幅限制，这里仅展示部分菜单)</p>
+            <div class="row m-0">
+              <div class="col-12">
+                    <textarea highlight-js [options]="{}" [lang]="'javascript'">
+                      dataMap = {
+      ...
+
+    EditDemoOrderComponent,
+    ViewDemoOrderComponent,
+    };
+
+  imports: [
+      ...
+
+      EditDemoOrderModule,
+      ViewDemoOrderModule,
+    ]
+                    </textarea>
+              </div>
+            </div>
+            <div class="col-9">
+             配置完成后，点击demo菜单即可进入主界面，如下图所示。<br>
+              <div class="col-auto">
+                <img src="assets/images/doc/demo-order.png" width="400px;">
+              </div>
+            </div>
+          </div>
+
+          <br/>
+          <li>其他配置：</li>
+          <div>
+            <p>这里的其他配置主要是介绍附件功能的配置，需要修改的文件位于<b>/developer/demo/list-demo-order/demo-order-service.ts</b>。只需要在文件中加入 hasAttachment  = true 即可，具体配置如下:</p>
+            <div class="row m-0">
+              <div class="col-12">
+                    <textarea highlight-js [options]="{}" [lang]="'javascript'">
+                      export class DemoOrderService extends CommonService {
+    hasAttachment  = true;
+    get processInstanceKey() {
+    return '';
+  }
+}
+                    </textarea>
+              </div>
+            </div>
+            <div class="col-9">
+              以上配置完成后，点击新增按钮，进入新增界面，界面如下图所示：<br>
+              <div class="col-auto">
+                <img src="assets/images/doc/demo-fj.png" width="400px;">
+              </div>
+              <p>当出现如上图所示的界面后，则说明CGT生成的代码配置成功，现在你可以进一步进行后续的开发工作了。</p>
+            </div>
+
+          </div>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>
+

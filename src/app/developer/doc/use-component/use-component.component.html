@@ -1,0 +1,1028 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up" style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/useComponent#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down" style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/useComponent#bottom"></a>
+
+<div id="top">
+  <app-page-header [heading]="'自定义组件说明'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>组件使用讲解</h4>
+        </div>
+        <p>这里仅讲解平台提供的自定义组件，其他常用组件请参照：<a target="_blank" href="https://ng-bootstrap.github.io/#/components">ng-bootstrap.github.io</a>。</p>
+        <p class="text-warning">需知：这里介绍的所有组件，都需要在使用的地方引入相应的模块及其依赖模块。</p>
+        <p>通用组件有：</p>
+        <div class="row m-0">
+<!--          <div class="col-3">-->
+<!--            <a class="ml-1" href="developer/doc/useComponent#Collapse">collapse</a>-->
+<!--          </div>-->
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#common-select">common-select</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#app-common-type-tree">app-common-type-tree</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#app-image-view">app-image-view</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#region-select">region-select</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#true-false-select">true-false-select</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#app-upload-file">app-upload-file</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#app-upload-image">app-upload-image</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#scan-input">scan-input</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#dic-select">dic-select</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#app-date-input">app-date-input</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#app-date-time-input">app-date-time-input</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#app-rich-text-input">app-rich-text-input</a>
+          </div>
+          <div class="col-3">
+            <a class="ml-1" href="developer/doc/useComponent#app-page-header">app-page-header</a>
+          </div>
+        </div>
+
+<!--        <div id="Collapse">-->
+<!--          <div class="p-2 mb-2 bg-gray-me">-->
+<!--            <h4>收缩展开组件 Collapse</h4>-->
+<!--          </div>-->
+<!--          <div class="row m-0">-->
+<!--            <div class="col-9">-->
+<!--              <ngb-tabset class="tabset-code">-->
+<!--                <ngb-tab title="xxx-component.html">-->
+<!--                  <ng-template ngbTabContent>-->
+<!--                     <textarea highlight-js lang="html">-->
+<!--<div class=" card">-->
+<!--  <div class="card-header">-->
+<!--    销售订单信息-->
+<!--    <button type="button" class="btn btn-outline-primary float-right" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"-->
+<!--            aria-controls="collapseHelloWorldDemo"></button>-->
+
+<!--  </div>-->
+<!--  <div class="card-body" id="collapseHelloWorldDemo" [ngbCollapse]="isCollapsed">-->
+<!--    <h2>hello word</h2>-->
+<!--  </div>-->
+<!--</div>-->
+<!--                     </textarea>-->
+<!--                  </ng-template>-->
+<!--                </ngb-tab>-->
+<!--                <ngb-tab title="xxx-component.ts">-->
+<!--                  <ng-template ngbTabContent>-->
+<!--                     <textarea highlight-js lang="javascript">-->
+<!--import { Component, OnInit } from '@angular/core';-->
+<!--import {routerTransition} from '@app';-->
+
+<!--@Component({-->
+<!--  selector: 'app-use-component',-->
+<!--  templateUrl: './democrat.component.html',-->
+<!--  styleUrls: ['./democrat.component.scss'],-->
+<!--  animations: [routerTransition()],-->
+
+<!--})-->
+<!--export class ProfessionalComponent implements OnInit {-->
+<!--   isCollapsed = false;-->
+
+<!--   constructor() { }-->
+
+<!--  ngOnInit() {-->
+<!--  }-->
+<!--}-->
+<!--                     </textarea>-->
+<!--                  </ng-template>-->
+<!--                </ngb-tab>-->
+
+<!--              </ngb-tabset>-->
+<!--              <table class="table table-hover table-striped">-->
+<!--                <tr><td>添加点击事件</td><td>(click)="isCollapsed = !isCollapsed"</td></tr>-->
+<!--                <tr><td>添加属性</td><td> [attr.aria-expanded]="!isCollapsed"-->
+<!--                  aria-controls="collapseHelloWorldDemo"</td></tr>-->
+<!--                <tr><td>绑定id和属性</td><td>id="collapseHelloWorldDemo" [ngbCollapse]="isCollapsed"></td></tr>-->
+<!--                <tr><td>初始化值</td><td>isCollapsed = false;</td></tr>-->
+<!--              </table>-->
+
+<!--            </div>-->
+<!--            <div class="col-3">-->
+<!--              <p>isCollapsed:<b>{{isCollapsed}}</b></p>-->
+
+<!--              <div class=" card">-->
+<!--                <div class="card-header">-->
+<!--                  销售订单信息-->
+<!--                  <button type="button" class="btn btn-outline-primary float-right" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"-->
+<!--                          aria-controls="collapseHelloWorld"></button>-->
+<!--                </div>-->
+<!--                <div id="collapseHelloWorld" class="card-body" [ngbCollapse]="isCollapsed">-->
+<!--                  <h2>hello word</h2>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+
+        <div id="common-select">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>下拉框组件 common-select</h4>
+          </div>
+          <p>
+            下拉框组件有两类使用方法，1.在CGT工具中配置下拉框组件，代码自动生成（参见<a target="_blank" href="developer/doc/useCodeTool#codeToolMore">生成代码</a>）；2.自己使用组件、自己加载下拉框数据。
+            <br>下面讲解第二种情况:
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-inline">
+  <div class="form-group col-12">
+    <small class="col-7 col-form-label text-right">选择用户:</small>
+    <common-select class="col-5 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="selectUser" [dataList]="selectUserList"></common-select>
+  </div>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+...
+export class ProfessionalComponent implements OnInit {
+  selectUser: any;
+  selectUserList: any;
+  constructor(public http: HttpClient) {
+  }
+
+  ngOnInit() {
+    this.loadSelectUserList();
+  }
+
+  // 加载人员下拉框数据
+  loadSelectUserList() {
+    this.selectUserList = new Observable((subscriber) => {
+      return this.http.post('getPageData', {entityName: 'UserLogin', condition: {}}).subscribe((data: any) => {
+        data.list.forEach(item => {
+          item.id = item.userLoginId;
+          item.value = item.userName;
+        });
+        subscriber.next(data.list);
+      });
+    });
+  }
+
+}
+
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>common-select</td></tr>
+                    <tr><td>导入模块</td><td>CommonSelectModule</td></tr>
+                    <tr><td>依赖模块</td><td>FormsModule<br>NgbModule</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>dataList属性</td><td>Observable</td><td>异步加载的下拉框数据</td></tr>
+                    <tr><td>additionalDataList属性</td><td>Array</td><td>下拉框额外数据</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <p>selectUser: <b>{{selectUser}}</b></p>
+
+              <div class="form-inline">
+                <div class="form-group col-12">
+                  <small class="col-4 col-form-label">选择用户:</small>
+                  <common-select class="col-8 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="selectUser" [dataList]="selectUserList"></common-select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <div id="app-common-type-tree">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>通用树组件 app-common-type-tree</h4>
+          </div>
+          <p>
+            用于将一个数据库表中的数据以树状形式展示，并提供树节点选中事件监听功能。使用该组件的表需要符合一个树状结构数据表的特征：即将树数据以节点为单位存放，每个节点记录其父节点。
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<app-common-type-tree #tree
+                      [entityName]="'Department'"
+                      [treeTitle]="'部门树'"
+                      [idField]="'deptId'"
+                      [valueField]="'deptName'"
+                      [parentField]="'parentId'"
+                      (nodeSelectEvent)="nodeSelect($event)"
+></app-common-type-tree>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+...
+export class ProfessionalComponent implements OnInit {
+  selectedNodeData: any;
+...
+  // 树节点选中事件
+  nodeSelect(selectedNodeData) {
+    this.selectedNodeData = selectedNodeData;
+  }
+}
+
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>app-common-type-tree</td></tr>
+                    <tr><td>导入模块</td><td>CommonTypeTreeModule</td></tr>
+                    <tr><td>依赖模块</td><td>FormsModule<br>NgbModule</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>entityName属性</td><td>String</td><td>实体名</td></tr>
+                    <tr><td>treeTitle属性</td><td>String</td><td>树标题</td></tr>
+                    <tr><td>idField属性</td><td>String</td><td>id字段名</td></tr>
+                    <tr><td>valueField属性</td><td>String</td><td>显示字段名</td></tr>
+                    <tr><td>parentField属性</td><td>String</td><td>父节点字段名</td></tr>
+                    <tr><td>condition属性</td><td>ConditionExpr</td><td>查询条件</td></tr>
+                    <tr><td>nodeSelectEvent事件</td><td></td><td>节点选中事件,返回节点数据</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+
+            <p>selectedNodeData: <b *ngIf="selectedNodeData">{{selectedNodeData.id}} {{selectedNodeData.value}}</b></p>
+
+            <app-common-type-tree #tree
+                                  [entityName]="'Department'"
+                                  [treeTitle]="'部门树'"
+                                  [idField]="'deptId'"
+                                  [valueField]="'deptName'"
+                                  [parentField]="'parentId'"
+                                  (nodeSelectEvent)="nodeSelect($event)"
+            ></app-common-type-tree>
+          </div>
+          </div>
+        </div>
+
+
+
+        <div id="app-image-view">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>图片预览组件 app-image-view</h4>
+          </div>
+          <p>
+            根据图片地址展示图片，并提供点击图片查看大图的功能。
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<app-image-view appImageView="eiip/1/0/1/demo.png" ></app-image-view>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>app-image-view</td></tr>
+                    <tr><td>导入模块</td><td>ImageViewModule</td></tr>
+                    <tr><td>依赖模块</td><td></td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>appImageView属性</td><td>String</td><td>图片地址（默认情况下，为图片相对否台runtime目录的地址）。</td></tr>
+                    <tr><td>uri属性</td><td>String</td><td>图片服务器地址，默认为后台api地址，可自行修改，修改后图片的实际地址为：uri+appImageView属性。</td></tr>
+                    <tr><td>imgStyle属性</td><td>String</td><td>图片样式，默认样式是宽高48px</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <app-image-view appImageView="eiip/1/0/1/demo.png" ></app-image-view>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <div id="region-select">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>地址选择组件 region-select</h4>
+          </div>
+          <p>
+            一个地址级联选择组件。可从指定级别开始选择，并可从指定级别结束选择。
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-inline">
+  <div class="form-group col-12"  >
+    <small class="col-4 col-form-label text-right">国家</small>
+    <region-select [(ngModel)]="regionData.country" [parentId]="0" class="col-8 row p-0 ml-0" [cssStyle]="'col-12 form-control form-control-sm'"></region-select>
+  </div>
+  <div class="form-group col-12"  >
+    <small class="col-4 col-form-label text-right">省</small>
+    <region-select [(ngModel)]="regionData.province" [parentId]="regionData.country" class="col-8 row p-0 ml-0" [cssStyle]="'col-12 form-control form-control-sm'"></region-select>
+  </div>
+  <div class="form-group col-12"  >
+    <small class="col-4 col-form-label text-right">市</small>
+    <region-select [(ngModel)]="regionData.city" [parentId]="regionData.province" class="col-8 row p-0 ml-0" [cssStyle]="'col-12 form-control form-control-sm'"></region-select>
+  </div>
+  <div class="form-group col-12"  >
+    <small class="col-4 col-form-label text-right">区/县</small>
+    <region-select [(ngModel)]="regionData.county" [parentId]="regionData.city" class="col-8 row p-0 ml-0" [cssStyle]="'col-12 form-control form-control-sm'"></region-select>
+  </div>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+...
+export class ProfessionalComponent implements OnInit {
+  regionData: any = {}; // 地区选择数据
+...
+}
+
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>region-select</td></tr>
+                    <tr><td>导入模块</td><td>RegionSelectModule</td></tr>
+                    <tr><td>依赖模块</td>FormsModule<td></td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>parentId属性</td><td>String</td><td>上级地区id，根据需要传入相应值。例如：从国家开始选择，则第一个地区选择框传入的该参数值为0。</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <p style="word-break: break-all">regionData: <b *ngIf="regionData">{{stringify(regionData)}}</b></p>
+
+              <div class="form-inline">
+                <div class="form-group col-12"  >
+                  <small class="col-4 col-form-label text-right">国家</small>
+                  <region-select [(ngModel)]="regionData.country" [parentId]="0" class="col-8 row p-0 ml-0" [cssStyle]="'col-12 form-control form-control-sm'"></region-select>
+                </div>
+                <div class="form-group col-12"  >
+                  <small class="col-4 col-form-label text-right">省</small>
+                  <region-select [(ngModel)]="regionData.province" [parentId]="regionData.country" class="col-8 row p-0 ml-0" [cssStyle]="'col-12 form-control form-control-sm'"></region-select>
+                </div>
+                <div class="form-group col-12"  >
+                  <small class="col-4 col-form-label text-right">市</small>
+                  <region-select [(ngModel)]="regionData.city" [parentId]="regionData.province" class="col-8 row p-0 ml-0" [cssStyle]="'col-12 form-control form-control-sm'"></region-select>
+                </div>
+                <div class="form-group col-12"  >
+                  <small class="col-4 col-form-label text-right">区/县</small>
+                  <region-select [(ngModel)]="regionData.county" [parentId]="regionData.city" class="col-8 row p-0 ml-0" [cssStyle]="'col-12 form-control form-control-sm'"></region-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div id="true-false-select">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>是/否选择组件 true-false-select</h4>
+          </div>
+          <p>
+            选择是/否，实际值对应Y/N。
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<true-false-select [(ngModel)]="trueFalseData"></true-false-select>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+...
+export class ProfessionalComponent implements OnInit {
+  trueFalseData: any; // 是否值
+...
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>true-false-select</td></tr>
+                    <tr><td>导入模块</td><td>TrueFalseSelectModule</td></tr>
+                    <tr><td>依赖模块</td>FormsModule<td></td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <p style="word-break: break-all">trueFalseData: <b>{{trueFalseData}}</b></p>
+
+              <true-false-select [(ngModel)]="trueFalseData"></true-false-select>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div id="app-upload-file">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>附件上传组件 app-upload-file</h4>
+          </div>
+          <p>
+            支持上传多个附件，并显示附件，提供附件下载功能。该组件负责管理上传的文件存储，由使用者处理文件信息（例如使用者需要存储附件路径及附件名称等）。
+          </p>
+
+          <div class="row m-0">
+            <div class="col-12">
+              <p style="word-break: break-all">attachListData: <b>{{stringify(attachListData)}}</b></p>
+
+              <app-upload-file [(ngModel)]="attachListData"></app-upload-file>
+            </div>
+            <div class="col-12 mt-1">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<app-upload-file [(ngModel)]="attachListData"></app-upload-file>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+...
+export class ProfessionalComponent implements OnInit {
+  attachListData = []; // 附件列表
+...
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>app-upload-file</td></tr>
+                    <tr><td>导入模块</td><td>UploadFileModule</td></tr>
+                    <tr><td>依赖模块</td>FormsModule<td></td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>inEdit</td><td>boolean</td><td>设置附件组件是否可编辑，默认为true</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div id="app-upload-image">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>图片上传组件 app-upload-image</h4>
+          </div>
+          <p>
+            支持单个图片上传，并能预览。
+          </p>
+
+          <div class="row m-0">
+            <div class="col-12">
+              <p style="word-break: break-all">imageUrl: <b>{{stringify(imageUrl)}}</b></p>
+
+              <app-upload-image [(ngModel)]="imageUrl"></app-upload-image>
+            </div>
+            <div class="col-12 mt-1">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<app-upload-image [(ngModel)]="imageUrl"></app-upload-image>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+...
+export class ProfessionalComponent implements OnInit {
+  imageUrl: any; // 上传图片路径
+...
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>app-upload-image</td></tr>
+                    <tr><td>导入模块</td><td>UploadImageModule</td></tr>
+                    <tr><td>依赖模块</td><td>FormsModule</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+<!--            <div class="col-3">-->
+<!--              <p style="word-break: break-all">imageUrl: <b>{{imageUrl}}</b></p>-->
+<!--              <app-upload-image [(ngModel)]="imageUrl"></app-upload-image>-->
+<!--            </div>-->
+          </div>
+        </div>
+
+        <div id="scan-input">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>多行纯文本编辑组件 scan-input</h4>
+          </div>
+          <p>
+            多行纯文本编辑组件只需要使用 scan-input 标签即可定义自己的多行纯文本编辑框。
+            <br>下面讲解详细使用:
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-inline">
+  <div class="form-group col-12">
+    <small class="col-4 col-form-label text-right">纯文本输入:</small>
+    <scan-input class="col-8 p-0 ml-0"></scan-input>
+  </div>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+  ...
+export class ProfessionalComponent implements OnInit {
+  scanInputValue: string;  // 纯文本输入框内
+...
+}
+                       </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>scan-input</td></tr>
+                    <tr><td>导入模块</td><td>ScanInputModule</td></tr>
+                    <tr><td>依赖模块</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>disabled属性</td><td>boolean</td><td>输入框是否可用</td></tr>
+                    <tr><td>styleAttr属性</td><td>string</td><td>样式属性</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <p>纯文本输入: <b>{{scanInputValue}}</b></p>
+
+              <div class="form-inline">
+                <div class="form-group col-12">
+                  <scan-input class="col-8 p-0 ml-0" [(ngModel)]="scanInputValue"></scan-input>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="dic-select">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>字典值选择组件 dic-select</h4>
+          </div>
+          <p>
+            字典值选择组件和 <a href="developer/doc/useComponent#common-select" >common-select</a> 类似，区别在于common-select 可以对所有的表进行数据选择，
+            而 dic-select 则只针对于字典数据进行数据选择。
+            <br>下面讲解详细使用:
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-inline">
+  <div class="form-group col-12">
+    <dic-select class="col-8 p-0 ml-0" [(ngModel)]="dicSelectValue" [dicSelect]="'accountMethod'" [hasDefault]="true"></dic-select>
+  </div>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+ ...
+export class ProfessionalComponent implements OnInit {
+ dicSelectValue: string;  // 字典数据
+...
+}
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>dic-select</td></tr>
+                    <tr><td>导入模块</td><td>DicSelectModule</td></tr>
+                    <tr><td>依赖模块</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>dicSelect属性</td><td>string</td><td>父字典的值</td></tr>
+                    <tr><td>cssStyle属性</td><td>string</td><td>样式属性</td></tr>
+                    <tr><td>name属性</td><td>string</td><td>名称属性</td></tr>
+                    <tr><td>hasDefault属性</td><td>boolean</td><td>是否有默认值属性，默认是false</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <p>字典值: <b>{{dicSelectValue}}</b></p>
+
+              <div class="form-inline">
+                <div class="form-group col-12">
+                  <dic-select class="col-8 p-0 ml-0" [(ngModel)]="dicSelectValue" [dicSelect]="'accountMethod'" [hasDefault]="true"></dic-select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="app-date-input">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>日期选择组件 app-date-input</h4>
+          </div>
+          <p>
+            用户使用 app-date-input 标签，即可调用日期选择组件选择 yyyy-mm-dd 格式的日期。
+            <br>下面讲解详细使用:
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-inline">
+  <div class="form-group col-12">
+    <app-date-input class="col-8 p-0 ml-0" [(ngModel)]="dateInputValue"></app-date-input>
+  </div>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+ ...
+export class ProfessionalComponent implements OnInit {
+ dateInputValue: string;  // 日期数据
+...
+}
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>app-date-input</td></tr>
+                    <tr><td>导入模块</td><td>DateInputModule</td></tr>
+                    <tr><td>依赖模块</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>cssStyle属性</td><td>string</td><td>样式属性</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <p>日期值: <b>{{dateInputValue}}</b></p>
+
+              <div class="form-inline">
+                <div class="form-group col-12">
+                  <app-date-input class="col-8 p-0 ml-0" [(ngModel)]="dateInputValue"></app-date-input>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="app-date-time-input">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>时间选择组件 app-date-time-input</h4>
+          </div>
+          <p>
+            用户使用 app-date-time-input 标签，即可调用时间选择组件选择时间。
+            <br>下面讲解详细使用:
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-inline">
+  <div class="form-group col-12">
+    <app-date-input class="col-8 p-0 ml-0" [(ngModel)]="dateTimeInputValue"></app-date-input>
+  </div>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+ ...
+export class ProfessionalComponent implements OnInit {
+ dateTimeInputValue: string;  // 时间数据
+...
+}
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>app-date-time-input</td></tr>
+                    <tr><td>导入模块</td><td>DateTimeInputModule</td></tr>
+                    <tr><td>依赖模块</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>cssStyle属性</td><td>string</td><td>样式属性</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <p>时间值: <b>{{dateTimeInputValue}}</b></p>
+
+              <div class="form-inline">
+                <div class="form-group col-12">
+                  <app-date-time-input class="col-8 p-0 ml-0" [(ngModel)]="dateTimeInputValue"></app-date-time-input>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div id="app-rich-text-input">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>富文本编辑组件 app-rich-text-input</h4>
+          </div>
+          <p>
+            该组件是使用 ueditor 标签封装而成的自定义富文本编辑组件，用户使用 app-rich-text-input 标签，即可满足富文本编辑功能。
+            <br>下面讲解详细使用:
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-inline">
+  <div class="form-group col-12">
+    <app-rich-text-input class="col-8 p-0 ml-0" [(ngModel)]="richTextInputValue"></app-rich-text-input>
+  </div>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+ ...
+export class ProfessionalComponent implements OnInit {
+  richTextInputValue: string;  // 富文本数据
+...
+}
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>app-rich-text-input</td></tr>
+                    <tr><td>导入模块</td><td>RichTextInputModule</td></tr>
+                    <tr><td>依赖模块</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>cssStyle属性</td><td>string</td><td>样式属性</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <p>富文本值: <b>{{richTextInputValue}}</b></p>
+
+              <div class="form-inline">
+                <div class="form-group col-12">
+                  <app-rich-text-input class="col-8 p-0 ml-0" [(ngModel)]="richTextInputValue"></app-rich-text-input>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="app-page-header">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>页面返回组件 app-page-header</h4>
+          </div>
+          <p>
+            该组件一般使用于页面的头部，点击后返回到指定的页面，用户使用 app-page-header 即可实现该功能。
+            <br>下面讲解详细使用:
+          </p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-inline">
+  <div class="form-group col-12">
+    <app-page-header class="col-8 p-0 ml-0" [heading]="'返回到CGT介绍'" [icon]="'fa fa-wrench'" [backUrl]="'/developer/doc/intro'"></app-page-header>
+  </div>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用标签</td><td>app-page-header</td></tr>
+                    <tr><td>导入模块</td><td>PageHeaderModule</td></tr>
+                    <tr><td>依赖模块</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>heading属性</td><td>string</td><td>返回名称属性</td></tr>
+                    <tr><td>icon属性</td><td>string</td><td>返回图标样式属性</td></tr>
+                    <tr><td>hasBackButton属性</td><td>boolean</td><td>是否有返回按钮属性，默认为true</td></tr>
+                    <tr><td>backUrl属性</td><td>string</td><td>要返回的页面的url属性</td></tr>
+                    <tr><td>backClick事件</td><td>function</td><td>返回后的回调函数</td></tr>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <p>返回到CGT介绍页面:</p>
+
+              <div class="form-inline">
+                <div class="form-group col-12">
+                  <app-page-header class="col-8 p-0 ml-0" [heading]="'返回到CGT介绍'" [icon]="'fa fa-wrench'" [backUrl]="'/developer/doc/intro'"></app-page-header>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>
+

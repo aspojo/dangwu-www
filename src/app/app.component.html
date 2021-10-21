@@ -1,0 +1,8 @@
+<div class="alert-message-global" *ngIf="alerts">
+  <div *ngFor="let alert of alerts">
+    <ngb-alert [type]="alert.type" [dismissible]="true" (close)="onClosed(alert)">
+      <div [innerHTML]="alert.msg | safeHtml"></div>
+    </ngb-alert>
+  </div>
+</div>
+<router-outlet></router-outlet>

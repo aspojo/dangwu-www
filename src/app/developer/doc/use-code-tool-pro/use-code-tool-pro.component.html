@@ -1,0 +1,686 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up" style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/useCodeToolPro#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down" style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/useCodeToolPro#bottom"></a>
+
+<div id="top">
+  <app-page-header [heading]="'CGT进阶说明'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row">
+    <div class="col-12">
+      <div>
+        <p>CGT进阶主要讲述对生成组件及指令的使用。</p>
+        <label class="text-warning">注意：本节的重点是各个父类的属性和方法的理解。</label>
+        <!-- <p>CGT生成文件目录如下（以DemoOrder为例）：</p>
+        -<pre>
+
+ list-demo-order                                演示页面订单管理
+   edit-demo-order                               订单新增、修改页面
+     edit-demo-order.component.html
+     edit-demo-order.component.scss
+     edit-demo-order.component.ts
+     edit-demo-order.module.ts
+   pop-demo-order                               弹出订单curd界面
+     pop-demo-order.component.html
+     pop-demo-order.component.scss
+     pop-demo-order.component.ts
+     pop-demo-order.module.ts
+     pop-demo-order-routing.module.ts
+   select-demo-order                             订单选择页面
+     select-demo-order.component.html
+     select-demo-order.component.scss
+     select-demo-order.component.ts
+     select-demo-order.module.ts
+   view-demo-order                               订单查看页面
+     view-demo-order-base-info                   订单查看页面-单纯展示数据
+       view-demo-order-base-info.component.html
+       view-demo-order-base-info.component.ts
+       view-demo-order-base-info.module.ts
+     view-demo-order.component.html
+     view-demo-order.component.scss
+     view-demo-order.component.ts
+     view-demo-order.module.ts
+   list-demo-order.component.html               演示页面主界面
+   list-demo-order.component.scss               演示页面主界面的样式文件
+   list-demo-order.component.ts                 演示页面的业务操作类
+   list-demo-order.module.ts                    演示页面的模块类
+   list-demo-order-routing.module.ts            演示页面的路由配置
+   list-demo-order-service.ts                   演示页面的服务
+         </pre>-->
+
+        <p>
+          如上所示，CGT生成代码包含2个服务，2个组件，3个指令。下面以DemoOrder为例列出这些内容：
+        </p>
+        <table class="table table-hover table-striped">
+          <tr>
+            <td>服务</td>
+            <td>
+              <a href="developer/doc/useCodeToolPro#DemoOrderFieldInfoService">DemoOrderFieldInfoService</a><br>
+              <a href="developer/doc/useCodeToolPro#DemoOrderService">DemoOrderService</a>
+            </td>
+          </tr>
+          <tr>
+            <td>组件</td>
+            <td>
+              <a href="developer/doc/useCodeToolPro#app-list-demo-order">app-list-demo-order</a><br>
+              <a href="developer/doc/useCodeToolPro#app-view-demo-order-base-info">app-view-demo-order-base-info</a>
+            </td>
+          </tr>
+          <tr>
+            <td>指令</td>
+            <td>
+              <a href="developer/doc/useCodeToolPro#appCommonEdit">[appCommonEdit]</a><br>
+              <a href="developer/doc/useCodeToolPro#selectDemoOrder">[selectDemoOrder]</a><br>
+              <a href="developer/doc/useCodeToolPro#appCommonView">[appCommonView]</a></td>
+          </tr>
+        </table>
+
+
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>服务</h4>
+        </div>
+        <ol>
+          <li id="DemoOrderFieldInfoService"><h6>服务 DemoOrderFieldInfoService：</h6></li>
+          <p>该服务有以下几点功能，</p>
+          <ol>
+            <li>配置主表字段信息，诸如：字段是否参与查询，是否参与排序，数据格式化方式等,详情请参见类<b>FieldInfo</b>的定义；</li>
+            <li>提供以下继承自其父类（FieldInfoService）的功能。</li>
+          </ol>
+          <p>下面讲解FieldInfoService中的常用属性及方法：</p>
+          <div class="row m-0">
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">属性</th>
+              </tr>
+              <tr>
+                <td>deleteField</td>
+                <td>string， 如果该表中的数据使用的是标记删除，则需要配置某个具体的字段为标记删除的字段，例如 'isDel'为标记删除字段，则配置 deleteField = 'isDel'即可</td>
+              </tr>
+            </table>
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">方法</th>
+              </tr>
+              <tr>
+                <td>get entityName()</td>
+                <td>获取操作的实体名，抽象方法，这里主要指真实的实体</td>
+              </tr>
+              <tr>
+                <td>get queryEntityName()</td>
+                <td>获取查询实体名，抽象方法，这里主要指视图名（如果记得之前提到过的使用视图去生成代码，则在这里就需要去掉生成的实体名和视图名后面多余的View）</td>
+              </tr>
+              <tr>
+                <td>get _fieldInfo()</td>
+                <td>获取字段配置信息</td>
+              </tr>
+              <tr>
+                <td>get uiLabels()</td>
+                <td>获取中英文对照map</td>
+              </tr>
+              <tr>
+                <td>getEntityPK(entity)</td>
+                <td>根据实体对象，获取主键对象</td>
+              </tr>
+              <tr>
+                <td>getEntityPKValue(entity)</td>
+                <td>根据实体对象，获取主键的值</td>
+              </tr>
+              <tr>
+                <td>loadSelectDataList()</td>
+                <td>初始化当前服务管理的所有下拉框数据.</td>
+              </tr>
+              <tr>
+                <td>validateGenericValue(data)</td>
+                <td>验证数据是否可以为空</td>
+              </tr>
+              <tr>
+                <td>formatFieldValue(obj, fieldInfo)</td>
+                <td>格式化数据，将date和dateTime类型的数据格式化成'yyyy-MM-dd'和'yyyy-MM-dd HH:mm:ss'格式</td>
+              </tr>
+              <tr>
+                <td>getOne(submitQueryData): Observable</td>
+                <td>通过主键查询条件获取一条数据</td>
+              </tr>
+              <tr>
+                <td>getPageData(submitQueryData): Observable</td>
+                <td>通过查询条件获取已进行分页处理的数据</td>
+              </tr>
+              <tr>
+                <td>genericSave(fieldMap): Observable</td>
+                <td>保存一条数据</td>
+              </tr>
+              <tr>
+                <td>genericSaveAll(dataList): Observable</td>
+                <td>批量保存多条数据</td>
+              </tr>
+              <tr>
+                <td>deleteData(PK): Observable</td>
+                <td>根据主键删除数据</td>
+              </tr>
+            </table>
+          </div>
+
+          <li id="DemoOrderService"><h6>服务 DemoOrderService：</h6></li>
+          <p>该服务有以下几点功能，</p>
+          <ol>
+            <li>该服务类是实际业务的处理类，与后台数据交互的业务处理都应在该服务类中进行操作；</li>
+            <li>业务是否参与审批的配置类，平台流程引擎使用的 activi 工作流，使用中只要在 processInstanceKey 方法中配置对应的 activi 流程编号，即可参与流程审批；</li>
+            <li>提供以下继承自其父类（CommonService）的功能。</li>
+          </ol>
+          <p>下面讲解CommonService中的常用属性及方法：</p>
+          <div class="row m-0">
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">属性</th>
+              </tr>
+              <tr>
+                <td>hasAttachment</td>
+                <td>boolean，配置界面是否有上传附件的功能，true为有，false为没有改功能，默认值为false。</td>
+              </tr>
+            </table>
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">方法</th>
+              </tr>
+              <tr>
+                <td>get processInstanceKey()</td>
+                <td>获取流程编号</td>
+              </tr>
+              <tr>
+                <td>get hasFlow()</td>
+                <td>根据 processInstanceKey 方法返回的流程编号，判断是否参与了审批，有编号则认为参与审批，反之，则没有参与。</td>
+              </tr>
+            </table>
+          </div>
+        </ol>
+
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>组件</h4>
+        </div>
+        <ol>
+          <li id="app-list-demo-order"><h6>组件 app-list-demo-order ：</h6></li>
+          <p>该组件继承CommonDataTable是CURD主界面（该组件主要作为一个单独模块使用，如果需要作为其他界面的一部分使用，请单独使用CGT工具生成代码放置到相应模块使用）。</p>
+          <div class="row m-0">
+            <div class="col-12">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+                        <app-list-demo-order [showDataTableOnly]="true"></app-list-demo-order>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-module.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+@NgModule({
+  imports: [
+    ...
+    ListDemoOrderModule,
+  ],
+  ...
+  providers: [DemoOrderFieldInfoService]
+})
+export class UseCodeToolProModule {
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <table class="table table-hover table-striped">
+                <tr><td>使用标签</td><td>app-list-demo-order</td></tr>
+                <tr><td>导入模块</td><td>ListDemoOrderModule</td></tr>
+                <tr><td>依赖模块</td><td></td></tr>
+                <tr><td>依赖服务</td><td>DemoOrderFieldInfoService</td></tr>
+              </table>
+
+            </div>
+            <div class="col-12">
+              <div class=" card">
+                <div class="card-header">
+                  订单列表
+                </div>
+                <div class="card-body">
+                  <app-list-demo-order [showDataTableOnly]="true"></app-list-demo-order>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <p>下面讲解 ListDemoOrderComponent 及其父类 CommonDataTable中的常用属性及方法：</p>
+          <div class="row m-0">
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">属性</th>
+              </tr>
+              <tr>
+                <td>isQueryCollapsed</td>
+                <td>boolean，查询框是否折叠，默认为false</td>
+              </tr>
+              <tr>
+                <td>isOpratorCollapsed</td>
+                <td>boolean，数据框是否折叠，默认为false</td>
+              </tr>
+              <tr>
+                <td>hasBackButton</td>
+                <td>boolean，界面是否有返回按钮，默认为false</td>
+              </tr>
+              <tr>
+                <td>showDataTableOnly</td>
+                <td>submitQueryData，当前组件是否仅显示表格，不显示查询框，默认为false</td>
+              </tr>
+              <tr>
+                <td>queryData</td>
+                <td>object，输入属性，传入默认查询条件</td>
+              </tr>
+              <tr>
+                <td>dataList</td>
+                <td>array，页面展示的数据集</td>
+              </tr>
+              <tr>
+                <td>submitQueryData</td>
+                <td>object，提交到后台用于查询的数据</td>
+              </tr>
+              <tr>
+                <td>pageData</td>
+                <td>object，提交到后台用于分页处理的数据</td>
+              </tr>
+            </table>
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">方法</th>
+              </tr>
+              <tr><td>get isAllChecked()</td><td>返回是否全选</td></tr>
+              <tr><td>get checkedNum()</td><td>返回选中数量</td></tr>
+              <tr><td>get selectedList(): Array</td><td>返回选中数据列表</td></tr>
+              <tr><td>get selectedPK(): Array</td><td>返回选中数据主键列表</td></tr>
+              <tr><td>beforeInit()</td><td>类初始化之前执行，该方法体为空，子类可按需重写</td></tr>
+              <tr><td>beforeQuery()</td><td>进行查询之前执行，用于前置数据处理和查询条件拼装，该方法体为空，子类可按需重写</td></tr>
+              <tr><td>afterDataLoaded()</td><td>数据加载之后执行，每次查询完都执行（用于在前台进行少量后置数据处理），该方法体为空，子类可按需重写</td></tr>
+              <tr><td>afterDataSaved(savedValue: any)</td><td>数据保存后调用的方法（用于在数据保存后的操作处理），该方法体为空，子类可按需重写</td></tr>
+              <tr><td>afterDataDeleted(PK: any)</td><td>数据删除之后执行（用于在数据删除后的操作处理），该方法体为空，子类可按需重写</td></tr>
+            </table>
+          </div>
+
+
+          <li id="app-view-demo-order-base-info"><h6>组件 app-view-demo-order-base-info：</h6></li>
+          <p>该组件用于展示一条数据详细信息,继承自CommonViewBaseInfo。</p>
+
+          <div class="row m-0">
+            <div class="col-12">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<app-view-demo-order-base-info [PK]="{orderId:'10041'}"></app-view-demo-order-base-info>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-module.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+@NgModule({
+  imports: [
+    ...
+    CommonViewModule,
+    ViewDemoOrderBaseInfoModule,
+  ],
+  ...
+  providers: [DemoOrderFieldInfoService]
+})
+export class UseCodeToolProModule {
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <table class="table table-hover table-striped">
+                <tr>
+                  <td>使用标签</td>
+                  <td>app-view-demo-order-base-info</td>
+                </tr>
+                <tr>
+                  <td>导入模块</td>
+                  <td>ViewDemoOrderBaseInfoModule</td>
+                </tr>
+                <tr>
+                  <td>依赖模块</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>依赖服务</td>
+                  <td>DemoOrderFieldInfoService</td>
+                </tr>
+              </table>
+
+            </div>
+            <div class="col-12">
+              <div class=" card">
+                <div class="card-header">
+                  订单详情
+                </div>
+                <div class="card-body">
+                  <app-view-demo-order-base-info [PK]="{orderId:'10041'}"></app-view-demo-order-base-info>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <p>下面讲解 CommonViewBaseInfo 中的常用属性及方法：</p>
+          <div class="row m-0">
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">属性</th>
+              </tr>
+              <tr>
+                <td>PK</td>
+                <td>object，输入属性，传入待展示数据的主键数据</td>
+              </tr>
+            </table>
+            <table class="table table-hover table-striped col-12">
+              <tr><th class="text-center" colspan="2">方法</th></tr>
+              <tr>
+                <td>afterGetOne()</td>
+                <td>获取单条数据后执行（用于根据主键查询到待展示的数据后的操作处理），子类可重写</td>
+              </tr>
+            </table>
+          </div>
+
+        </ol>
+
+
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>指令</h4>
+        </div>
+        <ol>
+          <li id="appCommonEdit"><h6>指令 [appCommonEdit]：</h6></li>
+          <p>该组件继承 CommonEditComponent 和 CommonComponent 是数据新增及修改界面，新增修改通过指令输入值[Pk]确定([PK]有值则为编辑，没有则为新增，详见右侧两个按钮)。</p>
+
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="btn-group">
+  <button *ngIf="envService.showPopUp" class="btn btn-outline-dark btn-xsm"
+          [appCommonEdit]
+          [comp]="getComponentByName('EditDemoOrderComponent')"
+          (dataSavedEvent)="dataSaved($event)"
+          (handleTaskEvent)="handleTask($event)"><i class="fa fa-plus-circle"></i>新增
+  </button>
+  <button *ngIf="envService.showPopUp" class="btn btn-outline-dark btn-xsm"
+          [appCommonEdit]
+          [comp]="getComponentByName('EditDemoOrderComponent')"
+          [PK]="{'orderId':'10041'}"
+          (dataSavedEvent)="dataSaved($event)"
+          (handleTaskEvent)="handleTask($event)"><i class="fa fa-edit"></i>编辑
+  </button>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+                       export class ListDemoOrderComponent extends CommonDataTable {
+
+   isQueryCollapsed = false;
+   isOpratorCollapsed = false;
+
+   constructor(
+     public envService: EnvironmentService,
+     public http: HttpClient,
+     public modalService: NgbModal,
+     public compMapService: ComponentMapService,
+     public commonService: DemoOrderService,
+     public fieldInfoService: DemoOrderFieldInfoService,
+   ) {
+    super();
+  }
+
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-module.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+@NgModule({
+  imports: [
+    ...
+    CommonEditModule,
+  ],
+  ...
+  providers: [DemoOrderFieldInfoService]
+})
+export class UseCodeToolProModule {
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <table class="table table-hover table-striped">
+                <tr><td>使用指令</td><td>[appCommonEdit]</td></tr>
+                <tr><td>导入模块</td><td>CommonEditModule</td></tr>
+                <tr><td>依赖模块</td><td></td></tr>
+                <tr><td>依赖服务</td><td>DemoOrderService,DemoOrderFieldInfoService</td></tr>
+              </table>
+
+            </div>
+            <div class="col-3">
+              <div class="btn-group">
+                <button *ngIf="envService.showPopUp" class="btn btn-outline-dark btn-xsm"
+                        [appCommonEdit]
+                        [comp]="getComponentByName('EditDemoOrderComponent')"
+                        (dataSavedEvent)="dataSaved($event)"
+                        (handleTaskEvent)="handleTask($event)"><i class="fa fa-plus-circle"></i>新增
+                </button>
+                <button *ngIf="envService.showPopUp" class="btn btn-outline-dark btn-xsm"
+                        [appCommonEdit]
+                        [comp]="getComponentByName('EditDemoOrderComponent')"
+                        [PK]="{'orderId':'10041'}"
+                        (dataSavedEvent)="dataSaved($event)"
+                        (handleTaskEvent)="handleTask($event)"><i class="fa fa-edit"></i>编辑
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <p>下面讲解 CommonEditComponent 和 CommonComponent 中的常用属性及方法：</p>
+          <div class="row m-0">
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">属性</th>
+              </tr>
+              <tr><td>defaultAddValue</td><td>object，输入属性，新增数据时的默认数据</td></tr>
+              <tr><td>PK</td><td>object，输入主键，有主键则判断为新增，没有则是编辑</td></tr>
+              <tr><td>handleTaskComponent</td><td>string，输入属性，任务办理界面组件</td></tr>
+              <tr><td>dataSavedEvent</td><td>事件，数据保存后触发</td></tr>
+              <tr><td>handleTaskEvent</td><td>事件，启动任务处理事件</td></tr>
+              <tr><td>handleTaskDoneEvent</td><td>事件，任务处理完成事件</td></tr>
+              <tr><td>closeViewEvent</td><td>事件，关闭页面事件,当组件被用作弹出窗口的时候使用</td></tr>
+            </table>
+            <table class="table table-hover table-striped col-12">
+              <tr><th class="text-center" colspan="2">方法</th></tr>
+              <tr><td>commitToServer()</td><td>若需要自己保存数据（用于进行多表的数据保存操作），请在子类重写此方法</td></tr>
+              <tr><td>afterGetOne()</td><td>在获取编辑数据后执行，该方法体为空，子类可按需重写</td></tr>
+              <tr><td>beforeValidateAndFormat()</td><td>在验证与格式化要提交的数据之前执行，该方法体为空，子类可按需重写</td></tr>
+              <tr><td>beforeSubmit(validate: EntityFieldValidate)</td><td>提交数据之前执行（用于前置数据的处理），该方法体为空，子类可按需重写</td></tr>
+              <tr><td>afterSave(savedValue: any)</td><td>数据保存成功之后执行（用于数据保存后的操作），该方法体为空，子类可按需重写</td></tr>
+              <tr><td>afterInit()</td><td>页面加载完成后触发，该方法体为空，子类可按需重写</td></tr>
+              <tr><td>formatDuring()</td><td>格式化时间间隔，用户将时长毫秒格式化成'天/时/分/秒'的可读间隔</td></tr>
+            </table>
+          </div>
+
+          <li id="selectDemoOrder"><h6>指令 [selectDemoOrder]：</h6></li>
+          <p>该组件继承 CommonSelectOne ,弹出选择数据界面。</p>
+
+          <div class="row m-0">
+            <div class="col-8">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-inline">
+  <div class="form-group col-12">
+    <small class="col-6 col-form-label text-right">选择订单:</small>
+    <span class="col-6 form-control form-control-sm" [selectDemoOrder] [(ngModel)]="selectedDemoOrder"></span>
+  </div>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-module.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+@NgModule({
+  imports: [
+    ...
+    SelectDemoOrderModule,
+  ],
+  ...
+  providers: [DemoOrderFieldInfoService]
+})
+export class UseCodeToolProModule {
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <table class="table table-hover table-striped">
+                <tr><td>使用指令</td><td>[selectDemoOrder]</td></tr>
+                <tr><td>导入模块</td><td>SelectDemoOrderModule</td></tr>
+                <tr><td>依赖模块</td><td></td></tr>
+                <tr><td>依赖服务</td><td>DemoOrderFieldInfoService</td></tr>
+              </table>
+
+            </div>
+            <div class="col-4">
+              <div class="form-inline">
+                <div class="form-group col-12">
+                  <small class="col-6 col-form-label text-right">选择订单:</small>
+                  <span class="col-6 form-control form-control-sm" [selectDemoOrder] [(ngModel)]="selectedDemoOrder"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p>下面讲解 SelectDemoOrderComponent及其父类CommonSelectOne中的常用属性及方法：</p>
+          <div class="row m-0">
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">属性</th>
+              </tr>
+              <tr><td>isQueryCollapsed</td><td>boolean，查询框是否折叠，默认为false</td></tr>
+              <tr><td>showValue</td><td>string，输入属性，默认显示值</td></tr>
+              <tr><td>valueField</td><td>string，输入属性，值字段名</td></tr>
+              <tr><td>showField</td><td>string，输入属性，显示字段名</td></tr>
+              <tr><td>mapCondition</td><td>object，简单查询条件（k-v形式）</td></tr>
+              <tr><td>condition</td><td>EntityCondition，复杂查询条件</td></tr>
+              <tr><td>selectedEvent</td><td>事件，选中数据后触发</td></tr>
+            </table>
+            <table class="table table-hover table-striped col-12">
+              <tr><th class="text-center" colspan="2">方法</th></tr>
+            </table>
+          </div>
+
+
+          <li id="appCommonView"><h6>指令 [appCommonView]：</h6></li>
+          <p>该组件继承 CommonView ,弹出查看数据详情界面。</p>
+
+          <div class="row m-0">
+            <div class="col-8">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+              <button class="btn btn-xsm btn-outline-dark" [appCommonView] [comp]="compMapService.getComponentByName('ViewDemoOrderComponent')"
+                      [PK]="{orderId:'10041'}" #viewButton><i class="fa fa-eye"></i>查看</button>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-module.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+@NgModule({
+  imports: [
+    ...
+    CommonViewModule,
+    ViewDemoOrderBaseInfoModule,
+  ],
+  ...
+  providers: [DemoOrderFieldInfoService]
+})
+export class UseCodeToolProModule {
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <table class="table table-hover table-striped">
+                <tr><td>使用指令</td><td>[appCommonView]</td></tr>
+                <tr><td>导入模块</td><td>CommonViewModule,ViewDemoOrderBaseInfoModule,</td></tr>
+                <tr><td>依赖模块</td><td></td></tr>
+                <tr><td>依赖服务</td><td>DemoOrderFieldInfoService</td></tr>
+              </table>
+
+            </div>
+            <div class="col-4">
+              <button class="btn btn-xsm btn-outline-dark" [appCommonView] [comp]="compMapService.getComponentByName('ViewDemoOrderComponent')" [PK]="{orderId:'10041'}" #viewButton><i class="fa fa-eye"></i>查看</button>
+            </div>
+          </div>
+
+          <p>下面讲解 CommonView 中的常用属性及方法：</p>
+          <div class="row m-0">
+            <table class="table table-hover table-striped col-12">
+              <tr>
+                <th class="text-center" colspan="2">属性</th>
+              </tr>
+              <tr><td>approveAction</td><td>string，输入属性，审批相关</td></tr>
+              <tr><td>dataSavedEvent</td><td>事件，审批状态改变时触发</td></tr>
+            </table>
+            <table class="table table-hover table-striped col-12">
+              <tr><th class="text-center" colspan="2">方法</th></tr>
+            </table>
+          </div>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>

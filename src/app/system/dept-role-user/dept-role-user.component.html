@@ -1,0 +1,226 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'通讯录管理'" [icon]="'fa-users'"></app-page-header>
+  <div>
+    <div class="float-left left-tree">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-fw fa-search"></i></span>
+          </div>
+
+          <input type="text" class="form-control" name="a" [(ngModel)]="searchResult.searchValue" placeholder="搜索" (keyup)="searchChange($event)">
+        </div>
+        <div class="input-group input-group-sm mt-2">
+          <div class="btn-group btn-group-toggle col-12 p-0" ngbRadioGroup name="radioBasic" [(ngModel)]="searchData.signType">
+            <label ngbButtonLabel class="btn btn-outline-primary btn-sm col-6">
+              <input ngbButton type="radio" value="dept"> 组织架构
+            </label>
+            <label ngbButtonLabel class="btn btn-outline-primary btn-sm col-6">
+              <input ngbButton type="radio" value="role"> 角色
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="mt-2" [hidden]="searchResult.searchValue">
+        <div [hidden]="searchData.signType!='dept'">
+
+          <tree-root class="mt-2" #deptTreeComponent
+                     [nodes]="treeData"
+                     [options]="treeSettings"
+                     (activate)="onNodeSelected($event)"
+                     (nodeCreated)="handleCreated($event)"
+          >
+          </tree-root>
+        </div>
+        <div [hidden]="searchData.signType!='role'">
+
+          <app-role-edit [roleDataTemp]="{}" (roleChange)="loadRoleTreeData()"></app-role-edit>
+
+          <tree-root #roleTreeComponent
+                     [nodes]="roleTreeData"
+                     [options]="treeSettings"
+                     (activate)="onRoleNodeSelected($event)">
+          </tree-root>
+
+        </div>
+      </div>
+      <div class="mt-2" [hidden]="!searchResult.searchValue">
+        <div class="p-2 mb-2 bg-gray-me">部门</div>
+        <table class="table table-hover">
+          <tr *ngFor="let item of searchResult.deptList" (click)="searchDeptClick(item)">
+            <td>
+              <button class="btn-link"><i class="fa fa-fw fa-folder text-info"></i>{{item.deptName}}</button>
+            </td>
+          </tr>
+        </table>
+        <div class="p-2 mb-2 bg-gray-me">人员</div>
+        <table class="table table-hover">
+          <tr *ngFor="let item of searchResult.userList">
+            <td [userEdit]="item" (userDataChange)="searchUserChange(item,$event)" class="btn-link">
+              <i class="fa fa-fw fa-user text-info"></i>{{item.userName}}
+            </td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+
+
+    <div class="right-content bg-white">
+      <div [hidden]="searchData.signType!='dept'">
+        <div *ngIf="selectedDept">
+          <h4>
+            {{selectedDept.data.deptName}}
+            <button class="btn btn-outline-dark btn-xsm" *ngIf="{ permission: 'FULL_ADMIN', action: '', permissionList: [], projectId: ''} | permission" (click)="editDeptClick()">设置</button>
+          </h4>
+          <div style="font-size: 16px;">
+            <i class="fa fa-fw fa-building"></i>
+            <span>下级部门</span>
+          </div>
+          <div class="p-2" style="background-color: #eceff4" *ngIf="{ permission: 'FULL_ADMIN', action: '', permissionList: [], projectId: ''} | permission">
+            <button (click)="addDeptClick()" class="btn btn-outline-dark btn-xsm ml-1">添加子部门</button>
+            <button class="btn btn-outline-dark btn-xsm ml-1" (click)="sortDeptClick()" [disabled]="!hasChildren">调整顺序</button>
+          </div>
+          <div *ngIf="showSortInfo" class="p-2 btn-group col-12" style="background-color: #fff9db">
+            <small class="m-auto">
+              上下移动部门调整位置
+              <button class="btn btn-outline-dark btn-xsm" (click)="saveDeptSortClick()">保存</button>
+              <button class="btn btn-outline-dark btn-xsm" (click)="cancelDeptSortClick()">撤销</button>
+            </small>
+          </div>
+          <div class="p-2">
+            <ng-template [ngIf]="showSortInfo">
+              <table class="table table-hover " [sortablejs]="newChildDeptList">
+                <ng-template ngFor let-item [ngForOf]="newChildDeptList" let-i="index">
+                  <tr>
+                    <ng-container *ngTemplateOutlet="childDeptTdView; context: {dept:item}"></ng-container>
+                  </tr>
+                </ng-template>
+              </table>
+            </ng-template>
+            <ng-template [ngIf]="!showSortInfo">
+              <table class="table table-hover">
+                <ng-template ngFor let-item [ngForOf]="newChildDeptList" let-i="index">
+                  <tr>
+                    <ng-container *ngTemplateOutlet="childDeptTdView; context: {dept:item}"></ng-container>
+                  </tr>
+                </ng-template>
+              </table>
+            </ng-template>
+
+            <ng-template #childDeptTdView let-dept="dept">
+              <td>
+                <small>
+                  <i *ngIf="showSortInfo" class="fa fa-fw fa-list text-muted"></i>
+                  {{dept.deptName}}
+                  <small *ngIf="dept.enabled=='N'" class="text-danger">(已禁用)</small>
+                </small>
+              </td>
+              <td>
+                <small>
+                  {{dept.description}}
+                </small>
+              </td>
+            </ng-template>
+
+            <app-user [selectedNode]="selectedDept" (deptChange)="loadTreeData()"></app-user>
+
+
+          </div>
+        </div>
+      </div>
+      <div [hidden]="searchData.signType!='role'">
+        <ng-template [ngIf]="selectedRole">
+
+          <app-user-role [selectedRole]="selectedRole" [rootDept]="rootDept" (roleChange)="loadRoleTreeData()"></app-user-role>
+
+        </ng-template>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<ng-template #addDeptView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">
+      <ng-template [ngIf]="inEdit">
+        修改部门
+      </ng-template>
+      <ng-template [ngIf]="!inEdit">
+        添加部门
+      </ng-template>
+    </h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="addDeptModalRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="p-2 mb-2" style="background-color: #eceff4">部门基本信息</div>
+
+    <div class="form-group row" *ngIf="!inEdit">
+      <label for="deptId" class="col-sm-3 col-form-label text-right">部门id:</label>
+      <div class="col-sm-3">
+        <input [(ngModel)]="newDept.deptId" type="text" class="form-control" id="deptId" #deptId="ngModel">
+      </div>
+      <div class="col-sm-6">
+        <div>
+          <small class="text-left text-muted">1.不能包含中文</small>
+        </div>
+        <div>
+          <small class="text-left text-muted">2.建议填写有实际含义的部门id,方便检索及记忆</small>
+        </div>
+        <div>
+          <small class="text-left text-muted">3.不填部门id，将自动生成</small>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row" *ngIf="inEdit">
+      <label class="col-sm-3 col-form-label text-right">部门id:</label>
+      <div class="col-sm-3 form-control border-0">
+        {{newDept.deptId}}
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="deptName" class="col-sm-3 col-form-label text-right"><span class="text-danger">*</span>部门名:</label>
+      <div class="col-sm-4">
+        <input [(ngModel)]="newDept.deptName" type="text" class="form-control" id="deptName" #deptName="ngModel" required>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="description" class="col-sm-3 col-form-label text-right">部门描述:</label>
+      <div class="col-sm-4">
+        <textarea [(ngModel)]="newDept.description" type="text" class="form-control" id="description" required></textarea>
+      </div>
+    </div>
+
+    <div class="p-2 mb-2" style="background-color: #eceff4">部门设置</div>
+
+    <div class="row">
+      <div class="col-3">
+        <div class="text-right">启用本部门:</div>
+        <!--<small>停用本部门开启后，本部门将不会显示在公司通讯录中</small>-->
+      </div>
+      <div class="col-4">
+        <div class="btn-group p-0">
+          <true-false-select class="col-4" [(ngModel)]="newDept.enabled"></true-false-select>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <div *ngIf="newDept.deptId">
+      <button class="btn btn-sm  btn-danger" [confirm]="'确定删除部门['+newDept.deptName+']'"
+              (confirmClick)="deleteDeptById(newDept.deptId)"><i class="fa fa-fw fa-remove"></i>删除
+      </button>
+    </div>
+    <button [disabled]="!deptName.valid || validateForm()" type="submit" class="btn btn-primary btn-sm" (click)="addDeptSave()">保存
+    </button>
+  </div>
+</ng-template>
+

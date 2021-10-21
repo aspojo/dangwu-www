@@ -1,0 +1,48 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up" style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/start#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down" style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/start#bottom"></a>
+
+<div id="top">
+  <app-page-header [heading]="'运行起来'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div class="p-2 mb-2 bg-gray-me">
+        <h4>配置项目开发环境</h4>
+      </div>
+      <ol>
+        <li>安装JDK、Idea、WebStorm以及Chrome浏览器<span style="color: red;">（公司电脑都已经预安装）</span>；</li>
+        <li>安装NodeJS，从公司内网共享文件夹（file://server.jr.com/ftp/软件/开发环境/）中下载 node-v10.16.3-x64.msi 文件以进行安装；</li>
+<!--        <li>安装cnpm</li>-->
+        <li>使用 Webstorm 从公司SVN仓库检出前端代码，代码地址为：http://svn.jr.com/svn/h5web/projectMgr-www <span style="color: red;">（如果没有SVN账号，请先联系部门负责人以创建SVN账号，并赋予相应权限）</span>；</li>
+        <li>使用 Idea 从公司SVN仓库检出后端代码，代码地址为：http://svn.jr.com/svn/fadp13/branches/projectMgr ；</li>
+        <li>建议禁用计算机上安装的第三方输入法的快捷键，禁用QQ(除截屏外)的快捷键，如果还有其他软件可能占用开发快捷键请一并禁用。</li>
+      </ol>
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>运行你的代码</h4>
+        </div>
+        <ol>
+          <li>使用Idea打开后端项目，点击Idea右上角的调试按钮启动后端平台，等待启动完成；</li>
+          <img src="assets/images/doc/run-fadp.png" width="400px">
+          <li>使用WebStorm打开前端项目；</li>
+          <img src="assets/images/doc/run-www.png" width="400px">
+          <li>在项目目录内运行 npm install；</li>
+          <li>在WebStorm中点击左下角npm > start，启动angular，等待启动完成；</li>
+          <li>在WebStorm中点击右上角调试按钮，启动浏览器调试。</li>
+<!--          <p class="mt-2">到这里，你的chrome浏览器应该显示出fadp开发平台的前端页面。</p>-->
+        </ol>
+      </div>
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>查看前端页面</h4>
+        </div>
+        <ol>
+          <li>浏览器自动打开页面或者在浏览器输入localhost:4200，进入前端主页面；</li>
+          <img src="assets/images/doc/dashboard.png" width="400px">
+          <li>如果在浏览器显示出如上图的前端主页面，恭喜你，前后端环境配置成功，现在你可以使用CGT工具生成你的代码了！</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>
+

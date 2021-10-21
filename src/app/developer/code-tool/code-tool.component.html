@@ -1,0 +1,43 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'开发者'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div class="p-2 mb-2 bg-gray-me">
+        <button class="btn btn-primary btn-xsm ml-1">导入数据</button>
+        <div class="form-inline float-right">
+          <div class="form-group ">
+            <small class=" col-form-label text-right"></small>
+            <input class=" form-control form-control-sm" type="text" [(ngModel)]="searchValue" (keyup)="searchChange()" placeholder="搜索">
+          </div>
+        </div>
+      </div>
+      <div>
+        <ng-template ngFor let-item [ngForOf]="dataList" let-i="index">
+
+          <a *ngIf="item.show" style="width:250px;" class="d-inline-block" [routerLink]="['/developer/codeTool/entityList/'+item.entityName]"><img src="assets/images/entity/dataTable.bmp">{{item.entityName}}</a>
+
+        </ng-template>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <!--<ng-select class="col-12" [items]="dataList"-->
+                 <!--bindLabel="entityName"-->
+                 <!--bindValue="entityName"-->
+                 <!--(change)="searchChange()"-->
+                 <!--[(ngModel)]="searchValue"-->
+      <!--&gt;-->
+      <!--</ng-select>-->
+
+      <!--<div class="row" *ngIf="dataList">-->
+        <!--<ng-template ngFor let-item [ngForOf]="showDataList" let-i="index">-->
+
+          <!--<app-entity-edit [entity]="item" class="col-12 mb-1"></app-entity-edit>-->
+
+        <!--</ng-template>-->
+      <!--</div>-->
+
+
+    </div>
+  </div>
+</div>
+

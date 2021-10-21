@@ -1,0 +1,33 @@
+<div class="login-page" [@routerTransition]>
+
+  <h1 height="60px" class="float-left" style="font-family: STKaiti;font-weight: bolder; color: #ff4800;text-shadow: -2px 0 white,0 2px white,2px 0 white,0 -2px white">{{envService.title}}</h1>
+  <div class="row justify-content-md-center">
+    <div class="login-form">
+      <div style="background: #e7b885;">
+        <label style="margin-top: 0.5rem;color: white;">系统登录</label>
+      </div>
+      <form role="form" [formGroup]="loginForm" class=" p-4 pt-6">
+        <div class="form-content">
+          <div class="input-group">
+            <div class="input-group-prepend bg-white">
+              <span class="input-group-text"><img width="14px" src="assets/images/yonghu.png"></span>
+            </div>
+            <input type="text" formControlName="USERNAME" class="form-control" placeholder="用户名">
+          </div>
+
+          <div class="input-group pt-2">
+            <div class="input-group-prepend bg-white">
+              <span class="input-group-text"><img width="14px" src="assets/images/mimakuang.png"></span>
+            </div>
+            <input type="password" formControlName="PASSWORD" class="form-control" placeholder="密码">
+          </div>
+          <div class="form-check pt-2 float-left">
+            <input id="savePassword" class="form-check-inline" type="checkbox" [(ngModel)]="savePassword" [ngModelOptions]="{standalone: true}">
+            <label for="savePassword" class="form-check-label text-muted">记住密码</label>
+          </div>
+        </div>
+        <button [disabled]="loginForm.invalid" class="btn  btn-block mt-3 text-white" style="background-color: #e27314;" (click)="login()">登 录</button>
+      </form>
+    </div>
+  </div>
+</div>

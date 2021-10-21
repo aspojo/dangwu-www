@@ -1,0 +1,115 @@
+<app-common-pop-or-page heading="请假申请"
+                        [showPopUp]="showPopUp"
+                        [hasBackButton]="hasBackButton"
+                        [contentView]="contentView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+<ng-content></ng-content>
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header"><span>查询</span></div>
+    <div class="card-body">
+      <div class="form-inline">
+        <div class="form-group col-6">
+          <small class="col-3 col-form-label text-right">{{uiLabel('reason')}}:</small>
+          <input class="col-4 form-control form-control-sm" [(ngModel)]="queryData.reason" type="text">
+        </div>
+        <div class="form-group col-6">
+          <small class="col-3 col-form-label text-right">{{uiLabel('startDate')}}:</small>
+          <input class="col-4 form-control form-control-sm" placeholder="yyyy-mm-dd" [(ngModel)]="queryData.startDate_fld0" ngbDatepicker #startDate_fld0="ngbDatepicker" (click)="startDate_fld0.toggle()">
+          <span class="col-1">-</span>
+          <input class="col-4 form-control form-control-sm" placeholder="yyyy-mm-dd" [(ngModel)]="queryData.startDate_fld1" ngbDatepicker #startDate_fld1="ngbDatepicker" (click)="startDate_fld1.toggle()">
+        </div>
+        <div class="form-group col-6">
+          <small class="col-3 col-form-label text-right">{{uiLabel('endDate')}}:</small>
+          <input class="col-4 form-control form-control-sm" placeholder="yyyy-mm-dd" [(ngModel)]="queryData.endDate_fld0" ngbDatepicker #endDate_fld0="ngbDatepicker" (click)="endDate_fld0.toggle()">
+          <span class="col-1">-</span>
+          <input class="col-4 form-control form-control-sm" placeholder="yyyy-mm-dd" [(ngModel)]="queryData.endDate_fld1" ngbDatepicker #endDate_fld1="ngbDatepicker" (click)="endDate_fld1.toggle()">
+        </div>
+      </div>
+      <div class="form-inline ">
+        <div class="col-12 ">
+          <div class="float-right btn-group">
+            <button class="btn btn-xsm btn-warning" (click)="resetQueryForm()">重置</button>
+            <button class="btn btn-xsm btn-info " (click)="loadDataList()">搜索</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card mt-2">
+    <div class="card-header">
+      <div class="btn-group">
+        <a *ngIf="envService.notShowPopUp" class="btn btn-outline-primary btn-xsm" routerLink="editActDemoLeave/null"><i class="fa fa-plus-circle"></i>新增</a>
+        <button *ngIf="envService.showPopUp" class="btn btn-outline-primary btn-xsm"
+                [appCommonEdit]
+                [comp]="getComponentByName('EditActDemoLeaveComponent')"
+                [handleTaskComponent]="getComponentByName('ViewActDemoLeaveComponent')"
+                (dataSavedEvent)="dataSaved($event)"
+                (handleTaskEvent)="handleTask($event)"><i class="fa fa-plus-circle"></i>新增</button>
+        <button [disabled]="checkedNum==0" class="btn btn-xsm  btn-danger" [confirm]="'确定删除？'" (confirmClick)="deleteList()"><i class="fa fa-fw fa-remove"></i>批量删除
+        </button>
+
+      </div>
+    </div>
+    <div class="card-body">
+      <ng-container *ngTemplateOutlet="table"></ng-container>
+    </div>
+  </div>
+</ng-template>
+<ng-container *ngIf="showDataTableOnly">
+  <ng-container *ngTemplateOutlet="table"></ng-container>
+</ng-container>
+
+<ng-template #table>
+  <div class="table-responsive">
+    <table class="table table-hover table-striped">
+      <thead class="">
+      <tr>
+        <th><input type="checkbox" [checked]="isAllChecked" (click)="checkAll()"></th>
+                <th>{{uiLabel('userLoginId')}}</th>
+                <th>{{uiLabel('reason')}}</th>
+                <th>{{uiLabel('startDate')}}</th>
+                <th>{{uiLabel('endDate')}}</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template ngFor let-data [ngForOf]="dataList">
+        <tr>
+          <td><input type="checkbox" [(ngModel)]="data.checked"></td>
+                  <td>{{data.userLoginId}}</td>
+                  <td>{{data.reason}}</td>
+                  <td>{{data.startDate}}</td>
+                  <td>{{data.endDate}}</td>
+          <td>
+              <ng-container *ngIf="envService.notShowPopUp">
+                <a class="btn btn-xsm btn-outline-dark" routerLink="/oa/acttask/viewProcess/ActDemoLeave/{{data.procInstId}}/{{fieldInfoService.getEntityPKValue(data)}}"><i class="fa fa-eye"></i>查看</a>
+                <ng-container *ngIf="canEdit(data)">
+                  <a class="btn btn-xsm btn-outline-dark" routerLink="editActDemoLeave/{{fieldInfoService.getEntityPKValue(data)}}"><i class="fa fa-edit"></i>编辑</a>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="envService.showPopUp">
+                <button class="btn btn-xsm btn-outline-dark" [appCommonView] [comp]="getComponentByName('ViewActDemoLeaveComponent')" [procInstId]="data.procInstId"  [PK]="fieldInfoService.getEntityPK(data)" (handleTaskDoneEvent)="loadDataList()" #viewButton><i class="fa fa-eye"></i>查看</button>
+                <ng-container *ngIf="canEdit(data)">
+                  <button class="btn btn-xsm btn-outline-dark" [appCommonEdit]
+                          [comp]="getComponentByName('EditActDemoLeaveComponent')"
+                          [handleTaskComponent]="getComponentByName('ViewActDemoLeaveComponent')"
+                          [PK]="fieldInfoService.getEntityPK(data)"
+                          (dataSavedEvent)="dataSaved($event)"
+                          (handleTaskEvent)="handleTask($event)"
+                  ><i class="fa fa-edit"></i>编辑</button>
+                </ng-container>
+              </ng-container>
+          </td>
+        </tr>
+      </ng-template>
+      </tbody>
+
+    </table>
+    <small class="form-inline">
+      <ngb-pagination [collectionSize]="pageData.listSize" [(page)]="pageData.page" (pageChange)="pageData.pageChange($event)" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+      <label>共{{pageData.listSize}}条记录</label>
+    </small>
+
+  </div>
+</ng-template>

@@ -1,0 +1,116 @@
+<app-common-pop-or-page heading="{{inEdit?'修改':'添加'}}{{inGeneral?'分党委/党总支':'党支部'}}"
+                        [contentView]="contentView"
+                        [operateView]="operateView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+<ng-content></ng-content>
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header">
+      基本信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+<!--              {{uiLabel('generalPartyNumber')}}:-->
+              {{inGeneral?'分党委/党总支':'党支部'}}编号:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.generalPartyNumber" type="text">
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+<!--              {{uiLabel('generalPartyName')}}:-->
+              {{inGeneral?'分党委/党总支':'党支部'}}名称:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.generalPartyName" type="text">
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div *ngIf="!inEdit" class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              同时添加为部门:
+            </small>
+            <input  [(ngModel)]="editDataTemp.isAddBumen" type="checkbox">
+          </div>
+<!--          <div class="form-group p-0 pt-1 col-6">-->
+<!--            <small class="col-4 col-form-label text-right">-->
+<!--              {{uiLabel('parentId')}}:-->
+<!--            </small>-->
+
+<!--            <span class="col-4 form-control form-control-sm" [selectDwGeneralParty]="" [showValue]="editDataTemp.parentIdValue" [(ngModel)]="editDataTemp.parentId"></span>-->
+<!--            <small class="col-4">-->
+<!--            </small>-->
+<!--          </div>-->
+<!--          <div class="form-group p-0 pt-1 col-6">-->
+<!--            <small class="col-4 col-form-label text-right">-->
+<!--              <span class="text-danger">*</span>-->
+<!--              {{uiLabel('generalPartyHistory')}}:-->
+<!--            </small>-->
+
+<!--            <common-select class="col-4 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="editDataTemp.generalPartyHistory" [dataList]="fieldInfoService.fieldInfoMap.generalPartyHistory.selectDataList"></common-select>-->
+<!--            <small class="col-4">-->
+<!--              <div>-->
+<!--                <small class="text-left text-muted">必填</small>-->
+<!--              </div>-->
+<!--            </small>-->
+<!--          </div>-->
+
+<!--          <div class="form-group p-0 pt-1 col-6">-->
+<!--            <small class="col-4 col-form-label text-right">-->
+<!--              <span class="text-danger">*</span>-->
+<!--              {{uiLabel('cadres')}}:-->
+<!--            </small>-->
+
+<!--            <common-select class="col-4 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="editDataTemp.cadres" [dataList]="fieldInfoService.fieldInfoMap.cadres.selectDataList"></common-select>-->
+<!--            <small class="col-4">-->
+<!--              <div>-->
+<!--                <small class="text-left text-muted">必填</small>-->
+<!--              </div>-->
+<!--            </small>-->
+<!--          </div>-->
+<!--          <div class="form-group p-0 pt-1 col-6">-->
+<!--            <small class="col-4 col-form-label text-right">-->
+<!--              <span class="text-danger">*</span>-->
+<!--              {{uiLabel('orderNum')}}:-->
+<!--            </small>-->
+<!--            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.orderNum" type="text">-->
+<!--            <small class="col-4">-->
+<!--              <div>-->
+<!--                <small class="text-left text-muted">必填</small>-->
+<!--              </div>-->
+<!--            </small>-->
+<!--          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList"></app-attachment-files>
+  </div>
+
+
+
+</ng-template>
+
+<ng-template #operateView>
+  <div class="float-right btn-group-sm">
+<!--    <button type="submit" class="btn btn-xsm btn-warning" (click)="saveData()">保存</button>-->
+<!--    <button type="submit" class="btn btn-xsm btn-warning" (click)="saveGeneralParty()">保存</button>-->
+    <button type="submit" class="btn btn-sm btn-warning" (click)="saveData()">保存</button>
+    <button type="submit" *ngIf="commonService.hasFlow" class="btn btn-sm btn-primary" (click)="saveAndHandleTask()">提交审批</button>
+  </div>
+</ng-template>
+

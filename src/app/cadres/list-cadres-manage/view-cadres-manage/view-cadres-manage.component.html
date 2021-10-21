@@ -1,0 +1,44 @@
+<app-handle-task *ngIf="viewTask"
+                 [taskId]="taskId"
+                 [procInstId]="procInstId"
+                 [formView]="contentView"
+                 (closeViewEvent)="closeViewEvent.emit()"
+                 (handleTaskDoneEvent)="handleTaskDoneEvent.emit()"></app-handle-task>
+<ng-container *ngIf="!viewTask">
+  <app-common-pop-or-page heading="查看干部"
+                          [contentView]="contentView"
+                          (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+</ng-container>
+
+<ng-template #contentView>
+  <app-view-cadres-manage-base-info [PK]="PK"></app-view-cadres-manage-base-info>
+  <!-- 个人简历 -->
+  <div class="card mt-2">
+    <div class="card-body">
+      <app-list-dw-resume [queryData]="{pertymember: PK.id}" [showDataTableOnly]="true"></app-list-dw-resume>
+    </div>
+  </div>
+  <!-- 年度考核 -->
+  <div class="card mt-2">
+    <div class="card-body">
+      <app-list-dw-assessment [queryData]="{pertymember: PK.id}" [showDataTableOnly]="true"></app-list-dw-assessment>
+    </div>
+  </div>
+  <!-- 培训信息 -->
+  <div class="card mt-2">
+    <div class="card-body">
+      <app-list-dw-train [queryData]="{pertymember: PK.id}" [showDataTableOnly]="true"></app-list-dw-train>
+    </div>
+  </div>
+  <!-- 家庭成员 -->
+  <div class="card mt-2">
+    <div class="card-body">
+      <app-list-dw-family [queryData]="{pertymember: PK.id}" [showDataTableOnly]="true"></app-list-dw-family>
+    </div>
+  </div>
+
+
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList" [inEdit]="false"></app-attachment-files>
+  </div>
+</ng-template>

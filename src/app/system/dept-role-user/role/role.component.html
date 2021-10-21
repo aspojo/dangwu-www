@@ -1,0 +1,129 @@
+<div class="btn-group col-12" *ngIf="!inEdit&& ({ permission: 'FULL_ADMIN', action: '', permissionList: [], projectId: ''} | permission)">
+  <button class="btn btn-xsm btn-outline-dark ml-1" (click)="addGroupClick(editRoleView)">
+    <i class="fa fa-fw fa-plus"></i>添加角色
+  </button>
+</div>
+
+<button *ngIf="inEdit && ({ permission: 'FULL_ADMIN', action: '', permissionList: [], projectId: ''} | permission)" class="btn btn-xsm btn-outline-dark ml-1" (click)="editGroupClick(editRoleView)">
+  <i class="fa fa-fw fa-edit"></i>设置
+</button>
+
+
+
+<ng-template #editRoleView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left" *ngIf="!inEdit">新建角色</h4>
+    <h4 class="modal-title pull-left" *ngIf="inEdit">修改角色</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="editRoleModalRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="p-2 mb-2 bg-gray-me">角色基础信息</div>
+
+    <div class="form-group row">
+      <label for="groupId" class="col-sm-3 col-form-label text-right"><span class="text-danger">*</span>角色标识:</label>
+      <div class="col-sm-3">
+        <input [(ngModel)]="roleDataTemp.groupId" type="text" class="form-control" id="groupId" #groupId="ngModel" required>
+      </div>
+      <div class="col-sm-6">
+        <div>
+          <small class="text-left text-muted">角色标识必须保证唯一</small>
+        </div>
+        <div>
+          <small class="text-left text-muted">角色标识只能包含字母及下划线</small>
+        </div>
+
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="groupName" class="col-sm-3 col-form-label text-right"><span class="text-danger">*</span>角色名:</label>
+      <div class="col-sm-3">
+        <input [(ngModel)]="roleDataTemp.groupName" type="text" class="form-control" id="groupName" #groupName="ngModel" required>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="groupType" class="col-sm-3 col-form-label text-right"><span class="text-danger">*</span>角色类型:</label>
+      <div class="col-sm-3">
+        <dic-select [(ngModel)]="roleDataTemp.groupType" [dicSelect]="'roleType'" type="text" [cssStyle]="'form-control'" id="groupType" #groupType="ngModel" required></dic-select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="description" class="col-sm-3 col-form-label text-right">角色描述:</label>
+      <div class="col-sm-5">
+        <textarea [(ngModel)]="roleDataTemp.description" type="text" class="form-control" id="description" #description="ngModel" required></textarea>
+      </div>
+    </div>
+
+
+    <div class="card mt-2">
+      <div class="card-header p-2 mb-2 bg-gray-me">
+        设置权限
+        <div class="float-right">
+          <button class="btn btn-xsm btn-link" (click)="collapse(treeMap.null,true)">
+            <i class="fa fa-fw fa-minus"></i>全收起
+          </button>
+          <button class="btn btn-xsm btn-link" (click)="collapse(treeMap.null,false)">
+            <i class="fa fa-fw fa-plus"></i>全展开
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <input type="text" class="form-control ml-2" style="width: 300px;" placeholder="输入权限编号或描述，搜索" (keyup)="searchPermission($event)">
+        <ng-container *ngTemplateOutlet="card; context:{nodeList: permList,lvl:1}"></ng-container>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="inEdit" class="btn btn-sm  btn-danger" [confirm]="'确定删除角色['+roleDataTemp.groupName+']?'" (confirmClick)="deleteById(roleDataTemp)">
+      <i class="fa fa-fw fa-remove"></i>删除
+    </button>
+    <button [disabled]="!groupId.valid||!groupName.valid||!groupType.valid" type="submit" class="btn btn-sm btn-primary" (click)="saveData()">保存
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #card let-nodeList="nodeList" let-lvl="lvl">
+  <ng-template ngFor let-node [ngForOf]="nodeList">
+    <div class="mt-1">
+      <div class="p-0 pl-{{lvl*2}} bg-gray-me">
+        <small>{{node.typeName}}</small>
+        <div class="float-right">
+          <input type="checkbox" class="mx-sm-3" (click)="checkAll(node,$event)">
+          <button class="btn btn-xsm btn-link " (click)="collapse(node,true)">
+            <i class="fa fa-fw fa-minus"></i>全收起
+          </button>
+          <button class="btn btn-xsm btn-link " (click)="collapse(node,false)">
+            <i class="fa fa-fw fa-plus"></i>全展开
+          </button>
+
+          <button class="btn btn-xsm btn-link " (click)="node.isCollapsed = !node.isCollapsed">
+            <i class="fa fa-fw {{node.isCollapsed?'fa-arrow-left':'fa-arrow-down'}} "></i>
+          </button>
+        </div>
+
+      </div>
+      <div class="" [ngbCollapse]="node.isCollapsed">
+        <ng-template [ngIf]="node.children">
+          <ng-container *ngTemplateOutlet="card; context:{nodeList: node.children,lvl:lvl+1}"></ng-container>
+        </ng-template>
+        <ng-template [ngIf]="node.permList">
+          <div class="form-inline">
+            <ng-template ngFor let-item [ngForOf]="node.permList">
+              <div class="form-group " style="min-width: 50%;" *ngIf="item.__show__!=false">
+                <input type="checkbox" class="form-control mx-sm-3" [(ngModel)]="item.checked">
+                <small class="text-muted mx-sm-3">
+                  {{item.description}}
+                  <small>{{item.permissionId}}</small>
+                </small>
+              </div>
+            </ng-template>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>

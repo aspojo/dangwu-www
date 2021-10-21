@@ -1,0 +1,27 @@
+<!--情况1：弹出窗口-->
+<ng-container *ngIf="showPopUp">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{heading}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeViewEvent.emit()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ng-container *ngTemplateOutlet="contentView"></ng-container>
+  </div>
+  <div class="modal-footer">
+    <ng-container *ngTemplateOutlet="operateView"></ng-container>
+  </div>
+</ng-container>
+
+<!--情况2：导航页面-->
+<ng-container *ngIf="!showPopUp">
+  <div [@routerTransition]>
+    <app-page-header heading="{{heading}}" [icon]="'fa-wrench'" [hasBackButton]="hasBackButton" [backUrl]="backUrl"></app-page-header>
+    <ng-container *ngTemplateOutlet="contentView"></ng-container>
+    <div class="m-2">
+      <ng-container *ngTemplateOutlet="operateView"></ng-container>
+    </div>
+
+  </div>
+</ng-container>

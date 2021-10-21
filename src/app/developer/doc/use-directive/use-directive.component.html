@@ -1,0 +1,282 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up" style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/useDirective#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down" style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/useDirective#bottom"></a>
+
+<div id="top">
+  <app-page-header [heading]="'自定义指令说明'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>指令使用讲解</h4>
+        </div>
+        <p>这里仅讲解平台提供的自定义指令，其他常用指令请参照：<a target="_blank" href="https://angular.io/">angular.io</a>。</p>
+        <p class="text-warning">需知：这里介绍的所有指令，都需要在使用的地方引入相应的模块及其依赖模块。</p>
+        <p>通用指令有：</p>
+        <div class="row m-0">
+          <div class="col-2"><a class="ml-1" href="developer/doc/useDirective#confirm">[confirm]</a></div>
+          <div class="col-2"><a class="ml-1" href="developer/doc/useDirective#appDownload">[appDownload]</a></div>
+          <div class="col-2"><a class="ml-1" href="developer/doc/useDirective#selectDept">[selectDept]</a></div>
+          <div class="col-2"><a class="ml-1" href="developer/doc/useDirective#selectUser">[selectUser]</a></div>
+
+        </div>
+
+        <div id="confirm">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>确认提示指令 [confirm]</h4>
+          </div>
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<button class="btn btn-xsm  btn-danger" [confirm]="'确定删除？'" (confirmClick)="confirmClickEvent()">
+  <i class="fa fa-fw fa-remove"></i>批量删除
+</button>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+...
+export class UseDirectiveComponent implements OnInit {
+...
+  // 确认通过后执行的方法
+  confirmClickEvent() {
+    MessageService.showGlobalMessage('success', '已确认');
+  }
+}
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用属性</td><td>confirm</td></tr>
+                    <tr><td>导入模块</td><td>ConfirmModule</td></tr>
+                    <tr><td>依赖模块</td><td></td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>confirm 属性</td><td>string</td><td>提示文本，默认为：确定吗？</td></tr>
+                    <tr><td>confirmOk 属性</td><td>string</td><td>确定按钮文本，默认为：确定</td></tr>
+                    <tr><td>confirmCancel 属性</td><td>string</td><td>取消按钮文本，默认为：取消</td></tr>
+                    <tr><td>confirmIf 属性</td><td>boolean</td><td>指令是否有效，默认为：true</td></tr>
+                    <tr><td>confirmIf 属性</td><td>boolean</td><td>指令是否有效，默认为：true</td></tr>
+                    <tr><td>confirmClick 事件</td><td></td><td>确认弹出框中的确定按钮被点击后触发</td></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <p><b></b></p>
+
+              <button class="btn btn-xsm  btn-danger" [confirm]="'确定删除？'" (confirmClick)="confirmClickEvent()">
+                <i class="fa fa-fw fa-remove"></i>批量删除
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <div id="appDownload">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>文件下载指令 [appDownload]</h4>
+          </div>
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<a target="_blank" class="btn btn-xsm btn-outline-primary" [appDownload]="'eiip/1/0/1/demo.xlsx'">
+  <i class="fa fa-download"></i>下载
+</a>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用属性</td><td>appDownload</td></tr>
+                    <tr><td>导入模块</td><td>DownloadModule</td></tr>
+                    <tr><td>依赖模块</td><td></td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>appDownload 属性</td><td>string</td><td>文件路径，一般情况是相对java后端runtime的路径</td></tr>
+                    <tr><td>uri 属性</td><td>string</td><td>后端文件下载服务地址，默认为：download</td></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <p><b></b></p>
+              <a target="_blank" class="btn btn-xsm btn-outline-primary" [appDownload]="'eiip/1/0/1/demo.xlsx'">
+                <i class="fa fa-download"></i>下载
+              </a>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div id="selectDept">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>选择部门指令 [selectDept]</h4>
+          </div>
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-group row">
+  <small class="col-5 col-form-label text-right">选择部门:</small>
+  <span class="col-7 form-control form-control-sm" [selectDept] [(ngModel)]="selectDeptData"></span>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+...
+export class UseDirectiveComponent implements OnInit {
+  selectDeptIdData: any; // 选中部门id
+  selectDeptData: any; // 选中部门完整数据
+  // 部门选择事件
+  deptSelectedEvent(data) {
+    this.selectDeptData = data;
+  }
+...
+}
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用属性</td><td>selectDept</td></tr>
+                    <tr><td>导入模块</td><td>SelectDeptModule</td></tr>
+                    <tr><td>依赖模块</td><td>FormsModule</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>rootDept 属性</td><td>object</td><td>起始部门，默认为根部门</td></tr>
+                    <tr><td>deptName 属性</td><td>string</td><td>默认部门名称</td></tr>
+                    <tr><td>selectedDeptList 属性</td><td>string</td><td>默认选中部门</td></tr>
+                    <tr><td>selectOne 属性</td><td>boolean</td><td>是否选择单个部门，默认为：true</td></tr>
+                    <tr><td>selectedEvent 事件</td><td></td><td>部门选择确认事件，回传选中数据（选中单个时为object，选中多个时为数组）</td></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <p style="word-break: break-all;">选中部门id selectDeptIdData: <br><b *ngIf="selectDeptIdData">{{selectDeptIdData}}</b></p>
+              <p style="word-break: break-all;">选中部门selectDeptData: <br><b *ngIf="selectDeptData">{{stringify(selectDeptData)}}</b></p>
+              <div class="form-group row">
+                <small class="col-4 col-form-label text-right">选择部门:</small>
+                <span class="col-4 form-control form-control-sm" [selectDept] [(ngModel)]="selectDeptIdData" (selectedEvent)="deptSelectedEvent($event)"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="selectUser">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>人员选择指令 [selectUser]</h4>
+          </div>
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-group row">
+  <small class="col-4 col-form-label text-right">
+    选择人员
+  </small>
+  <span class="col-4 form-control form-control-sm" [selectUser] [(ngModel)]="selectUserIdData" (selectedEvent)="userSelectedEvent($event)"></span>
+  <small class="col-4">
+  </small>
+</div>
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+...
+export class UseDirectiveComponent implements OnInit {
+  selectUserIdData: any; // 选中用户id
+  selectUserData: any; // 选中用户
+  // 人员选择事件
+  userSelectedEvent($event) {
+    this.selectUserData = $event;
+  }
+...
+}
+                     </textarea>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用属性</td><td>selectDept</td></tr>
+                    <tr><td>导入模块</td><td>SelectDeptModule</td></tr>
+                    <tr><td>依赖模块</td><td>FormsModule</td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>rootDept 属性</td><td>object</td><td>起始部门，默认为根部门</td></tr>
+                    <tr><td>userName 属性</td><td>string</td><td>默认人员名称</td></tr>
+                    <tr><td>selectOne 属性</td><td>boolean</td><td>是否选择单个人员，默认为：true</td></tr>
+                    <tr><td>selectedEvent 事件</td><td></td><td>人员选择确认事件，回传选中数据（选中单个时为object，选中多个时为数组）</td></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <p style="word-break: break-all;">选中人员id selectUserIdData: <br><b *ngIf="selectUserIdData">{{selectUserIdData}}</b></p>
+              <p style="word-break: break-all;">选中人员 selectUserData: <br><b *ngIf="selectUserData">{{stringify(selectUserData)}}</b></p>
+              <div class="form-group row">
+                <small class="col-4 col-form-label text-right">
+                  选择人员
+                </small>
+                <span class="col-4 form-control form-control-sm" [selectUser] [(ngModel)]="selectUserIdData" (selectedEvent)="userSelectedEvent($event)"></span>
+                <small class="col-4">
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>

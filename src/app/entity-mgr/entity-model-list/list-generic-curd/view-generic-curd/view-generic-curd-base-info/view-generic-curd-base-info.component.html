@@ -1,0 +1,10 @@
+<div class="form-inline">
+  <ng-container *ngFor="let field of fieldInfoService.fieldInfo">
+    <div class="form-group p-0 pt-1 {{field.fieldType=='text'?'col-12':'col-6'}}" *ngIf="field.showInView=='Y'">
+      <small class="{{field.fieldType=='text'?'col-2':'col-4'}} col-form-label text-right">{{field.fieldLabel}}:</small>
+      <div class="{{field.fieldType=='text'?'col-10':'col-8'}} form-control border-0">
+        {{viewDataTemp[field.fieldName]}}
+      </div>
+    </div>
+  </ng-container>
+</div>

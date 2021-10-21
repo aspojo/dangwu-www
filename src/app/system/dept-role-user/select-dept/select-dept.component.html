@@ -1,0 +1,57 @@
+<div class="px-3">
+  <div class=" row">
+    <div class="card col-6">
+      <div>选择：</div>
+
+      <div class="card-body bg-gray-me">
+        <div class="input-group pt-1">
+          <div class="input-group-prepend bg-white">
+            <span class="input-group-text"><i class="fa fa-fw fa-search"></i></span>
+          </div>
+          <input type="text" class="form-control" placeholder="搜索" (keyup)="searchChange($event)">
+        </div>
+
+        <div><input type="checkbox" [checked]="isAllDeptChecked" (click)="checkAllDept()">全选</div>
+        <div>
+          <div>
+            <ng-template ngFor let-item [ngForOf]="parentDeptList" let-i="index">
+              <ng-template [ngIf]="i!==(parentDeptList.length-1)">
+                <button class="btn btn-xsm btn-link dept-nav" (click)="deptSelectClick(item)">{{item.deptName}}</button>
+                <span> ></span>
+              </ng-template>
+            </ng-template>
+            <small>{{selectedDept.deptName}}</small>
+          </div>
+          <table class="table table-hover">
+            <tr *ngFor="let item of deptList">
+              <td style="width: 30px;">
+                <input type="checkbox" [(ngModel)]="item.checked" (click)="changeState(item)">
+              </td>
+              <td>{{item.deptName}}</td>
+              <td>
+                <button class="btn btn-xsm btn-link" (click)="deptSelectClick(item)"><i class="fa fa-fw fa-building"></i>下级</button>
+              </td>
+            </tr>
+          </table>
+
+        </div>
+      </div>
+    </div>
+    <div class="card col-6">
+      <div>已选：</div>
+      <div class="card-body bg-gray-me">
+        <table class="table table-hover">
+          <ng-template ngFor let-item [ngForOf]="selectedDeptList">
+            <tr>
+              <td>{{item.deptName}}</td>
+              <td>
+                <button class="btn btn-xsm btn-link" (click)="changeState(item)"><i class="fa fa-fw fa-remove"></i></button>
+              </td>
+            </tr>
+          </ng-template>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

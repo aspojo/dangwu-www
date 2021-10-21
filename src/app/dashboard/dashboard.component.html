@@ -1,0 +1,55 @@
+<div [@routerTransition]>
+  <!--<h2 class="text-muted">仪表盘-->
+  <!--<small>总览</small>-->
+  <!--</h2>-->
+  <div class="row" style="margin-left: 10%; margin-right: 10%">
+    <ng-template ngFor let-item [ngForOf]="moduleList">
+      <div *ngIf="item  | permission" class="col-lg-4 col-md-6 col-sm-12 my-1">
+        <a class="card text-white {{item.bgColor}}" (click)="getNewExternalLoginKey()" [routerLink]="item.url">
+          <div class="card-header">
+            <i class="fa {{item.icon}} fa-5x"></i>
+          </div>
+          <div class="card-footer">
+            <span class="float-left">{{item.name}}</span>
+            <span class="float-right"><i class="fa fa-arrow-circle-right text-white"></i></span>
+          </div>
+        </a>
+      </div>
+    </ng-template>
+    <div class="col-lg-4 col-md-6 col-sm-12 my-1">
+      <a class="card text-white bg-dark" (click)="logout()" [href]="'login'">
+        <div class="card-header">
+          <i class="fa fa-sign-out fa-5x"></i>
+        </div>
+        <div class="card-footer">
+          <span class="float-left">退出系统</span>
+          <span class="float-right"><i class="fa fa-arrow-circle-right text-white"></i></span>
+        </div>
+      </a>
+    </div>
+  </div>
+  <!--<div class="row">
+    <div class="col col-sm-4">
+      <div class="card ">
+        <div class="card-header">
+          项目状态分布
+        </div>
+        <div class="card-body">
+          <canvas baseChart height="180px" [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
+          </canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col col-8">
+      <div class="card">
+        <div class="card-header">
+          近30天系统访问量（访问次数）
+        </div>
+        <div class="card-body">
+          <canvas baseChart height="180px" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend" [chartType]="lineChartType">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>-->
+</div>

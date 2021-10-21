@@ -1,0 +1,279 @@
+<div class="card-header">
+  基本信息
+</div>
+<div>
+  <table class="table table-bordered">
+    <tbody>
+    <tr>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">所属部门</td>
+      <td width="18%" style="text-align: center"><span style="margin-left: 5px; margin-right: 5px">{{viewDataTemp.departmentValue}}</span></td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7;">分党委/党总支</td>
+      <td width="18%" style="text-align: center">{{viewDataTemp.generalpartyValue}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">党支部</td>
+      <td width="18%" style="text-align: center">{{viewDataTemp.branchpartyValue}}</td>
+      <td rowspan="4">
+        <app-image-view [appImageView]="viewDataTemp.photoaddress" [imgStyle]="'common-image-size'"></app-image-view>
+      </td>
+    </tr>
+    <tr>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">姓名</td>
+      <td width="18%" style="text-align: center"> {{viewDataTemp.name}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">性别</td>
+      <td width="18%" style="text-align: center">{{viewDataTemp.genderValue}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">年龄</td>
+      <td width="18%" style="text-align: center"> {{age}}</td>
+    </tr>
+    <tr>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">民族</td>
+      <td width="18%" style="text-align: center">{{viewDataTemp.ethnicValue}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">籍贯</td>
+      <td width="18%" style="text-align: center">{{viewDataTemp.hometown}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">出生地</td>
+      <td width="18%" style="text-align: center">{{viewDataTemp.birth}}</td>
+    </tr>
+    <tr>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">身份</td>
+      <td width="18%" style="text-align: center">{{viewDataTemp.identityValue}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">身份证号</td>
+      <td width="18%" style="text-align: center">{{viewDataTemp.idnumber}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">出生年月</td>
+      <td width="18%" style="text-align: center">{{viewDataTemp.birthday}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="card-header" *ngIf="viewDataTemp.identity==2">
+  学生信息
+</div>
+<div *ngIf="viewDataTemp.identity==2">
+  <table class="table table-bordered">
+    <tbody>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('studentcategoryValue')}}</td>
+      <td width="23%" style="text-align: center">{{viewDataTemp.studentcategoryValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('studentlevelValue')}}</td>
+      <td width="23%" style="text-align: center">{{viewDataTemp.studentlevelValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('studentexistingacademicValue')}}</td>
+      <td width="23%" style="text-align: center">{{viewDataTemp.studentexistingacademicValue}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('studentyear')}}</td>
+      <td width="23%" style="text-align: center">{{viewDataTemp.studentyear}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('studentclass')}}</td>
+      <td width="23%" style="text-align: center">{{viewDataTemp.studentclass}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('studentnumber')}}</td>
+      <td width="23%" style="text-align: center">{{viewDataTemp.studentnumber}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('studentprofessionalValue')}}</td>
+      <td width="23%" style="text-align: center">{{viewDataTemp.studentprofessionalValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('studentschoolsystemValue')}}</td>
+      <td width="23%" style="text-align: center">{{viewDataTemp.studentschoolsystemValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('studentrepresentation')}}</td>
+      <td width="23%" style="text-align: center">{{viewDataTemp.studentrepresentation}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="card-header" *ngIf="viewDataTemp.identity==1">
+  学历信息
+</div>
+<div *ngIf="viewDataTemp.identity==1">
+  <table class="table table-bordered">
+    <tbody>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherfulltimeacademicValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherfulltimeacademicValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherfulltimeacademicprofessional')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherfulltimeacademicprofessional}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherfulltimeacademicschool')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherfulltimeacademicschool}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherfulltimeacademicperiodtime')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherfulltimeacademicperiodtime}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherfulltimedegreeValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherfulltimedegreeValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherfulltimedegreeprofessional')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherfulltimedegreeprofessional}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherfulltimedegreeschool')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherfulltimedegreeschool}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherfulltimedegreeperiodtime')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherfulltimedegreeperiodtime}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('inserviceacademicValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.inserviceacademicValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('inserviceacademicprofessional')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.inserviceacademicprofessional}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('inserviceacademicschool')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.inserviceacademicschool}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('inserviceacademicperiodtime')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.inserviceacademicperiodtime}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('inservicedegreeValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.inservicedegreeValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('inservicedegreeprofessional')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.inservicedegreeprofessional}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('inservicedegreeschool')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.inservicedegreeschool}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('inservicedegreeperiodtime')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.inservicedegreeperiodtime}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7;">{{uiLabel('lastacademicdegreeValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.lastacademicdegreeValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7;"></td>
+      <td width="15%" style="text-align: center"></td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7;"></td>
+      <td width="15%" style="text-align: center"></td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7;"></td>
+      <td width="15%" style="text-align: center"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="card-header" *ngIf="viewDataTemp.identity==1">
+  工作信息
+</div>
+<div *ngIf="viewDataTemp.identity==1">
+  <table class="table table-bordered">
+    <tbody>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherpersonnelnatureValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherpersonnelnatureValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('teachercategoryValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teachercategoryValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teachertoworktime')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teachertoworktime}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('jobnumber')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.jobnumber}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherpostValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherpostValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('jobtypeValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.jobtypeValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('postgradesValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.postgradesValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('stafflevel')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.stafflevel}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('technicaltitlesValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.technicaltitlesValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('technicaltitleslevelValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.technicaltitleslevelValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('technicaltitlesservingtime')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.technicaltitlesservingtime}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('technicaltitlesnumber')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.technicaltitlesnumber}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('onetitlesdate')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.onetitlesdate}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('onenumber')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.onenumber}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('twotitlesdate')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.twotitlesdate}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('twonumber')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.twonumber}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('threetitlesdate')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.threetitlesdate}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('threenumber')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.threenumber}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('fourtitlesdate')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.fourtitlesdate}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('fournumber')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.fournumber}}</td>
+    </tr>
+    <tr>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherexistingduties')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherexistingduties}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('teacherexistingdutieslevelValue')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherexistingdutieslevelValue}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('teacherexistingdutiesservingtime')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherexistingdutiesservingtime}}</td>
+      <td width="10%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7">{{uiLabel('teacherexistingdutiesnumber')}}</td>
+      <td width="15%" style="text-align: center">{{viewDataTemp.teacherexistingdutiesnumber}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="card-header">
+  党务信息
+</div>
+<div>
+  <table class="table table-bordered">
+    <tr>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('applicantdate')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.applicantdate}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('activistsdate')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.activistsdate}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('partyPhasesValue')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.partyPhasesValue}}</td>
+    </tr>
+    <tr>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('developmentdate')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.developmentdate}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('volunteerbook')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.volunteerbook}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('probationarydate')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.probationarydate}}</td>
+    </tr>
+    <tr>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('partymemberdate')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.partymemberdate}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('mannerValue')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.mannerValue}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('partypostValue')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.partypostValue}}</td>
+    </tr>
+    <tr>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('pingyi')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.pingyi}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('pyresult')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.pyresult}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('growthtime')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.growthtime}}</td>
+    </tr>
+    <tr *ngIf="viewDataTemp.democratmodel == 1">
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('joindemocratdate')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.joindemocratdate}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('partypostdemocratValue')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.partypostdemocratValue}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('contact')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.contact}}</td>
+    </tr>
+    <tr *ngIf="viewDataTemp.democratmodel == 1">
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('jieshaodemocrat')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.jieshaodemocrat}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('danwei')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.danwei}}</td>
+      <td width="12%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('socialduty')}}</td>
+      <td width="21%" style="text-align: center">{{viewDataTemp.socialduty}}</td>
+    </tr>
+  </table>
+</div>
+<div class="card-header">
+  备注信息
+</div>
+<div>
+  <table class="table table-bordered">
+    <tr>
+      <td width="8%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('rewardsandpunishments')}}</td>
+      <td width="42%" style="text-align: center">{{viewDataTemp.rewardsandpunishments}}</td>
+      <td width="8%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('othermaterials')}}</td>
+      <td width="42%" style="text-align: center">{{viewDataTemp.othermaterials}}</td>
+    </tr>
+    <tr>
+      <td width="8%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('remarks1')}}</td>
+      <td width="42%" style="text-align: center">{{viewDataTemp.remarks1}}</td>
+      <td width="8%" style="text-align:justify; text-justify:distribute-all-lines; text-align-last:justify; background-color: #f7f7f7; padding-left: 10px; padding-right: 10px">{{uiLabel('remarks2')}}</td>
+      <td width="42%" style="text-align: center">{{viewDataTemp.remarks2}}</td>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,33 @@
+<app-common-pop-or-page heading="{{inEdit?'修改':'添加'}}家庭成员"
+                        [contentView]="contentView"
+                        [operateView]="operateView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+<ng-content></ng-content>
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header">
+      基本信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList"></app-attachment-files>
+  </div>
+
+
+
+</ng-template>
+
+<ng-template #operateView>
+  <div class="float-right btn-group-sm">
+    <button type="submit" class="btn btn-sm btn-warning" (click)="saveData()">保存</button>
+    <button type="submit" *ngIf="commonService.hasFlow" class="btn btn-sm btn-primary" (click)="saveAndHandleTask()">提交审批</button>
+  </div>
+</ng-template>
+

@@ -1,0 +1,26 @@
+<app-handle-task *ngIf="viewTask"
+                 [taskId]="taskId"
+                 [procInstId]="procInstId"
+                 [formView]="contentView"
+                 (closeViewEvent)="closeViewEvent.emit()"
+                 (handleTaskDoneEvent)="handleTaskDoneEvent.emit()"></app-handle-task>
+<ng-container *ngIf="!viewTask">
+  <app-common-pop-or-page heading="查看性别"
+                          [contentView]="contentView"
+                          (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+</ng-container>
+
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header">
+      基本信息
+    </div>
+    <div class="card-body">
+      <app-view-dw-gender-base-info [PK]="PK"></app-view-dw-gender-base-info>
+    </div>
+  </div>
+
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList" [inEdit]="false"></app-attachment-files>
+  </div>
+</ng-template>

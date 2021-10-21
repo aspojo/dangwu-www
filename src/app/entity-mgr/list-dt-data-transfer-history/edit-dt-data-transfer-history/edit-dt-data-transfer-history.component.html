@@ -1,0 +1,110 @@
+<app-common-pop-or-page heading="{{inEdit?'修改':'添加'}}数据传输历史"
+                        [contentView]="contentView"
+                        [operateView]="operateView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+<ng-content></ng-content>
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header">
+      基本信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <div class="form-group p-0 pt-1 col-12">
+            <small class="col-2 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('filePath')}}:
+            </small>
+            <div class="col-8"><app-upload-file [(ngModel)]="editDataTemp.filePath" (fileRemoveEvent)="fileRemove()" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></app-upload-file></div>
+            <small class="col-2">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-12">
+            <small class="col-2 col-form-label text-right">
+              {{uiLabel('description')}}:
+            </small>
+            <textarea class="col-8 form-control form-control-sm" rows="2" [(ngModel)]="editDataTemp.description"></textarea>
+            <small class="col-2">
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card mt-2">
+    <div class="card-header">
+      选择数据传输模型
+      <button class="btn btn-outline-primary btn-xsm" (click)="addRow()"><i class="fa fa-plus-circle"></i>新增一行</button>
+
+    </div>
+    <div class="card-body">
+      <table class="table table-hover table-striped">
+        <thead class="table">
+        <tr>
+          <th>传输模型</th>
+          <th width="150px">数据写入方式</th>
+          <th width="370px">字段默认值</th>
+          <th width="50px">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of editDataTemp.influenceDomain">
+          <td>
+            <span class="col-12 form-control form-control-sm" [selectDtDataTransferModel] [(ngModel)]="item.transferId" (selectedEvent)="transferModelSelected($event,item)"></span>
+
+          </td>
+          <td>
+            <select  class="form-control form-control-sm " [(ngModel)]="item.saveMode">
+              <option>新增</option>
+              <option>更新</option>
+              <option>新增或更新</option>
+            </select>
+          </td>
+          <td>
+            <div class="card" *ngIf="item.defaultFieldList">
+              <table>
+                <tr>
+                  <th width="180px">字段</th>
+                  <th width="180px">默认值</th>
+                </tr>
+                <tbody>
+                <tr *ngFor="let fieldItem of item.defaultFieldList">
+                  <td>
+                    {{fieldItem.description}}
+                  </td>
+                  <td>
+                    <input class="form-control form-control-sm" [(ngModel)]="fieldItem.defaultValue">
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+          <td>
+            <button class="btn btn-outline-danger btn-xsm" (click)="removeRow(item)"><i class="fa fa-fw fa-remove"></i>删除</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList"></app-attachment-files>
+  </div>
+
+
+
+</ng-template>
+
+<ng-template #operateView>
+  <div class="float-right btn-group">
+    <button type="submit" class="btn btn-xsm btn-warning" (click)="saveData()">保存</button>
+    <button type="submit" *ngIf="commonService.hasFlow" class="btn btn-xsm btn-primary" (click)="saveAndHandleTask()">提交审批</button>
+  </div>
+</ng-template>
+

@@ -1,0 +1,47 @@
+<div class="card">
+  <div class="card-header">
+    <span>附加文件</span>
+    <div class="btn-group" *ngIf="inEdit">
+      <button class="btn btn-xsm btn-outline-primary" (click)="fileInput.click()">
+        <input type="file" #fileInput  ng2FileSelect [uploader]="uploader"  hidden>
+        <i class="fa fa-fw fa-upload"></i>上传文件
+      </button>
+    </div>
+    <div class="progress" [hidden]="!uploader.getNotUploadedItems().length" >
+      <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table table-hover table-striped">
+      <thead class="">
+      <tr>
+        <th>文件名称</th>
+        <th>文件类型</th>
+        <th>上传时间</th>
+        <th>上传人</th>
+        <th>分类</th>
+        <th>大小</th>
+        <th width="50px">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template ngFor let-data [ngForOf]="value" let-i="index">
+        <tr>
+          <td>{{data.fileOriginalName}}</td>
+          <td><span class="content-type" ngbTooltip="{{data.fileType}}">{{data.fileType}}</span></td>
+          <td>{{data.uploadTime}}</td>
+          <td>{{data.uploader}}</td>
+          <td>{{data.attachCategory}}</td>
+          <td>{{formatFileSize(data.fileSize)}}</td>
+          <td>
+            <div class="btn-group ">
+              <a target="_blank" class="btn btn-xsm btn-outline-primary" [appDownload]="data.filePath" uri="download" ><i class="fa fa-download"></i>下载</a>
+              <button *ngIf="inEdit" class="btn btn-xsm btn-outline-danger" (click)="deleteData(i)">删除</button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      </tbody>
+    </table>
+  </div>
+</div>

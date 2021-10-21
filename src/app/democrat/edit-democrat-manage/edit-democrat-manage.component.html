@@ -1,0 +1,942 @@
+<app-common-pop-or-page heading="{{inEdit?'修改':'添加'}}民主人士"
+                        [contentView]="contentView"
+                        [operateView]="operateView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+<ng-content></ng-content>
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header">
+      基本信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('photoaddress')}}:
+            </small>
+
+            <app-upload-image [(ngModel)]="editDataTemp.photoaddress"></app-upload-image>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('department')}}:
+            </small>
+
+            <span class="col-6 form-control form-control-sm" [selectDwBuMen]=""
+                  [showValue]="editDataTemp.departmentValue" [(ngModel)]="editDataTemp.department"></span>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('democrat')}}:
+            </small>
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.democrat" [dataList]="democratSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('generalparty')}}:
+            </small>
+            <span class="col-6 form-control form-control-sm" [selectDwGeneralParty]="" [isQueryCollapsed]="true"
+                  [mapCondition]="{parentId: 'null', generalPartyHistory: 0}"
+                  [showValue]="editDataTemp.generalpartyValue" [(ngModel)]="editDataTemp.generalparty"></span>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('branchparty')}}:
+            </small>
+
+            <span class="col-6 form-control form-control-sm" [selectDwGeneralParty]="" [isQueryCollapsed]="true"
+                  [mapCondition]="{parentId: editDataTemp.generalparty!='null'?editDataTemp.generalparty:0, generalPartyHistory: 0}"
+                  [showValue]="editDataTemp.branchpartyValue" [(ngModel)]="editDataTemp.branchparty"
+                  (selectedEvent)="getBranchParty($event)"></span>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('name')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.name" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('gender')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.gender" [dataList]="genderSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('ethnic')}}:
+            </small>
+
+            <span class="col-6 form-control form-control-sm" [selectDwEthnic]="" [showValue]="editDataTemp.ethnicValue"
+                  [(ngModel)]="editDataTemp.ethnic"></span>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('hometown')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.hometown" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('birth')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.birth" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('identity')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.identity" [dataList]="identitySelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('idnumber')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" (blur)="fillBirthday()"
+                   [(ngModel)]="editDataTemp.idnumber" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('birthday')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" (blur)="fillBirthday()" [(ngModel)]="editDataTemp.showBirthday" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              年龄:
+            </small>
+
+            <div class="col-6 p-0 ml-0">{{age}}</div>
+            <small class="col-4">
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngIf="editDataTemp.identity==1">
+    <div class="card-header">
+      学历信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherfulltimeacademic')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.teacherfulltimeacademic"
+                           [dataList]="teacherfulltimeacademicSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherfulltimeacademicprofessional')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm"
+                   [(ngModel)]="editDataTemp.teacherfulltimeacademicprofessional" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherfulltimeacademicschool')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.teacherfulltimeacademicschool"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherfulltimeacademicperiodtime')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm"
+                   [(ngModel)]="editDataTemp.teacherfulltimeacademicperiodtime" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherfulltimedegree')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.teacherfulltimedegree"
+                           [dataList]="teacherfulltimedegreeSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherfulltimedegreeprofessional')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm"
+                   [(ngModel)]="editDataTemp.teacherfulltimedegreeprofessional" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherfulltimedegreeschool')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.teacherfulltimedegreeschool"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherfulltimedegreeperiodtime')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.teacherfulltimedegreeperiodtime"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('inserviceacademic')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.inserviceacademic"
+                           [dataList]="teacherfulltimeacademicSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('inserviceacademicprofessional')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.inserviceacademicprofessional"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('inserviceacademicschool')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.inserviceacademicschool"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('inserviceacademicperiodtime')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.inserviceacademicperiodtime"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('inservicedegree')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.inservicedegree"
+                           [dataList]="teacherfulltimedegreeSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('inservicedegreeprofessional')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.inservicedegreeprofessional"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('inservicedegreeschool')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.inservicedegreeschool"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('inservicedegreeperiodtime')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.inservicedegreeperiodtime"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('lastacademicdegree')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.lastacademicdegree"
+                           [dataList]="lastacademicdegreeSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngIf="editDataTemp.identity==1">
+    <div class="card-header">
+      工作信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('teacherpersonnelnature')}}:
+            </small>
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.teacherpersonnelnature"
+                           [dataList]="personnelnatureSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('teachercategory')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.teachercategory"
+                           [dataList]="teachercategorySelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teachertoworktime')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.teachertoworktime" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('jobnumber')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.jobnumber" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherpost')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.teacherpost"
+                           [dataList]="teacherpostSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('jobtype')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.jobtype" [dataList]="jobtypeSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('postgrades')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.postgrades"
+                           [dataList]="dwjobtypelevelSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('stafflevel')}}:
+            </small>
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.stafflevel"
+                           [dataList]="stafflevelSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('technicaltitles')}}:
+            </small>
+
+            <span class="col-6 form-control form-control-sm" [selectDwTitles]=""
+                  [showValue]="editDataTemp.technicaltitlesValue" [(ngModel)]="editDataTemp.technicaltitles"></span>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('technicaltitleslevel')}}:
+            </small>
+
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.technicaltitleslevel"
+                           [dataList]="titleslevelSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('technicaltitlesservingtime')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.technicaltitlesservingtime"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('technicaltitlesnumber')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.technicaltitlesnumber"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('onetitlesdate')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.onetitlesdate" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('onenumber')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.onenumber" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('twotitlesdate')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.twotitlesdate" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('twonumber')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.twonumber" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('threetitlesdate')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.threetitlesdate" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('threenumber')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.threenumber" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('fourtitlesdate')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.fourtitlesdate" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('fournumber')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.fournumber" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherexistingduties')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.teacherexistingduties"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherexistingdutieslevel')}}:
+            </small>
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.teacherexistingdutieslevel"
+                           [dataList]="dutieslevelSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherexistingdutiesservingtime')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm"
+                   [(ngModel)]="editDataTemp.teacherexistingdutiesservingtime" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-3">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('teacherexistingdutiesnumber')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.teacherexistingdutiesnumber"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      民主党派党务信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('joindemocratdate')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.joindemocratdate" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('partypostdemocrat')}}:
+            </small>
+            <common-select class="col-6 p-0 ml-0" [cssStyle]="'form-control form-control-sm'"
+                           [(ngModel)]="editDataTemp.partypostdemocrat"
+                           [dataList]="partypostdemocratSelectDataList"></common-select>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('contact')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.contact" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('democratValue')}}:
+            </small>
+            <div class="col-6 form-control form-control-sm">{{editDataTemp.democratValue}}</div>
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('jieshaodemocrat')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.jieshaodemocrat" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('danwei')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.danwei" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-4">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('socialduty')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.socialduty" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      备注信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('rewardsandpunishments')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.rewardsandpunishments"
+                   type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('othermaterials')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.othermaterials" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('remarks1')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.remarks1" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              {{uiLabel('remarks2')}}:
+            </small>
+            <input class="col-6 form-control form-control-sm" [(ngModel)]="editDataTemp.remarks2" type="text">
+            <small class="col-4">
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 培训 -->
+  <div class="card mt-2">
+    <div class="card-header">
+      <span>培训信息</span>
+      <button class="btn btn-outline-primary btn-xsm ml-1" (click)="addTranRow()"><i class="fa fa-plus-circle"></i>添加一行
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead class="">
+          <tr>
+            <th>培训班名称</th>
+            <th>主办单位</th>
+            <th>承办机构</th>
+            <th>培训地点</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th style="width: 5%">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-template ngFor let-data [ngForOf]="trainList">
+            <tr>
+              <td>
+                <input type="text" [(ngModel)]="data.trainClassName" class="form-control form-control-sm ">
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="data.sponsor" class="form-control form-control-sm ">
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="data.management" class="form-control form-control-sm ">
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="data.trainPlace" class="form-control form-control-sm ">
+              </td>
+              <td>
+                <input type="text" ngbTooltip="格式:2001.01.01" [(ngModel)]="data.startTime"
+                       class="form-control form-control-sm ">
+              </td>
+              <td>
+                <input type="text" ngbTooltip="格式:2001.01.12" [(ngModel)]="data.endTime"
+                       class="form-control form-control-sm ">
+              </td>
+              <td>
+                <div class="btn-group ">
+                  <button class="btn btn-xsm btn-outline-danger" [confirm]="'确定删除吗？'"
+                          (confirmClick)="deleteTrainRow(data)">
+                    删除
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- 奖惩情况 -->
+  <div class="card mt-2">
+    <div class="card-header">
+      <span>奖惩情况</span>
+      <button class="btn btn-outline-primary btn-xsm ml-1" (click)="addRapRow()"><i class="fa fa-plus-circle"></i>添加一行
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead class="">
+          <tr>
+            <th style="width: 15%">奖惩类别</th>
+            <th style="width: 15%">批准机关</th>
+            <th style="width: 15%">批准文号</th>
+            <th style="width: 15%">批准时间</th>
+            <th>奖惩名称</th>
+            <th style="width: 5%">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-template ngFor let-data [ngForOf]="rapList">
+            <tr>
+              <td>
+                <input type="text" [(ngModel)]="data.assessmentType" class="form-control form-control-sm ">
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="data.office" class="form-control form-control-sm ">
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="data.approveNumber" class="form-control form-control-sm ">
+              </td>
+              <td>
+                <input type="text" ngbTooltip="格式:2001.01" [(ngModel)]="data.approveTime" class="form-control form-control-sm ">
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="data.caption" class="form-control form-control-sm ">
+              </td>
+              <td>
+                <div class="btn-group ">
+                  <button class="btn btn-xsm btn-outline-danger" [confirm]="'确定删除吗？'"
+                          (confirmClick)="deleteRapRow(data)">
+                    删除
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+</ng-template>
+
+<ng-template #operateView>
+  <div class="float-right btn-group-sm">
+    <button *ngIf="envService.showPopUp" class="btn btn-sm btn-primary" [hidden]="editDataTemp.phases!=5&&editDataTemp.phases!=6"
+            [appCommonEdit]
+            [comp]="getDwRelationshipComponent()"
+            [PK]="{'pertymember':editDataTemp.id}"
+    >关系转接
+    </button>
+    <button *ngIf="editDataTemp.pertymembermodel==1&&(editDataTemp.phases==5||editDataTemp.phases==6)" class="btn btn-sm btn-primary" (click)="openDownloadRelationship()">下载关系转接表</button>
+    <a class="btn btn-xsm btn-primary" *ngIf="editDataTemp.cadresmodel==1" [href]="'exportCadresReportDoc/?id=' + editDataTemp.id| serverUrl"><i class="fa fa-file-word-o"></i>下载干部任免审批表</a>
+    <button type="submit" class="btn btn-sm btn-primary" [hidden]="editDataTemp.pertymembermodel==1" (click)="tobeApplicant()">转为申请人</button>
+    <!-- 显示条件有问题 -->
+    <button type="submit" class="btn btn-sm btn-primary"
+            *ngIf="editDataTemp.phases>=1&&editDataTemp.phases<=5"
+            (click)="phasesUp()">{{phasesButtonText}}</button>
+    <button type="submit" class="btn btn-sm btn-primary"
+            [hidden]="identity!=1||editDataTemp.cadresmodel!=1||currentDutiesLevel==6" (click)="dutiesLevelUp()">干部晋升
+    </button>
+    <button type="submit" class="btn btn-sm btn-primary" [hidden]="identity!=1||editDataTemp.cadresmodel==1"
+            [confirm]="'确认转为干部？'" (confirmClick)="tobeCadres()">转为干部
+    </button>
+    <button type="submit" class="btn btn-sm btn-primary" [hidden]="identity!=1||editDataTemp.cadresmodel!=1"
+            [confirm]="'确认取消干部？'" (confirmClick)="cancelCadres()">取消干部
+    </button>
+    <button type="submit" class="btn btn-sm btn-danger" *ngIf="inEdit"
+            [confirm]="'确认变为历史？'"
+            (confirmClick)="deletePhases()">历史删除</button>
+    <button type="submit" class="btn btn-sm btn-warning" (click)="saveData()">保存</button>
+  </div>
+</ng-template>
+
+
+
+
+
+
+
+<ng-template #chooseRelationshipStyleContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">下载关系转接表样式</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="chooseRelationshipStyleRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <common-select class="col-4 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="relationshipStyle" [dataList]="selectrelationshiptyleList"></common-select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm" [disabled]="!relationshipStyle||relationshipStyle==''" (click)="downloadRelationshipTable()">确定</button>
+  </div>
+</ng-template>
+
+<ng-template #editPartyPhasesContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{changeTitle}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="editPartyPhasesRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-4 col-form-label text-right">
+        {{changePartyPhases}}:
+      </small>
+      <app-date-input *ngIf="editDataTemp.phases!=2" class="col-8 p-0 ml-0" [(ngModel)]="changeDate"></app-date-input>
+      <span class="col-4 form-control form-control-sm" *ngIf="editDataTemp.phases==2" [selectDwPhases]="" [showValue]="editDataTemp.phasesValue"
+            [(ngModel)]="partyphases"></span>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+
+    <button [disabled]="!changeDate&&!partyphases" class="btn btn-primary btn-sm" (click)="savePartyPhases()">保存</button>
+    <button class="btn btn-primary btn-sm" (click)="editPartyPhasesRef.close()">关闭</button>
+  </div>
+</ng-template>
+<ng-template #editDutyLevelContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">干部晋升</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="editDutyLevelRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-12 col-form-label text-right">
+        现有职务名称:
+      </small>
+      <input class="col-12 form-control form-control-sm" [(ngModel)]="teacherexistingduties">
+    </div>
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-12 col-form-label text-right">
+        任职时间:
+      </small>
+      <input class="col-12 form-control form-control-sm" ngbTooltip="格式:2001.01"
+             [(ngModel)]="teacherexistingdutiesservingtime">
+    </div>
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-12 col-form-label text-right">
+        任职文号:
+      </small>
+      <input class="col-12 form-control form-control-sm" [(ngModel)]="teacherexistingdutiesnumber">
+    </div>
+
+  </div>
+  <div class="modal-footer">
+
+    <button [disabled]="!teacherexistingdutiesservingtime||!teacherexistingduties||!teacherexistingdutiesnumber"
+            class="btn btn-primary btn-sm" (click)="saveDutyLevelUp()">保存
+    </button>
+    <button class="btn btn-primary btn-sm" (click)="editDutyLevelRef.close()">关闭</button>
+  </div>
+</ng-template>
+
+<!-- 查看打印介绍信之前，需要选择介绍信模板信息，以及省内省外 -->
+<ng-template #selectLetterTemplateContent>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">关系转接表样式</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="selectLetterTemplateRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-12 col-form-label text-right">
+        模板:
+      </small>
+      <common-select class="col-12" [cssStyle]="'form-control form-control-sm'"
+                     [(ngModel)]="letterTemplate"
+                     [dataList]="letterTemplateList"></common-select>
+    </div>
+    <div class="form-group p-0 pt-1 col-12">
+      <small class="col-12 col-form-label text-right">
+        有效期:
+      </small>
+      <select class="col-12 form-control form-control-sm" [(ngModel)]="validity">
+        <option value="">请选择</option>
+        <option value="1">省内</option>
+        <option value="2">省外</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm" [disabled]="!letterTemplate||!validity" (click)="pinrtTransfer()">确认</button>
+  </div>
+</ng-template>

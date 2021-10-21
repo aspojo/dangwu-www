@@ -1,0 +1,49 @@
+<app-handle-task *ngIf="commonService.hasFlow"
+                 [taskId]="taskId"
+                 [procInstId]="procInstId"
+                 [formView]="contentView"
+                 (closeViewEvent)="closeViewEvent.emit()"
+                 (handleTaskDoneEvent)="handleTaskDoneEvent.emit()"></app-handle-task>
+<ng-container *ngIf="!commonService.hasFlow">
+  <app-common-pop-or-page heading="查看数据传输历史"
+                          [contentView]="contentView"
+                          (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+</ng-container>
+
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header">
+      基本信息
+    </div>
+    <div class="card-body">
+      <app-view-dt-data-transfer-history-base-info [PK]="PK" (dataLoadedEvent)="viewDtDataTransferHistory=$event"></app-view-dt-data-transfer-history-base-info>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      影响域
+    </div>
+    <div class="card-body">
+      <table class="table table-hover table-striped">
+        <thead class="">
+        <tr>
+          <th>传输模型</th>
+          <th>数据写入方式</th>
+          <th>受影响数据</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="viewData">
+        <tr *ngFor="let item of viewData.influenceDomain">
+          <td>{{item.transferName}}</td>
+          <td>{{item.saveMode}}</td>
+          <td>{{item.changeRows}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList" [inEdit]="false"></app-attachment-files>
+  </div>
+</ng-template>

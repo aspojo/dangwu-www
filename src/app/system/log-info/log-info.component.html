@@ -1,0 +1,111 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'日志管理'" [icon]="'fa-shield'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="form-inline">
+
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">用户</span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="searchData.userName">
+            </div>
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">id</span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="searchData.userLoginId">
+            </div>
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">操作内容</span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="searchData.operateContent">
+            </div>
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">模块</span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="searchData.moduleName">
+            </div>
+          </div>
+
+          <div class="form-inline">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">操作类型</span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="searchData.operateType">
+            </div>
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend" (click)="d.toggle()">
+                <span class="input-group-text"><span class="fa fa-calendar">开始时间</span></span>
+              </div>
+              <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="searchData.fromDate" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+            </div>
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend" (click)="d2.toggle()">
+                <span class="input-group-text"><span class="fa fa-calendar">截止时间</span></span>
+              </div>
+              <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="searchData.toDate" ngbDatepicker #d2="ngbDatepicker" (click)="d2.toggle()">
+            </div>
+            <!--<div class="input-group input-group-sm">-->
+              <!--<div class="input-group-addon" (click)="d.toggle()">-->
+                <!--<span class="fa fa-calendar">开始时间</span>-->
+              <!--</div>-->
+              <!--<input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="searchData.fromDate" bsDatepicker #d="bsDatepicker">-->
+            <!--</div>-->
+            <!--<div class="input-group input-group-sm">-->
+              <!--<div class="input-group-addon" (click)="d2.toggle()">-->
+                <!--<span class="fa fa-calendar">截止时间</span>-->
+              <!--</div>-->
+              <!--<input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="searchData.toDate" bsDatepicker #d2="bsDatepicker">-->
+            <!--</div>-->
+
+            <div class="p-2">
+              <button type="button" class="btn btn-sm btn-primary" (click)="searchLog()">搜索</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover table-striped">
+            <thead class="thead-light">
+            <tr>
+              <th>用户</th>
+              <th>id</th>
+              <th>操作时间</th>
+              <th>用户ip</th>
+              <th>模块</th>
+              <th>类型</th>
+              <th>内容</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-template ngFor let-data [ngForOf]="dataList">
+              <tr>
+                <td>{{data.userName}}</td>
+                <td>{{data.userLoginId}}</td>
+                <td>{{data.visitDateTime}}</td>
+                <td>{{data.clientIp}}</td>
+                <td>{{data.moduleName}}</td>
+                <td>{{data.operateType}}</td>
+                <td>{{data.operateContent}}</td>
+              </tr>
+            </ng-template>
+            </tbody>
+          </table>
+          <div>
+            <ngb-pagination [collectionSize]="listSize" [(page)]="page" (pageChange)="pageChange($event)" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+            <label>共{{listSize}}条记录</label>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+

@@ -1,0 +1,56 @@
+<ng-template #menuTemplate let-menuData="menuData">
+
+<!--  权限验证未通过的菜单不显示-->
+  <ng-container *ngIf="menuData | permission">
+    <!--  当前菜单为叶子节点-->
+    <ng-container *ngIf="!menuData.children">
+      <!-- 路由跳转-->
+      <a *ngIf="menuData.lk" class="list-group-item" [routerLink]="menuData.lk" href="javascript:void(0)" [routerLinkActive]="['router-link-active']">
+        <span><i *ngIf="menuData.icon" class="fa fa-fw {{menuData.icon}}"></i>{{menuData.lb}}</span>
+      </a>
+      <!--    点击事件-->
+      <a *ngIf="menuData.click" class="list-group-item" href="javascript:void(0)" (click)="menuClick(menuData.click)">
+        <span><i *ngIf="menuData.icon" class="fa fa-fw {{menuData.icon}}"></i>{{menuData.lb}}</span>
+      </a>
+    </ng-container>
+
+    <!--  当前菜单有子菜单-->
+    <ng-container *ngIf="menuData.children">
+      <a class="list-group-item" (click)="toggle(menuData.key)">
+          <span>
+            <i class="fa fa-fw {{menuData.icon}}"></i>
+            {{menuData.lb}}
+          </span>
+        <span class="float-right">
+            <i class="fa fa-fw fa-chevron-{{expend(menuData.key)?'down':'left'}}"></i>
+          </span>
+      </a>
+      <li class="nested" [class.expand]="expend(menuData.key)">
+        <ul class="submenu">
+
+
+          <ng-container *ngFor="let childMenu of menuData.children">
+            <ng-container *ngTemplateOutlet="menuTemplate; context: {menuData:childMenu}"></ng-container>
+          </ng-container>
+
+
+        </ul>
+      </li>
+    </ng-container>
+
+
+  </ng-container>
+
+</ng-template>
+
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+  <div class="list-group">
+    <!--    一级菜单-->
+    <ng-template ngFor let-lv1 [ngForOf]="menuList">
+      <div class="nested-menu">
+        <ng-container *ngTemplateOutlet="menuTemplate; context: {menuData:lv1}"></ng-container>
+      </div>
+    </ng-template>
+
+  </div>
+</nav>

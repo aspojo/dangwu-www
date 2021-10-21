@@ -1,0 +1,599 @@
+<div id="top">
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <app-common-pop-or-page heading="显示字段设置"
+                              [showPopUp]="showPopUp"
+                              [hasBackButton]="hasBackButton"
+                              (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+      <div class="p-2 btn-group col-12" style="background-color: #fff9db">
+        <small class="m-auto">
+          提示：此处勾选后将制定展示粗略查询的结果，如”姓名“是必选字段
+          <button class="btn btn-outline-dark btn-xsm" (click)="save()">保存</button>
+          <button class="btn btn-outline-dark btn-xsm" (click)="reset()">重置</button>
+        </small>
+      </div>
+      <ng-container>
+        <div class="col-12 text-center"><b>基本信息</b></div>
+        <div class="row py-3">
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.name">姓名
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.generalparty">分党委/党总支
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.branchparty">党支部
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.gender">性别
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.ethnic">民族
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.hometown">籍贯
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.idnumber">身份证号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.birthday">出生年月
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.identity">身份
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.department">所属部门
+              </label>
+            </div>
+          </div><div class="col-3">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="display.contact">联系电话
+            </label>
+          </div>
+        </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.birth">出生地
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.age">年龄
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.democrat">所属党派
+              </label>
+            </div>
+          </div>
+          <div class="col-12 text-center"><b>党务信息</b></div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.applicantdate">申请时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.activistsdate">积极分子
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.partyPhases">党校期数
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.developmentdate">发展对象
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.volunteerbook">志愿书编号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.probationarydate">入党时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.partymemberdate">转正时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.partypost">党内职务
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.manner">党员增加
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.pingyi">党员评议
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.pyresult">评议结果
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.growthtime">增加时间
+              </label>
+            </div>
+          </div>
+          <div class="col-12 text-center"><b>教师信息</b></div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherfulltimeacademic">全日制学历
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherfulltimeacademicprofessional">全日制学历院系专业
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherfulltimeacademicschool">全日制学历学校
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherfulltimeacademicperiodtime">全日制学历从学时间段
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherfulltimedegree">全日制学位
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherfulltimedegreeprofessional">全日制学位院系专业
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherfulltimedegreeschool">全日制学位学校
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherfulltimedegreeperiodtime">全日制学位从学时间段
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.inserviceacademic">在职学历
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.inserviceacademicprofessional">在职学历院系专业
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.inserviceacademicschool">在职学历学校
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.inserviceacademicperiodtime">在职学历从学时间段
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.inservicedegree">在职学位
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.inservicedegreeprofessional">在职学位院系专业
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.inservicedegreeschool">在职学位学校
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.inservicedegreeperiodtime">在职学位从学时间段
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.lastacademicdegree">最后学历学位
+              </label>
+            </div>
+          </div>
+          <div class="col-12 text-center"><b>学生信息</b></div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.studentyear">年级
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.studentnumber">学号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.studentprofessional">专业
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.studentcategory">学生类别
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.studentlevel">学生层次
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.studentexistingacademic">学生现有学历
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.studentclass">班级
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.studentschoolsystem">学制
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.studentrepresentation">任职情况
+              </label>
+            </div>
+          </div>
+          <div class="col-12 text-center"><b>工作信息</b></div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherpersonnelnature">人事性质
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teachercategory">类别
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teachertoworktime">工作时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.jobnumber">工号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherpost">岗位类型
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.jobtype">岗位名称
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.postgrades">岗位等级
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.stafflevel">职员级别
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.technicaltitles">职称名称
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.technicaltitleslevel">职称级别
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.technicaltitlesservingtime">现职时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.technicaltitlesnumber">现职文号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.onetitlesdate">初级职称时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.onenumber">初级职称文号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.twotitlesdate">中级职称时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.twonumber">中级职称文号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.threetitlesdate">副高职称时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.threenumber">副高职称文号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.fourtitlesdate">正高职称时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.fournumber">正高职称文号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherexistingduties">现职名称
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherexistingdutieslevel">职务级别
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherexistingdutiesservingtime">现职任职时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.teacherexistingdutiesnumber">现职文号
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.vicedivision">副科时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.anyzhengke">正科时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.deputyatthe">副处时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.lsatany">正处时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.samedutytime">同职时间
+              </label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="display.samedutynumber">同职文号
+              </label>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

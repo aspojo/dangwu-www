@@ -1,0 +1,175 @@
+<ng-content></ng-content>
+<ng-template #editUser>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{inEdit?'修改':'添加'}}用户</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="editUserRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm">
+      <div class="p-2 mb-2 bg-gray-me">基本信息</div>
+
+      <div class="form-group row" *ngIf="!inEdit">
+        <label class="col-sm-3 col-form-label text-right"><span class="text-danger">*</span>账号:</label>
+        <div class="col-sm-3">
+          <input name="userLoginId" [(ngModel)]="userDataTemp.userLoginId" type="text" class="form-control" required>
+        </div>
+        <div class="col-sm-6">
+          <div>
+            <small class="text-left text-muted">1.不能包含中文</small>
+          </div>
+          <div>
+            <small class="text-left text-muted">2.请保证唯一</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" [hidden]="!inEdit">
+        <label class="col-sm-3 col-form-label text-right">账号:</label>
+        <div class="col-sm-3 form-control border-0">
+          {{userDataTemp.userLoginId}}
+        </div>
+        <div class="col-sm-6">
+          <div>
+            <small class="text-left text-muted">1.不可修改</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label text-right"><span class="text-danger">*</span>姓名:</label>
+        <div class="col-sm-3">
+          <input name="userName" [(ngModel)]="userDataTemp.userName" type="text" class="form-control" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label text-right">分党委/党总支:</label>
+        <div class="col-sm-3">
+          <select name="generalPartyId" (ngModelChange)="loadViewPermissionSelectList($event)" [(ngModel)]="userDataTemp.generalPartyId" class="form-control" type="text" required>
+            <option value="">请选择</option>
+            <ng-template ngFor let-item [ngForOf]="generalPartyList | async">
+              <option value="{{item.id}}">{{item.value}}</option>
+            </ng-template>
+          </select>
+<!--          <common-select  [cssStyle]="'form-control'" [(ngModel)]="userDataTemp.generalPartyId" [dataList]="generalPartyList"></common-select>-->
+        </div>
+      </div>
+      <div class="form-group row" [hidden]="!userDataTemp.generalPartyId">
+        <label class="col-sm-3 col-form-label text-right">查看权限:</label>
+        <div class="col-sm-3">
+          <select name="viewPermissions" multiple="multiple" [(ngModel)]="userDataTemp.viewPermissions" class="form-control" type="text">
+            <ng-template ngFor let-item [ngForOf]="viewPermissionsList">
+              <option value="{{item.id}}">{{item.generalPartyName}}</option>
+            </ng-template>
+          </select>
+        </div>
+        <div class="col-sm-6">
+          <div>
+            <small class="text-left text-muted">1.选择该账号可查看与编辑的其他分党委</small>
+          </div>
+          <div>
+            <small class="text-left text-muted">2.按住ctrl，鼠标左键单击进行多选</small>
+          </div>
+          <div>
+            <small class="text-left text-muted">3.按住ctrl，鼠标左键单击可取消选择</small>
+          </div>
+        </div>
+      </div>
+<!--      <div class="form-group row">-->
+<!--        <label class="col-sm-3 col-form-label text-right"><span class="text-danger">*</span>分党委/党总支:</label>-->
+<!--        <div class="col-sm-3">-->
+<!--          <input name="generalPartyId" [(ngModel)]="userDataTemp.generalPartyId" type="text" class="form-control" required>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="form-group row">-->
+<!--        <label class="col-sm-3 col-form-label text-right">移动电话:</label>-->
+<!--        <div class="col-sm-3">-->
+<!--          <input name="phoneNumber" [(ngModel)]="userDataTemp.phoneNumber" type="text" class="form-control">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="form-group row">-->
+<!--        <label class="col-sm-3 col-form-label text-right">固定电话:</label>-->
+<!--        <div class="col-sm-3">-->
+<!--          <input name="telephone" [(ngModel)]="userDataTemp.telephone" type="tel" class="form-control">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="form-group row">-->
+<!--        <label class="col-sm-3 col-form-label text-right">邮箱:</label>-->
+<!--        <div class="col-sm-3">-->
+<!--          <input name="email" [(ngModel)]="userDataTemp.email" type="email" class="form-control">-->
+<!--        </div>-->
+<!--      </div>-->
+      <div class="form-group row" *ngIf="!inEdit">
+        <label class="col-sm-3 col-form-label text-right">密码:</label>
+        <div class="col-sm-3">
+          <input name="currentPassword" [(ngModel)]="userDataTemp.currentPassword" type="text" class="form-control" required minlength="5">
+        </div>
+        <div class="col-sm-6">
+          <div>
+            <small class="text-left text-muted">1.密码长度不可小于5位</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label text-right">性别:</label>
+        <div class="col-sm-3">
+          <select name="userSex" [(ngModel)]="userDataTemp.userSex" class="form-control" type="text">
+            <option>男</option>
+            <option>女</option>
+          </select>
+        </div>
+      </div>
+      <div class="p-2 mb-2 bg-gray-me">职业信息</div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label text-right">工号:</label>
+        <div class="col-sm-3">
+          <input name="workNumber" [(ngModel)]="userDataTemp.workNumber" type="text" class="form-control">
+        </div>
+        <div class="col-sm-6">
+          <div>
+            <small class="text-left text-muted">1.不能包含中文</small>
+          </div>
+          <div>
+            <small class="text-left text-muted">2.请保证唯一</small>
+          </div>
+          <div>
+            <small class="text-left text-muted">3.若不填写，将自动生成</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label text-right">密级:</label>
+        <div class="col-sm-3">
+          <dic-select [name]="'secretLevel'" [hasDefault]="true" [(ngModel)]="userDataTemp.secretLevel" [dicSelect]="'userSecret'" [cssStyle]="'form-control'"></dic-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label text-right">账号状态:</label>
+        <div class="col-sm-3">
+          <select name="enabled" [(ngModel)]="userDataTemp.enabled" class="form-control" type="text">
+            <option value="Y">正常</option>
+            <option value="N">锁定</option>
+          </select>
+        </div>
+      </div>
+      <div  [hidden]="!inEdit">
+        <div class="p-2 mb-2 bg-gray-me">部门及角色</div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label text-right">所属部门:</label>
+          <div class="col-sm-9 form-control border-0">
+            {{userDataTemp.deptNames}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label text-right">具有角色:</label>
+          <div class="col-sm-9 form-control border-0">
+            {{userDataTemp.groupNames}}
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="validateForm()"  type="submit" class="btn btn-primary" (click)="saveUser()">保存
+    </button>
+  </div>
+</ng-template>

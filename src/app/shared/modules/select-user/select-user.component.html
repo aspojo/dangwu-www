@@ -1,0 +1,84 @@
+<ng-content></ng-content>
+<ng-container *ngIf="showResultAndSearchButton">
+  <ng-container *ngIf="value">
+    <span style="cursor: pointer;" *ngFor="let item of selectedUserList">{{item.userName}}<i class="text-danger" (click)="changeSelect(item)">&times;</i></span>
+  </ng-container>
+  <span class="float-right"><i class="fa fa-search text-primary" (click)="openSelectView()"></i></span>
+</ng-container>
+<ng-template #selectView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">选择人员</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="selectRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="p-2 mb-2 bg-gray-me">选择人员</div>
+    <div class="px-3">
+      <div class=" row">
+        <div class="card col-6">
+          <div>选择：</div>
+          <div class="card-body bg-gray-me">
+            <div class="input-group pt-1">
+              <div class="input-group-prepend bg-white">
+                <span class="input-group-text"><i class="fa fa-fw fa-search"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="搜索" (keyup)="searchChange($event)">
+            </div>
+            <div><input type="checkbox" [checked]="isAllUserChecked" (click)="checkAllUser()">全选</div>
+            <div>
+              <div>
+                <ng-template ngFor let-item [ngForOf]="parentDeptList" let-i="index">
+                  <ng-template [ngIf]="i!==(parentDeptList.length-1)&&item.deptName">
+                    <button class="btn btn-xsm btn-link dept-nav" (click)="deptSelectClick(item)">{{item.deptName}}</button>
+                    <span> ></span>
+                  </ng-template>
+                </ng-template>
+                <small>{{selectedDept.deptName}}</small>
+              </div>
+              <table class="table table-hover">
+                <tr *ngFor="let item of deptList">
+                  <td></td>
+                  <td>{{item.deptName}}</td>
+                  <td>
+                    <button class="btn btn-xsm btn-link" (click)="deptSelectClick(item)"><i class="fa fa-fw fa-building"></i>下级</button>
+                  </td>
+                </tr>
+                <ng-template ngFor let-item [ngForOf]="userList">
+                  <tr>
+                    <td style="width: 30px;">
+                      <input type="checkbox" [(ngModel)]="item.checked" (click)="changeSelect(item)">
+                    </td>
+                    <td>{{item.userName}}</td>
+                    <td></td>
+                  </tr>
+                </ng-template>
+              </table>
+
+            </div>
+          </div>
+        </div>
+        <div class="card col-6">
+          <div>已选：</div>
+          <div class="card-body bg-gray-me">
+            <table class="table table-hover">
+              <ng-template ngFor let-item [ngForOf]="selectedUserList">
+                <tr>
+                  <td>{{item.userName}}</td>
+                  <td>
+                    <button class="btn btn-xsm btn-link" (click)="changeSelect(item)"><i class="fa fa-fw fa-remove"></i></button>
+                  </td>
+                </tr>
+              </ng-template>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" (click)="clickOk()">保存
+    </button>
+  </div>
+</ng-template>

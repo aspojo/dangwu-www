@@ -1,0 +1,98 @@
+<div class="form-inline">
+  <div class="form-group p-0 pt-1 col-6">
+    <small class="col-4 col-form-label text-right">{{uiLabel('name')}}:</small>
+    <div class="col-8 form-control border-0">
+      {{viewDataTemp.name}}
+    </div>
+  </div>
+  <div class="form-group p-0 pt-1 col-6">
+    <small class="col-4 col-form-label text-right">{{uiLabel('modelType')}}:</small>
+    <div class="col-8 form-control border-0">
+
+      {{viewDataTemp.modelTypeValue}}
+    </div>
+  </div>
+  <div class="form-group p-0 pt-1 col-6">
+    <small class="col-4 col-form-label text-right">{{uiLabel('templateId')}}:</small>
+    <div class="col-8 form-control border-0">
+
+      {{viewDataTemp.templateIdValue}}
+    </div>
+  </div>
+  <div class="form-group p-0 pt-1 col-6">
+    <small class="col-4 col-form-label text-right">{{uiLabel('userLoginId')}}:</small>
+    <div class="col-8 form-control border-0">
+
+      {{viewDataTemp.userLoginIdValue}}
+    </div>
+  </div>
+  <div class="form-group p-0 pt-1 col-6">
+    <small class="col-4 col-form-label text-right">{{uiLabel('createdTime')}}:</small>
+    <div class="col-8 form-control border-0">
+      {{viewDataTemp.createdTime}}
+    </div>
+  </div>
+  <div class="form-group p-0 pt-1 col-12">
+    <small class="col-2 col-form-label text-right">{{uiLabel('description')}}:</small>
+    <div class="col-10 form-control border-0">
+      {{viewDataTemp.description}}
+    </div>
+  </div>
+  <div class="form-group p-0 pt-1 col-12">
+    <small class="col-2 col-form-label text-right">{{uiLabel('fieldColInfo')}}:</small>
+    <div class="col-10 ">
+      <div *ngIf="viewDataTemp.fieldColInfo&&viewDataTemp.modelType==commonService.modelTypeForm" class="card mt-2">
+        <div class="card-body">
+          <table class="table table-hover table-striped">
+            <thead class="">
+            <tr>
+              <th>sheet页号</th>
+              <th>行号</th>
+              <th>列号</th>
+              <th>数据格位置</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of viewDataTemp.fieldColInfo">
+              <td>{{item.sheet}}</td>
+              <td>{{item.row}}</td>
+              <td>{{item.col}}</td>
+              <td>{{item.dataPosition}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="viewDataTemp.fieldColInfo&&viewDataTemp.modelType!=commonService.modelTypeForm" class="card mt-2">
+        <div class="card-body">
+          <div class="form-inline">
+            <div class="form-group p-0 pt-1 col-12">
+              <small class="col-2 col-form-label text-right">
+                sheet页号:
+              </small>
+              <div class="col-8 form-control border-0">{{viewDataTemp.fieldColInfo.sheet}}</div>
+            </div>
+            <div class="form-group p-0 pt-1 col-12">
+              <small class="col-2 col-form-label text-right">
+                行号:
+              </small>
+              <div class="col-8 form-control border-0">{{viewDataTemp.fieldColInfo.row}}</div>
+            </div>
+            <div class="form-group p-0 pt-1 col-12">
+              <small class="col-2 col-form-label text-right">
+                起始列号:
+              </small>
+              <div class="col-8 form-control border-0">{{viewDataTemp.fieldColInfo.startCol}}</div>
+            </div>
+            <div class="form-group p-0 pt-1 col-12">
+              <small class="col-2 col-form-label text-right">
+                结束列号:
+              </small>
+              <div class="col-8 form-control border-0">{{viewDataTemp.fieldColInfo.endCol}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

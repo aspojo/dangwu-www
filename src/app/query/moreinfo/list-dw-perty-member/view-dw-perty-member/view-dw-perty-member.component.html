@@ -1,0 +1,21 @@
+<app-handle-task *ngIf="viewTask"
+                 [taskId]="taskId"
+                 [procInstId]="procInstId"
+                 [formView]="contentView"
+                 (closeViewEvent)="closeViewEvent.emit()"
+                 (handleTaskDoneEvent)="handleTaskDoneEvent.emit()"></app-handle-task>
+<ng-container *ngIf="!viewTask">
+  <app-common-pop-or-page heading="查看党员"
+                          [contentView]="contentView"
+                          (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+</ng-container>
+
+<ng-template #contentView>
+  <div class="card">
+      <app-view-dw-perty-member-base-info [PK]="PK"></app-view-dw-perty-member-base-info>
+  </div>
+
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList" [inEdit]="false"></app-attachment-files>
+  </div>
+</ng-template>

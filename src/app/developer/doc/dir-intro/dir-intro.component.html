@@ -1,0 +1,74 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up" style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/dirIntro#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down" style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/dirIntro#bottom"></a>
+
+<div id="top">
+  <app-page-header [heading]="'目录结构介绍'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>fadp平台后端目录结构介绍</h4>
+        </div>
+        <pre>
+
+  framework                                     平台基础目录<span style="color: red;">（严禁修改）</span>
+  hot-deploy                                    应用目录
+      demo                                      演示模块
+          config                                应用配置（放properties文件等，较少使用）
+          data                                  存放种子数据及演示数据
+            SeedData.xml                        种子数据文件
+          entitydef                             实体定义目录
+            demo-entitymodel.xml                实体定义文件
+          lib                                   jar包目录（平台提供的jar包已经能满足多数情况，较少使用）
+          script                                脚本目录（主要存放groovy脚本，用于处理简单业务）
+          src                                   java代码目录
+          webapp                                web目录
+              demo                              具体web应用目录
+                WEB-INF
+                  controller.xml                web请求控制器配置文件
+                  web.xml                       与普通web项目的web.xml类似
+          build.xml                             ant构建配置文件
+          fadp-component.xml
+      entityMgr                                 平台提供的数据库管理工具
+      fadp                                      平台提供的基础模块
+  runtime                                       平台数据存放位置（其中包含内嵌数据库H2的数据库文件）
+
+        </pre>
+      </div>
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>fadp平台前端目录结构介绍<small>（这里省略掉不常用目录的介绍）</small></h4>
+
+        </div>
+        <pre>
+
+src                                             源码根目录
+  app
+    developer
+      demo                                      演示模块
+        list-demo-order                         演示页面订单管理
+          edit-demo-order                       订单新增、修改页面
+          select-demo-order                     订单选择页面
+          view-demo-order                       订单查看页面
+          demo-order-field-info-service.ts      订单字段服务界面
+          demo-order-service.ts                 订单通用服务界面
+          list-demo-order.component.html        演示页面主界面
+          list-demo-order.component.scss        演示页面主界面的样式文件
+          list-demo-order.component.ts          演示页面的业务操作类
+          list-demo-order.module.ts             演示页面的模块类
+          list-demo-order-routing.module.ts     演示页面的路由配置类
+      partymember.module.ts                       父模块
+      partymember-routing.module.ts               父模块的路由配置
+    layout
+      layout-routing.module.ts                  根路由配置类
+  config
+    component-map.service.ts                    组件及及模块服务配置类
+    menu-list.ts                                界面左侧菜单配置类
+        </pre>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>
+

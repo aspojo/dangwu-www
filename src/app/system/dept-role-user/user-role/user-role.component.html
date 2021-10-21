@@ -1,0 +1,146 @@
+<div class="">
+
+  <div class="pl-2">
+    <h4 style="display: inline;">{{selectedRole.groupName}}</h4>
+
+    <app-role-edit [roleDataTemp]="selectedRole" [inEdit]="true"
+                   (roleChange)="notifyRoleTreeChange($event)"></app-role-edit>
+  </div>
+  <div class="p-2 mb-2 bg-gray-me">
+    <button *ngIf="selectedRole" class="btn btn-xsm btn-outline-dark" (click)="addUserClick(addUserView)">
+      <i class="fa fa-plus-circle"></i>添加成员
+    </button>
+  </div>
+
+
+  <table class="table table-hover table-striped">
+    <thead class="thead-light">
+    <tr>
+      <th width="80px">账号</th>
+      <th>姓名</th>
+      <th>生效时间</th>
+      <th>失效时间</th>
+      <th width="60px">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-template ngFor let-data [ngForOf]="dataList">
+      <tr *ngIf="data.__show__!==false" style="cursor: pointer;">
+        <td class="btn-link" scope="row" [userEdit]="data">{{data.userLoginId}}</td>
+        <td [userEdit]="data">{{data.userName}}</td>
+        <td>
+          {{data.fromDate}}
+        </td>
+        <td>
+          {{data.thruDate ? data.thruDate : '永不失效'}}
+        </td>
+        <td>
+          <div class="btn-group ">
+
+            <button class="btn btn-xsm  btn-danger" [confirm]="'确定移除人员['+data.userName+']的角色：'+data.groupId"
+                    (confirmClick)="deleteById(data)" ngbTooltip="从当前角色移除"><i class="fa fa-fw fa-remove"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    </tbody>
+  </table>
+</div>
+
+
+<ng-template #addUserView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">添加成员</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="addUserModalRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="p-2 mb-2 bg-gray-me">角色有效期设置</div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label text-right"><span class="text-danger">*</span>生效时间:</label>
+      <app-date-input class="col-4" [(ngModel)]="userDataTemp.fromDate"></app-date-input>
+      <div class="col-sm-6">
+        <small class="text-left text-muted row">只有服务器时间大于生效时间后，角色才生效。</small>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label text-right">失效时间:</label>
+      <app-date-input class="col-4" [(ngModel)]="userDataTemp.thruDate"></app-date-input>
+      <div class="col-sm-6">
+        <small class="text-left text-muted row">失效时间为空时，代表角色永不失效；</small>
+        <small class="text-left text-muted row">服务器时间大于失效时间后，角色失效。</small>
+      </div>
+    </div>
+    <div class="p-2 mb-2 bg-gray-me">选择人员</div>
+    <div class="px-3">
+      <div class=" row">
+        <div class="card col-6">
+          <div>选择：</div>
+          <div class="card-body bg-gray-me">
+            <div><input type="checkbox" [checked]="isAllUserChecked" (click)="checkAllUser()">全选</div>
+            <div>
+              <div>
+                <ng-template ngFor let-item [ngForOf]="parentDeptList" let-i="index">
+                  <ng-template [ngIf]="i!==(parentDeptList.length-1)">
+                    <button class="btn btn-xsm btn-link dept-nav"
+                            (click)="deptSelectClick(item)">{{item.deptName}}</button>
+                    <span> ></span>
+                  </ng-template>
+                </ng-template>
+                <small>{{selectedDept.deptName}}</small>
+              </div>
+              <table class="table table-hover">
+                <tr *ngFor="let item of deptList">
+                  <td></td>
+                  <td>{{item.deptName}}</td>
+                  <td>
+                    <button class="btn btn-xsm btn-link" (click)="deptSelectClick(item)"><i
+                      class="fa fa-fw fa-building"></i>下级
+                    </button>
+                  </td>
+                </tr>
+                <ng-template ngFor let-item [ngForOf]="userList">
+                  <tr>
+                    <td style="width: 30px;">
+                      <input type="checkbox" [(ngModel)]="item.checked" (click)="changeSelect(item)">
+                    </td>
+                    <td>{{item.userName}}</td>
+                    <td></td>
+                  </tr>
+                </ng-template>
+              </table>
+
+            </div>
+          </div>
+        </div>
+        <div class="card col-6">
+          <div>已选：</div>
+          <div class="card-body bg-gray-me">
+            <table class="table table-hover">
+              <ng-template ngFor let-item [ngForOf]="selectedUserList">
+                <tr>
+                  <td>{{item.userName}}</td>
+                  <td>
+                    <button class="btn btn-xsm btn-link" (click)="changeSelect(item)"><i class="fa fa-fw fa-remove"></i>
+                    </button>
+                  </td>
+                </tr>
+              </ng-template>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="selectedUserList.length==0" type="submit" class="btn btn-primary"
+            (click)="addData()">保存
+    </button>
+  </div>
+</ng-template>

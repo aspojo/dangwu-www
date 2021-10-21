@@ -1,0 +1,126 @@
+<audio #chatAudio>
+  <source src="./assets/sound/notify.mp3" type="audio/mpeg">
+</audio>
+<nav class="navbar navbar-expand-lg fixed-top">
+  <img src="assets/images/党徽.png" height="30px"/>
+  <a class="navbar-brand">&nbsp;&nbsp;<span [routerLink]="['/dashboard']" [routerLinkActive]="['router-link-active']" style="font-family: STKaiti; font-size: 26px;font-weight: bolder; color: #ff4800;text-shadow: -2px 0 white,0 2px white,2px 0 white,0 -2px white">{{envService.title}}</span></a>
+  <!--<button class="btn btn-sm btn-link" type="button" (click)="toggleSidebar()" >-->
+  <button class="btn btn-sm btn-link" type="button" (click)="toggleSidebar()"
+          *ngIf="{ permission: 'FULL_ADMIN', action: '', permissionList: [], projectId: ''} | permission">
+    <i class="fa fa-bars text-muted" aria-hidden="true"></i>
+  </button>
+  <div class="collapse navbar-collapse">
+<!--    <ul class="navbar-nav mr-auto">-->
+
+<!--      <li class="nav-item dropdown" ngbDropdown>-->
+<!--        <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>-->
+<!--          <i class="fa fa-bell"></i> <b *ngIf="getNotifyNum()!==0" class="caret"><span class="badge badge-info">{{getNotifyNum()}}</span></b>-->
+<!--        </a>-->
+<!--      </li>-->
+<!--    </ul>-->
+
+    <ul class="navbar-nav ml-auto">
+      <!--<li class="nav-item" >-->
+        <!--<a href="javascript:void(0)" class="nav-link" >-->
+          <!--<i class="fa fa-dashboard"></i>&nbsp;主页<b class="caret"></b>-->
+        <!--</a>-->
+      <!--</li>-->
+      <li class="nav-item" >
+        <a href="javascript:void(0)" class="nav-link" [routerLink]="['/pertymember']" [routerLinkActive]="['router-link-active']">
+          <i class="fa fa-adjust"></i>&nbsp;党员管理<b class="caret"></b>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="userLogin.userLoginId&&!userLogin.generalPartyId">
+        <a href="javascript:void(0)" class="nav-link" [routerLink]="['/cadres']" [routerLinkActive]="['router-link-active']">
+          <i class="fa fa-briefcase"></i>&nbsp;干部管理<b class="caret"></b>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="userLogin.userLoginId&&!userLogin.generalPartyId">
+        <a href="javascript:void(0)" class="nav-link" [routerLink]="['/democrat']" [routerLinkActive]="['router-link-active']">
+          <i class="fa fa-binoculars"></i>&nbsp;民主人士管理<b class="caret"></b>
+        </a>
+      </li>
+      <li class="nav-item" >
+        <a href="javascript:void(0)" class="nav-link" [routerLink]="['/query/moreinfo']" [routerLinkActive]="['router-link-active']">
+          <i class="fa fa-search"></i>&nbsp;统计查询<b class="caret"></b>
+        </a>
+      </li>
+      <li class="nav-item dropdown" ngbDropdown>
+        <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
+          <i class="fa fa-cog"></i>&nbsp;系统管理<b class="caret"></b>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+          <a href="javascript:void(0)" class="dropdown-item" [routerLink]="['/manage/generalparty']" [routerLinkActive]="['router-link-active']" >
+            <i class="fa fa-fw fa-users"></i> {{ '组织管理' }}
+          </a>
+          <a class="dropdown-item" [routerLink]="['/manage/professional']" [routerLinkActive]="['router-link-active']" >
+            <i class="fa fa-fw fa-life-ring"></i> {{ '专业管理' }}
+          </a>
+          <a href="javascript:void(0)" class="dropdown-item" [routerLink]="['/manage/phases']" [routerLinkActive]="['router-link-active']" >
+            <i class="fa fa-fw fa-university"></i> {{ '党校管理' }}
+          </a>
+          <a class="dropdown-item" [routerLink]="['/manage/democrat']" [routerLinkActive]="['router-link-active']" >
+            <i class="fa fa-fw fa-suitcase"></i> {{ '查看民主党派' }}
+          </a>
+          <a href="javascript:void(0)" class="dropdown-item" [routerLink]="['/manage/fieldSet']" [routerLinkActive]="['router-link-active']" >
+            <i class="fa fa-fw fa-tasks"></i> {{ '显示字段设置' }}
+          </a>
+          <a class="dropdown-item" *ngIf="{ permission: 'BASE_DIC_ADMIN', action: '', permissionList: [], projectId: ''} | permission" [routerLink]="['/system/dic']" [routerLinkActive]="['router-link-active']" >
+            <i class="fa fa-fw fa-book"></i> {{ '字典管理' }}
+          </a>
+          <a href="javascript:void(0)" class="dropdown-item" *ngIf="{ permission: 'BASE_CONTACT_ADMIN', action: '', permissionList: [], projectId: ''} | permission" [routerLink]="['/system/deptRoleUser']" [routerLinkActive]="['router-link-active']" >
+            <i class="fa fa-fw fa-user"></i> {{ '用户管理' }}
+          </a>
+          <a class="dropdown-item" [routerLink]="['/system/logInfo']" *ngIf="{ permission: 'BASE_LOG_ADMIN', action: '', permissionList: [], projectId: ''} | permission" [routerLinkActive]="['router-link-active']" >
+            <i class="fa fa-fw fa-newspaper-o"></i> {{ '日志管理' }}
+          </a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown" ngbDropdown>
+        <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
+          <i class="fa fa-user"></i> {{userLogin.userName}}({{userLogin.userLoginId}})<b class="caret"></b>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+<!--          <a href="javascript:void(0)" class="dropdown-item" (click)="changeTheme()">-->
+<!--            <i class="fa fa-fw fa-themeisle "></i> 切换主题({{envService.showPopUp?'跳转':'弹出'}})-->
+<!--          </a>-->
+          <a href="javascript:void(0)" class="dropdown-item" (click)="openModal(content)">
+            <i class="fa fa-fw fa-key"></i> {{ '修改密码' }}
+          </a>
+          <a class="dropdown-item" [routerLink]="['/login']" (click)="logout()">
+            <i class="fa fa-fw fa-power-off"></i> {{ '退出' }}
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">修改密码</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" [formGroup]="passwordForm">
+    <div class="input-group">
+      <label class="input-group-prepend"><span class="input-group-text">原密码</span></label>
+      <input class="form-control" formControlName="password" type="password">
+    </div>
+    <div class="input-group">
+      <label class="input-group-prepend"><span class="input-group-text">新密码</span></label>
+      <input class="form-control" formControlName="newPassword" type="password">
+    </div>
+    <div class="input-group">
+      <label class="input-group-prepend"><span class="input-group-text">确认新密码</span></label>
+      <input class="form-control" formControlName="newPasswordVerify" type="password">
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="!canSubmit" class="btn btn-primary" (click)="changePassword()">保存</button>
+  </div>
+</ng-template>

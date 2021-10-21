@@ -1,0 +1,49 @@
+//$topnav-background-color: #222;
+$topnav-background-color: #1f4564;
+:host {
+    .navbar {
+        //background-color: $topnav-background-color;
+      background-color: red; /* 浏览器不支持时显示 */
+      background-image: linear-gradient(red,rgba(255, 255, 0, 0.7));
+        .navbar-brand {
+            color: #fff;
+        }
+        .nav-item > a {
+            color: #fff;
+            &:hover {
+                color: yellow;
+            }
+        }
+    }
+    .messages {
+        width: 300px;
+        .media {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 10px;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        .media-body {
+            h5 {
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .small {
+                margin: 0;
+            }
+            .last {
+                font-size: 12px;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.header-icon{
+  color: white;
+}
+
+span{
+  color: white;
+}

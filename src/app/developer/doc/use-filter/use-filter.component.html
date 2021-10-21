@@ -1,0 +1,269 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up" style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/useFilter#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down" style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/useFilter#bottom"></a>
+
+<div id="top">
+  <app-page-header [heading]="'自定义管道说明'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div>
+        <div class="p-2 mb-2 bg-gray-me">
+          <h4>管道使用讲解</h4>
+        </div>
+        <p>这里仅讲解平台提供的自定义管道，其他常用管道请参照：<a target="_blank" href="https://angular.io/">angular.io</a>。</p>
+        <p class="text-warning">需知：这里介绍的所有管道，都需要在使用的地方引入相应的模块及其依赖模块。</p>
+        <p>通用管道有：</p>
+        <div class="row m-0">
+          <div class="col-2"><a class="ml-1" href="developer/doc/useFilter#fileName">[fileName]</a></div>
+          <div class="col-2"><a class="ml-1" href="developer/doc/useFilter#permission">[permission]</a></div>
+          <div class="col-2"><a class="ml-1" href="developer/doc/useFilter#safe">[safe]</a></div>
+          <div class="col-2"><a class="ml-1" href="developer/doc/useFilter#trueFalse">[trueFalse]</a></div>
+
+        </div>
+
+        <div id="fileName">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>获取文件名称管道 |fileName</h4>
+          </div>
+          <p>
+            对于存放在数据库中的文件数据，通常是带有路径的文件地址，可以使用 |fileName 管道，得到文件名称。
+            例如文件地址为 /pm/ueditor/jsp/image/demo.png ，使用管道后得到文件名 demo.png。
+            <br>下面讲解详细使用:
+          </p>
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+
+                <div class="col-8 form-control border-0">
+     viewDataTemp.filePath | fileName (注：实际使用中需要加上"{{")
+  <a class="btn btn-xsm btn-outline-primary" target="_blank" [href]="('download/'+viewDataTemp.filePath+'?') | serverUrl">
+  <i class="fa fa-fw fa-download"></i>下载文件
+</a>
+</div>
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+ // 用于管道数据变量使用
+  viewDataTemp = {
+   filePath: '/pm/ueditor/jsp/image/demo.png ',
+  };
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用属性</td><td>fileName</td></tr>
+                    <tr><td>导入模块</td><td>SharedPipesModule</td></tr>
+                    <tr><td>依赖模块</td><td></td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td></td></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <p>文件路径是：{{viewDataTemp.filePath}}</p>
+
+              <div class="col-8 form-control border-0">
+                <p class="form-control">{{viewDataTemp.filePath | fileName}} </p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="permission">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>权限控制管道 |permission</h4>
+          </div>
+          <p>
+            看过之前文档后可以发现，之前我们已经介绍了一个 [permission] 指令，在这里 |permission 管道和 [permission] 实现的功能其实是一样的。
+            <br>下面讲解详细使用:
+          </p>
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+
+                <div class="col-8 form-control border-0" *ngIf=" viewDataTemp.permissionFilter | permission">
+ <p class="form-control" style="width: 100%;background-color: #0c5460;color: white;">能看到我，说明你有销售开单权限!</p>
+</div>
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+  // 用于管道数据变量使用
+  viewDataTemp = {
+   permissionFilter : { permission: 'SALE_DELIVER', action: '_CREATE', permissionList: [], projectId: ''}
+  };
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-12 p-0">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td>permission 属性</td><td>string</td><td>权限的名称</td></tr>
+                    <tr><td>action 属性</td><td>string</td><td>权限的具体操作名称（_CREATE 或者 _UPDATE 等）</td></tr>
+                    <tr><td>projectId 属性</td><td></td><td>获取当前用户在该项目中的权限</td></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <p>当前拥有的权限：[ permission: {{viewDataTemp.permissionFilter.permission}} , action: {{viewDataTemp.permissionFilter.action}} ]</p>
+
+              <div class="col-12 form-control border-0" *ngIf=" viewDataTemp.permissionFilter | permission">
+                <p class="form-control" style="width: 100%;background-color: #0c5460;color: white;">能看到我，说明你有销售开单权限!</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="safe">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>安全资源路径管道 |safe</h4>
+          </div>
+          <p>
+            由于angular js的特性，容易受到一种名为跨站脚本（Cross-site scripting 简称 XSS）的安全漏洞攻击，为了加强安全风险防范，使用angular js提供的 sanitizer 对象的方法对传入的值进行内置清理，
+            对传入的代码块的值进行严格的检查。<span style="color: red;">（注：在 |safe 管道中 type参数 只能是 html，style，script，url，resourceUrl这五种！）</span>
+            <br>下面讲解详细使用:
+          </p>
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+                       <div class="col-3">
+  <p>iframe 使用 safe 管道的示例： </p>
+  <iframe class="btn btn-xsm btn-outline-primary" target="_blank" [src]="(viewDataTemp.imaSrc) | safe:'resourceUrl'">
+  </iframe>
+</div>
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+  // 用于管道数据变量使用
+  viewDataTemp = {
+   imaSrc: 'http://localhost:6001/pm/control/download/pm/ueditor/jsp/upload/image/20190904/demo.png'
+  };
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用属性</td><td>fileName</td></tr>
+                    <tr><td>导入模块</td><td>SharedPipesModule</td></tr>
+                    <tr><td>依赖模块</td><td></td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td></td></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <p>iframe 使用 safe 管道的示例： </p>
+              <iframe class="btn btn-xsm btn-outline-primary" target="_blank" [src]="(viewDataTemp.imaSrc) | safe:'resourceUrl'">
+              </iframe>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="trueFalse">
+          <div class="p-2 mb-2 bg-gray-me">
+            <h4>是/否选择管道 |trueFalse</h4>
+          </div>
+          <p>
+            对于需要显示 是/否的界面中，| trueFalse 管道可以将值为 'Y' 或者 'N' 的数据，转化为 '是' 或者 '否'。
+            <br>下面讲解详细使用:
+          </p>
+          <div class="row m-0">
+            <div class="col-9">
+              <ngb-tabset class="tabset-code">
+                <ngb-tab title="xxx-component.html">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="html">
+<div class="form-group p-0 pt-1 col-6">
+    <div class="col-8 form-control border-0">
+      viewDataTemp.trueFalseValue | trueFalse  (注：实际使用中需要加上"{{")
+        </div>
+  </div>
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="xxx-component.ts">
+                  <ng-template ngbTabContent>
+                     <textarea highlight-js lang="javascript">
+  // 用于管道数据变量使用
+  viewDataTemp = {
+     trueFalseValue: 'Y'
+  };
+                     </textarea>
+
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+              <div class="row m-0">
+                <div class="col-4 p-0">
+                  <table class="table table-hover table-striped">
+                    <tr><td>使用属性</td><td>trueFalse</td></tr>
+                    <tr><td>导入模块</td><td>SharedPipesModule</td></tr>
+                    <tr><td>依赖模块</td><td></td></tr>
+                  </table>
+                </div>
+                <div class="col-8 pl-1">
+                  <table class=" table table-hover table-striped pl-1">
+                    <tr><td>属性/事件</td><td>类型</td><td>说明</td></tr>
+                    <tr><td></td></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <p>当前 trueFalseValue 的值：{{viewDataTemp.trueFalseValue}} </p>
+              <div class="col-8 form-control border-0">
+                <p class="form-control">{{viewDataTemp.trueFalseValue | trueFalse}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>

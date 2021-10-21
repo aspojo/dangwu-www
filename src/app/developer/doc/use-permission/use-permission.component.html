@@ -1,0 +1,58 @@
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-up"
+   style="z-index: 9999; right: 10px; bottom: 10px;" href="developer/doc/useFilter#top"></a>
+<a class="btn btn-outline-primary position-fixed btn-sm fa fa-angle-double-down"
+   style="z-index: 9999; right: 10px; top: 70px;" href="developer/doc/useFilter#bottom"></a>
+
+<div id="top">
+  <app-page-header [heading]="'系统权限控制'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div class="p-2 mb-2 bg-gray-me">
+        <h4>权限控制概述</h4>
+      </div>
+      <p>权限控制分为两大类：</p>
+      <ol>
+        <li>前端权限控制</li>
+        <p>前端权限控制主要通过控制菜单、按钮及页面片段的显示与否来实现。</p>
+        <li>后端权限控制</li>
+        <p>后端权限控制主要用来控制数据的访问权限。又可分为特定api权限控制及通用api权限控制。</p>
+      </ol>
+    </div>
+    <div class="col-12">
+      <div class="p-2 mb-2 bg-gray-me">
+        <h4>前端权限控制</h4>
+      </div>
+      <div class="p-2 mb-2 bg-gray-me">
+        <h6>菜单</h6>
+      </div>
+      <p>通过控制菜单的显示与否来控制用户可见的功能模块。</p>
+      <p>所有菜单都可以通过permission属性进行权限配置。菜单的详细配置，参照<a href="/developer/doc/useCodeTool#menuConfig">使用GTC</a>中的菜单配置介绍</p>
+      <p>例如：只有拥有BASE_ADMIN权限的用户才能看到【系统管理】模块，则配置如下：</p>
+      <ngb-tabset class="tabset-code">
+        <ngb-tab title="src/config/menu-list.ts">
+          <ng-template ngbTabContent>
+           <textarea highlight-js lang="javascript">
+export const menuData =
+  [
+    ...
+    {
+      lb: '系统管理', permission: 'BASE_ADMIN', key: 'system', icon: 'fa-cog', children: [
+        {lb: '字典管理', lk: '/system/dic', icon: 'fa-book'},
+        {lb: '通讯录管理', lk: '/system/deptRoleUser', icon: 'fa-building'},
+        {lb: '日志管理', lk: '/system/logInfo', icon: 'fa-eye'},
+      ]
+    },
+
+    ...
+  ];
+
+           </textarea>
+
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>

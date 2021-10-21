@@ -1,0 +1,58 @@
+<div id="top">
+  <app-page-header [hasBackButton]="false" [heading]="'干部管理'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-12">
+      <div>
+
+        <div id="app-common-type-tree">
+
+          <div class="row m-0">
+            <div class="col-3">
+
+              <!--              <p>selectedNodeData: <b *ngIf="selectedNodeData">{{selectedNodeData.id}} {{selectedNodeData.value}}</b>-->
+              <!--              </p>-->
+              <div style="max-height: 90vh; overflow-y: auto;">
+              <app-common-type-tree #tree
+                                    [entityName]="'DwGeneralParty'"
+                                    [treeTitle]="'武汉轻工大学党委'"
+                                    [idField]="'id'"
+                                    [valueField]="'generalPartyName'"
+                                    [parentField]="'parentId'"
+                                    (nodeSelectEvent)="nodeSelect($event)"
+              ></app-common-type-tree>
+              </div>
+            </div>
+            <div class="col-9">
+              <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="model"
+                   (change)="clickPartyPhasesButton()">
+                <label ngbButtonLabel class="btn-primary">
+                  <input ngbButton type="radio" [value]="1">副科级
+                </label>
+                <label ngbButtonLabel class="btn-primary">
+                  <input ngbButton type="radio" [value]="2">正科级
+                </label>
+                <label ngbButtonLabel class="btn-primary">
+                  <input ngbButton type="radio" [value]="3">副处级
+                </label>
+                <label ngbButtonLabel class="btn-primary">
+                  <input ngbButton type="radio" [value]="4">正处级
+                </label>
+                <label ngbButtonLabel class="btn-primary">
+                  <input ngbButton type="radio" [value]="5">副厅级
+                </label>
+                <label ngbButtonLabel class="btn-primary">
+                  <input ngbButton type="radio" [value]="6">正厅级
+                </label>
+                <!--                <h3>{{model}}</h3>-->
+              </div>
+              <h3><p *ngIf="selectedNodeData">{{selectedNodeData.value}}</p></h3>
+              <app-list-cadres-manage [queryData]="queryDataList" [isQueryCollapsed]="true"></app-list-cadres-manage>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="bottom"></div>
+

@@ -1,0 +1,139 @@
+<app-common-pop-or-page heading="{{inEdit?'修改':'添加'}}数据传输模型"
+                        [contentView]="contentView"
+                        [operateView]="operateView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+<ng-content></ng-content>
+<ng-template #contentView>
+  <ng-container *ngIf="formPart=='p1'">
+    <div class="card">
+      <div class="card-header">
+        基本信息
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="form-inline">
+            <div class="form-group p-0 pt-1 col-6">
+              <small class="col-4 col-form-label text-right">
+                <span class="text-danger">*</span>
+                {{uiLabel('name')}}:
+              </small>
+              <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.name" type="text">
+              <small class="col-4">
+                <div>
+                  <small class="text-left text-muted">必填</small>
+                </div>
+              </small>
+            </div>
+            <div class="form-group p-0 pt-1 col-6">
+              <small class="col-4 col-form-label text-right">
+                <span class="text-danger">*</span>
+                {{uiLabel('extractModelId')}}:
+              </small>
+
+              <span class="col-4 form-control form-control-sm" [selectDtExcelDataExtractModel]=""
+                    [showValue]="editDataTemp.extractModelIdValue" [(ngModel)]="editDataTemp.extractModelId" (selectedEvent)="editDataTemp.extractModelIdValue=$event.name"></span>
+              <small class="col-4">
+                <div>
+                  <small class="text-left text-muted">必填</small>
+                </div>
+              </small>
+            </div>
+            <div class="form-group p-0 pt-1 col-6">
+              <small class="col-4 col-form-label text-right">
+                <span class="text-danger">*</span>
+                {{uiLabel('saveDatasource')}}:
+              </small>
+
+              <common-select class="col-4 p-0 ml-0" (change)="onDataSourceChange($event)"
+                             [cssStyle]="'form-control form-control-sm'" [(ngModel)]="editDataTemp.saveDatasource"
+                             [dataList]="fieldInfoService.fieldInfoMap.saveDatasource.selectDataList"></common-select>
+              <small class="col-4">
+                <div>
+                  <small class="text-left text-muted">必填</small>
+                </div>
+              </small>
+            </div>
+            <div class="form-group p-0 pt-1 col-6">
+              <small class="col-4 col-form-label text-right">
+                <span class="text-danger">*</span>
+                {{uiLabel('saveModelId')}}:
+              </small>
+              <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.saveModelId" type="text"
+                     list="models">
+              <datalist id="models">
+
+                <option *ngFor="let item of entityModelList" [value]="item.entityName">{{item.description}}</option>
+              </datalist>
+              <small class="col-4">
+                <div>
+                  <small class="text-left text-muted">必填</small>
+                </div>
+              </small>
+            </div>
+            <div class="form-group p-0 pt-1 col-12">
+              <small class="col-2 col-form-label text-right">
+                {{uiLabel('description')}}:
+              </small>
+              <input class="col-8 form-control form-control-sm" [(ngModel)]="editDataTemp.description" type="text">
+              <small class="col-2">
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="mt-2" *ngIf="commonService.hasAttachment">
+      <app-attachment-files [(ngModel)]="attachList"></app-attachment-files>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="formPart=='p2'">
+    <div class="card">
+      <div class="card-header">
+        字段映射
+      </div>
+      <div class="card-body">
+        <table class="table table-hover table-striped">
+          <thead class="">
+          <tr>
+            <th>存储模型字段</th>
+            <th>抽取模型字段</th>
+            <th>默认值</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let field of fieldList">
+            <td>{{field.description}}</td>
+            <td>
+              <select [(ngModel)]="editDataTemp.fieldMapping[field.fieldName].extractField" (ngModelChange)="extractFieldChange($event,field)">
+                <option></option>
+                <option *ngFor="let extractField of extractModelHeader" [value]="extractField">{{extractField}}</option>
+              </select>
+            </td>
+            <td><input *ngIf="!editDataTemp.fieldMapping[field.fieldName].extractField" class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.fieldMapping[field.fieldName].defaultValue" type="text"></td>
+
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </ng-container>
+
+
+</ng-template>
+
+<ng-template #operateView>
+  <div class="float-right btn-group">
+    <button type="submit" class="btn btn-xsm btn-outline-dark" (click)="changeFormPart()">{{formPart == 'p1' ? '下' : '上'}}
+      一步
+    </button>
+    <button type="submit" class="btn btn-xsm btn-warning" (click)="saveData()">保存</button>
+    <button type="submit" *ngIf="commonService.hasFlow" class="btn btn-xsm btn-primary" (click)="saveAndHandleTask()">
+      提交审批
+    </button>
+  </div>
+</ng-template>
+

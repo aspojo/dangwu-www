@@ -1,0 +1,29 @@
+<div id="top">
+  <app-page-header [heading]="'平台前后台介绍及名词解释'" [icon]="'fa-wrench'"></app-page-header>
+  <div class="card">
+    <div class="card-header">
+      <button class="btn btn-primary" (click)="submitClick()" [disabled]="!apiUrl">测试</button>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <label>
+            api地址:
+          </label>
+          <scan-input class="col-12 row p-0 m-0" cssStyle="col-12" rows="2" [(ngModel)]="apiUrl"></scan-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <label>提交数据</label>
+          <scan-input class="col-12 row p-0 m-0" cssStyle="col-12" [(ngModel)]="submitData"></scan-input>
+        </div>
+        <div class="col-8">
+          <label>返回数据</label>
+          <scan-input class="col-12 row p-0 m-0" cssStyle="col-12" [(ngModel)]="returnData"></scan-input>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

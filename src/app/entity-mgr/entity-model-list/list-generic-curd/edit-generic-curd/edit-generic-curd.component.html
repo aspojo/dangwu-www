@@ -1,0 +1,60 @@
+<app-common-pop-or-page heading="{{inEdit?'修改':'添加'}}{{fieldInfoService.entityName}}--{{fieldInfoService.entityDescription}}"
+                        [contentView]="contentView"
+                        [operateView]="operateView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+<ng-content></ng-content>
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header">
+      基本信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <ng-container *ngFor="let field of fieldInfoService.fieldInfo">
+            <ng-container *ngIf="field.showInEdit=='Y'">
+              <div class="form-group p-0 pt-1 {{field.fieldType=='text'?'col-12':'col-6'}}" *ngIf="inCreate||field.PK!='Y'">
+                <small class="{{field.fieldType=='text'?'col-2':'col-4'}} col-form-label text-right">
+                  <span class="text-danger" *ngIf="field.required=='Y'">*</span>
+                  {{field.fieldLabel}}:
+                </small>
+
+
+                <input *ngIf="!field.fieldType" class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp[field.fieldName]" type="text">
+                <app-date-input *ngIf="field.fieldType=='date'" class="col-4 row p-0 m-0" [(ngModel)]="editDataTemp[field.fieldName]"></app-date-input>
+                <app-date-time-input *ngIf="field.fieldType=='dateTime'" class="col-4 row p-0 m-0" [(ngModel)]="editDataTemp[field.fieldName]"></app-date-time-input>
+                <input type="number" *ngIf="field.fieldType=='numeric'" class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp[field.fieldName]">
+                <input *ngIf="field.fieldType=='text'" class="col-8 form-control form-control-sm" [(ngModel)]="editDataTemp[field.fieldName]">
+
+
+                <small class="{{field.fieldType=='text'?'col-2':'col-4'}}">
+                  <div *ngIf="field.required=='Y'">
+                    <small class="text-left text-muted">必填</small>
+                  </div>
+                  <div *ngIf="field.PK=='Y'">
+                    <small class="text-left text-muted">请保证唯一</small>
+                  </div>
+                </small>
+              </div>
+            </ng-container>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList"></app-attachment-files>
+  </div>
+
+
+</ng-template>
+
+<ng-template #operateView>
+  <div class="float-right btn-group">
+    <button type="submit" class="btn btn-xsm btn-warning" (click)="saveData()">保存</button>
+    <button type="submit" *ngIf="commonService.hasFlow" class="btn btn-xsm btn-primary" (click)="saveAndHandleTask()">提交审批</button>
+  </div>
+</ng-template>
+

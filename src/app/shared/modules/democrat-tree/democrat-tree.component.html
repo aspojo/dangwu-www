@@ -1,0 +1,25 @@
+<div class="form-inline">
+  <div class="form-group col-12 p-0">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">搜索值</span>
+      </div>
+      <input type="text" class="form-control" [(ngModel)]="searchValue" (keyup)="searchChange($event)">
+    </div>
+  </div>
+</div>
+
+
+<tree-root *ngIf="!searchValue" #dicTree
+      [nodes]="treeData"
+      [options]="treeSettings"
+      (activate)="onNodeSelected($event)"
+      (updateData)="onUpdateData()"
+>
+</tree-root>
+<tree-root *ngIf="searchValue" #dicTree
+      [nodes]="searchTreeData"
+      [options]="treeSettings"
+      (activate)="onNodeSelected($event)"
+>
+</tree-root>

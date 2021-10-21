@@ -1,0 +1,206 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'字典管理'" [icon]="'fa-book'"></app-page-header>
+  <div class="row" style="min-height: 400px;">
+    <div class="col-xl-4 col-lg-12">
+      <div class="form-inline">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">搜索值</span>
+            </div>
+            <input type="text" class="form-control" [(ngModel)]="searchValue" (keyup)="searchChange($event)">
+          </div>
+        </div>
+      </div>
+      <tree-root *ngIf="!searchValue" #dicTree
+                 [nodes]="treeData"
+                 [options]="treeSettings"
+                 (activate)="onNodeSelected($event)">
+      </tree-root>
+      <tree-root *ngIf="searchValue" #dicTree
+                 [nodes]="searchTreeData"
+                 [options]="treeSettings"
+                 (activate)="onNodeSelected($event)">
+      </tree-root>
+
+    </div>
+    <div class="col-xl-8 col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 *ngIf="selectedNode">字典：{{selectedNode.data.value}}{{selectedNode.data.dicId}}</h4>
+        </div>
+        <div class="card-body table-responsive">
+
+          <div class="p-2">
+            <button class="btn btn-outline-dark btn-xsm ml-1" (click)="open('add',addView,null)"><i class="fa fa-plus-circle"></i>添加</button>
+            <button class="btn btn-outline-dark btn-xsm ml-1" (click)="sortClick()" [disabled]="!hasChildren">调整顺序</button>
+          </div>
+          <div *ngIf="showSortInfo" class="p-2 btn-group col-12" style="background-color: #fff9db">
+            <small class="m-auto">
+              上下移动调整位置
+              <button class="btn btn-outline-dark btn-xsm" (click)="saveDeptSortClick()">保存</button>
+              <button class="btn btn-outline-dark btn-xsm" (click)="cancelDeptSortClick()">撤销</button>
+            </small>
+          </div>
+
+          <table class="table table-hover table-striped">
+            <thead class="thead-light">
+            <tr>
+              <th width="">字典id</th>
+              <th>字典值</th>
+              <th width="60px">排序</th>
+              <th width="60px">有效</th>
+              <th width="100px">操作</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="!showSortInfo">
+            <ng-template ngFor let-data [ngForOf]="dataList">
+              <tr *ngIf="data.__show__!==false">
+                <td>{{data.dicId}}</td>
+                <td>{{data.dicValue}}</td>
+                <td>{{data.orderNum}}</td>
+                <td>{{data.enabled==='Y'?'是':'否'}}</td>
+                <!--<td>{{data.description}}</td>-->
+                <td>
+                  <div class="btn-group ">
+                    <button class="btn btn-sm btn-warning" (click)="open('edit',editView,data)" ngbTooltip="编辑"><i class="fa fa-fw fa-edit"></i></button>
+                    <button class="btn btn-sm btn-info" (click)="(editDic=data)&&toggleEnable()" ngbTooltip="启停用"><i class="fa fa-fw fa-{{data.enabled==='Y'?'':'un'}}lock"></i></button>
+                    <button class="btn btn-sm  btn-danger" [confirm]="'确定删除字典['+data.dicValue+']'" (confirmClick)="deleteDicById(data.dicId)" ngbTooltip="删除"><i class="fa fa-fw fa-remove"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            </tbody>
+
+
+            <ng-template [ngIf]="showSortInfo">
+              <tbody [sortablejs]="newDataList">
+              <ng-template ngFor let-data [ngForOf]="newDataList" let-i="index">
+                <tr *ngIf="data.__show__!==false">
+                  <td scope="row">
+                    <i class="fa fa-fw fa-list text-muted"></i>{{data.dicId}}
+                  </td>
+                  <td>{{data.dicValue}}</td>
+                  <td>{{data.orderNum}}</td>
+                  <td>{{data.enabled==='Y'?'是':'否'}}</td>
+                  <td></td>
+                </tr>
+              </ng-template>
+              </tbody>
+            </ng-template>
+
+
+
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<ng-template #addView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">添加字典</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="addRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <fieldset class="form-group">
+
+      <div class="input-group" hidden>
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">父字典</span></label>
+        <input [(ngModel)]="newDic.parentId" class="form-control" type="text">
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">字典id</span></label>
+        <input [(ngModel)]="newDic.dicId" class="form-control" placeholder="若不填写，则自动生成" #add_dicId="ngModel">
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">排序</span></label>
+        <input [(ngModel)]="newDic.orderNum" class="form-control" type="text">
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">字典值</span></label>
+        <textarea [(ngModel)]="newDic.dicValue" class="form-control" placeholder="必填" required #add_dicValue="ngModel"></textarea>
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">字典描述</span></label>
+        <textarea [(ngModel)]="newDic.description" class="form-control" type="text"></textarea>
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">是否为分类</span></label>
+        <select [(ngModel)]="newDic.isLeaf" class="form-control" type="text">
+          <option value="Y">否</option>
+          <option value="N">是</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">是否有效</span></label>
+        <select [(ngModel)]="newDic.enabled" class="form-control" type="text">
+          <option value="Y">是</option>
+          <option value="N">否</option>
+        </select>
+      </div>
+    </fieldset>
+
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="!add_dicValue.valid" type="submit" class="btn btn-primary" (click)="saveData('add')">保存</button>
+  </div>
+</ng-template>
+
+<ng-template #editView>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">修改字典</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="editRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <fieldset class="form-group">
+
+      <div class="input-group" hidden>
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">父字典</span></label>
+        <input [(ngModel)]="editDic.parentId" class="form-control" type="text">
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">字典id</span></label>
+        <input [(ngModel)]="editDic.dicId" class="form-control" type="text" disabled>
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">排序</span></label>
+        <input [(ngModel)]="editDic.orderNum" class="form-control" type="text">
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">字典值</span></label>
+        <textarea [(ngModel)]="editDic.dicValue" class="form-control" type="text" required #add_dicValue="ngModel"></textarea>
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">字典描述</span></label>
+        <textarea [(ngModel)]="editDic.description" class="form-control" type="text"></textarea>
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">是否为分类</span></label>
+        <select [(ngModel)]="editDic.isLeaf" class="form-control" type="text">
+          <option value="Y">否</option>
+          <option value="N">是</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-group-prepend"><span class="input-group-text add-dic-label">是否有效</span></label>
+        <select [(ngModel)]="editDic.enabled" class="form-control" type="text">
+          <option value="Y">是</option>
+          <option value="N">否</option>
+        </select>
+      </div>
+    </fieldset>
+
+  </div>
+  <div class="modal-footer">
+    <button  [disabled]="!add_dicValue.valid" type="submit" class="btn btn-primary" (click)="saveData('edit')">保存</button>
+  </div>
+</ng-template>

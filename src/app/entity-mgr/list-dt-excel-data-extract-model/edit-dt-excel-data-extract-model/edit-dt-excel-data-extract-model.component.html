@@ -1,0 +1,196 @@
+<app-common-pop-or-page heading="{{inEdit?'修改':'添加'}}excel数据提取模型"
+                        [contentView]="contentView"
+                        [operateView]="operateView"
+                        (closeViewEvent)="closeViewEvent.emit()"></app-common-pop-or-page>
+<ng-content></ng-content>
+<ng-template #contentView>
+  <div class="card">
+    <div class="card-header">
+      基本信息
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="form-inline">
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('name')}}:
+            </small>
+            <input class="col-4 form-control form-control-sm" [(ngModel)]="editDataTemp.name" type="text">
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('modelType')}}:
+            </small>
+
+            <common-select class="col-4 p-0 ml-0" [cssStyle]="'form-control form-control-sm'" [(ngModel)]="editDataTemp.modelType" [dataList]="fieldInfoService.fieldInfoMap.modelType.selectDataList"></common-select>
+            <small class="col-4">
+              <div>
+                <small class="text-left text-muted">必填</small>
+              </div>
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-6">
+            <small class="col-4 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('templateId')}}:
+            </small>
+
+            <span class="col-8 form-control form-control-sm" [selectDtExcelTemplateFile]="" [showValue]="editDataTemp.templateIdValue" [(ngModel)]="editDataTemp.templateId"></span>
+
+          </div>
+          <div class="form-group p-0 pt-1 col-12">
+            <small class="col-2 col-form-label text-right">
+              {{uiLabel('description')}}:
+            </small>
+            <textarea class="col-8 form-control form-control-sm" rows="2" [(ngModel)]="editDataTemp.description"></textarea>
+            <small class="col-2">
+            </small>
+          </div>
+          <div class="form-group p-0 pt-1 col-12">
+            <small class="col-2 col-form-label text-right">
+              <span class="text-danger">*</span>
+              {{uiLabel('fieldColInfo')}}:
+            </small>
+            <div class="col-8 p-0">
+
+              <div *ngIf="isFormType" class="card mt-2">
+                <div class="card-header">
+                  <button class="btn btn-outline-primary btn-xsm" (click)="addRow()"><i class="fa fa-plus-circle"></i>新增一行号</button>
+                </div>
+                <div class="card-body">
+                  <table class="table table-hover table-striped">
+                    <thead class="">
+                    <tr>
+                      <th>sheet页号</th>
+                      <th>行号</th>
+                      <th>列号</th>
+                      <th width="150px">数据格位置</th>
+                      <th width="50px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of fieldColInfo">
+                      <td><input type="number" [(ngModel)]="item.sheet" class="form-control form-control-sm " style="width: 100px;"></td>
+                      <td><input type="number" [(ngModel)]="item.row" class="form-control form-control-sm " style="width: 100px;"></td>
+                      <td><input [(ngModel)]="item.col" class="form-control form-control-sm " style="width: 100px;"></td>
+                      <td>
+                        <select [(ngModel)]="item.dataPosition" class="form-control form-control-sm ">
+                          <option>居右</option>
+                          <option>居下</option>
+                        </select>
+                      </td>
+                      <td>
+                        <button class="btn btn-outline-danger btn-xsm" (click)="removeRow(item)"><i class="fa fa-fw fa-remove"></i>删除</button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div *ngIf="!isFormType" class="card mt-2">
+                <div>
+                  <div class="form-inline">
+                    <div class="form-group p-0 pt-1 col-12">
+                      <small class="col-2 col-form-label text-right">
+                        sheet页号:
+                      </small>
+                      <input type="number" class="col-4 form-control form-control-sm" [(ngModel)]="fieldColInfo2.sheet" type="text">
+                      <small class="col-4">
+                        <div>
+                          <small class="text-left text-muted">必填</small>
+                        </div>
+                      </small>
+                    </div>
+                    <div class="form-group p-0 pt-1 col-12">
+                      <small class="col-2 col-form-label text-right">
+                        行号:
+                      </small>
+                      <input type="number" class="col-4 form-control form-control-sm" [(ngModel)]="fieldColInfo2.row" type="text">
+                      <small class="col-4">
+                        <div>
+                          <small class="text-left text-muted">必填</small>
+                        </div>
+                      </small>
+                    </div>
+                    <div class="form-group p-0 pt-1 col-12">
+                      <small class="col-2 col-form-label text-right">
+                        起始列号:
+                      </small>
+                      <input class="col-4 form-control form-control-sm" [(ngModel)]="fieldColInfo2.startCol" type="text">
+                      <small class="col-4">
+                        <div>
+                          <small class="text-left text-muted">必填</small>
+                        </div>
+                      </small>
+                    </div>
+                    <div class="form-group p-0 pt-1 col-12">
+                      <small class="col-2 col-form-label text-right">
+                        结束列号:
+                      </small>
+                      <input class="col-4 form-control form-control-sm" [(ngModel)]="fieldColInfo2.endCol" type="text">
+                      <small class="col-4">
+                        <div>
+                          <small class="text-left text-muted">必填</small>
+                        </div>
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <small class="col-2">
+              <div>
+                <div><small class="text-left text-muted">1.必填</small></div>
+                <div><small class="text-left text-muted">2.sheet页号从1开始</small></div>
+                <div><small class="text-left text-muted">3.使用大写字母表达列号</small></div>
+              </div>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-2">
+    <div class="card-header">
+      提取测试   <button class="btn btn-xsm btn-outline-primary" (click)="excelExtractTest()"><i class="fa fa-bug"></i>测试</button>
+      <small>最多显示10条数据</small>
+    </div>
+    <div class="card-body">
+      <table class="table table-hover table-striped">
+        <thead class="">
+        <tr>
+          <th *ngFor="let item of testData.header">{{item}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let trData of testData.data">
+          <td *ngFor="let item of trData">{{item}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mt-2" *ngIf="commonService.hasAttachment">
+    <app-attachment-files [(ngModel)]="attachList"></app-attachment-files>
+  </div>
+
+
+
+</ng-template>
+
+<ng-template #operateView>
+  <div class="float-right btn-group">
+    <button type="submit" class="btn btn-xsm btn-warning" (click)="saveData()">保存</button>
+    <button type="submit" *ngIf="commonService.hasFlow" class="btn btn-xsm btn-primary" (click)="saveAndHandleTask()">提交审批</button>
+  </div>
+</ng-template>
+

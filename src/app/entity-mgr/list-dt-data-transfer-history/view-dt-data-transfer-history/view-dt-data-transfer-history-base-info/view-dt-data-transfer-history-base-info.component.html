@@ -1,0 +1,30 @@
+<div class="form-inline">
+  <div class="form-group p-0 pt-1 col-6">
+    <small class="col-4 col-form-label text-right">{{uiLabel('userLoginId')}}:</small>
+    <div class="col-8 form-control border-0">
+
+      {{viewDataTemp.userLoginIdValue}}
+        </div>
+  </div>
+  <div class="form-group p-0 pt-1 col-6">
+    <small class="col-4 col-form-label text-right">{{uiLabel('operateTime')}}:</small>
+    <div class="col-8 form-control border-0">
+          {{viewDataTemp.operateTime}}
+    </div>
+  </div>
+  <div class="form-group p-0 pt-1 col-12">
+    <small class="col-2 col-form-label text-right">{{uiLabel('filePath')}}:</small>
+    <div class="col-10 form-control border-0">
+          {{viewDataTemp.filePath | fileName}}
+      <a class="btn btn-xsm btn-outline-primary" target="_blank" [href]="('download/'+viewDataTemp.filePath+'?') | serverUrl">
+        <i class="fa fa-fw fa-download"></i>下载文件
+      </a>
+    </div>
+  </div>
+  <div class="form-group p-0 pt-1 col-12">
+    <small class="col-2 col-form-label text-right">{{uiLabel('description')}}:</small>
+    <div class="col-10 form-control border-0">
+          {{viewDataTemp.description}}
+    </div>
+  </div>
+</div>
